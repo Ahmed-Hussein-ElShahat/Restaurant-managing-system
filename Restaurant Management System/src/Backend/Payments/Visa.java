@@ -27,7 +27,8 @@ public class Visa extends Payment {
         else throw new IllegalArgumentException("illegal length") ;
 
     }
-    
-    
-
+    @Override
+    public String getMethod() {
+        return "Visa";
+    }
 }

@@ -1,22 +1,16 @@
 package Backend;
 
 public abstract class Payment {
-    String method; // May not be needed
     double amount;
 
     public Payment() {
     }
-    public Payment(String method, double amount) {
-        this.method = method;
+    public Payment(double amount) {
         this.setAmount(amount);
     }
 
-    public String getMethod() {
-        return method;
-    }
-    public void setMethod(String method) {
-        this.method = method;
-    }
+    abstract public String getMethod();
+
     public double getAmount() {
         return amount;
     }
@@ -28,9 +22,9 @@ public abstract class Payment {
             throw new IllegalArgumentException ("the amount can't be negative");
         }
     }
-
-    public void print(){
-        System.out.println(this.getMethod() + " " + this.getAmount()) ;
+    @Override
+    public String toString(){
+        return this.getMethod() + " " + this.getAmount();
     }
     
 }
