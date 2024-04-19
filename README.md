@@ -9,6 +9,13 @@ Write one of the main backend classes along with its parameters, setters and get
   **_Zeyad_: Item class**  
   **_Hisham_: Payment class**
 
+## Folder Structure
+
+The workspace contains two folders by default, where:
+
+- `src`: the folder to maintain sources
+- `lib`: the folder to maintain dependencies
+
 ## Package Structure
 
 We will divide the code structure into 2 main components:

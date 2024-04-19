@@ -1,4 +1,4 @@
-import Backend.Item;
+package Backend.Items;
 
 public class Appetizer {
     private double soup = 0;

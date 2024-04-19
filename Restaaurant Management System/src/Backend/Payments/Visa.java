@@ -1,7 +1,7 @@
 package Backend.Payments;
 
 import Backend.Payment;
-import java.lang.IllegalArgumentException ; 
+import java.lang.IllegalArgumentException; 
 
 public class Visa extends Payment {
     private String id ;
@@ -20,11 +20,11 @@ public class Visa extends Payment {
         
         if ( id.length() == 16 ) {
             for ( int i = 0; i < id.length() ; i++ ) {
-                if ( !(Character.isDigit(id.charAt(i))) ) throw IllegalArgumentException("illegal character")  ;
+                if ( !(Character.isDigit(id.charAt(i))) ) throw new IllegalArgumentException("illegal character")  ;
             }
             this.id = id;
         }
-        else throw IllegalArgumentException("illegal length") ;
+        else throw new IllegalArgumentException("illegal length") ;
 
     }
     

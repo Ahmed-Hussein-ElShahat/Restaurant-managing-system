@@ -1,4 +1,6 @@
-public class Drinks {
+package Backend.Items;
+
+public class Drink {
     private double water = 0;
     private double soda = 0;
     private double coffee = 0;
