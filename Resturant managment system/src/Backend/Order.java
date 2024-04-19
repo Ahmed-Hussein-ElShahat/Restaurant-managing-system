@@ -31,7 +31,8 @@ public class Order {
     public void addOrder(Item newOrder) {guestOrder.add(newOrder);}
 
     public void removeOrder(int n) {guestOrder.remove(n);}
+    // Need a function that is passed the Item to be removed
 
     public void updatingOrder(int n,Item update){guestOrder.set(n,update);}
-
+    // Same here
 }

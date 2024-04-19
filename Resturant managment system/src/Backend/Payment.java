@@ -1,7 +1,7 @@
 package Backend;
 
 public abstract class Payment {
-    String method;
+    String method; // May not be needed
     double amount;
 
     public Payment() {
@@ -25,7 +25,7 @@ public abstract class Payment {
             this.amount = amount;
         }
         else {
-            throw new IllegalArgumentException ("the amount can't be negative ");
+            throw new IllegalArgumentException ("the amount can't be negative");
         }
     }
 
