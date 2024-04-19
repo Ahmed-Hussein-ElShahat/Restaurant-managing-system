@@ -1,34 +1,39 @@
 package Backend.Items;
 
-public class MainCourse {
-    private double pizza = 0;
-    private double pasta = 0;
-    private double lasagna = 0;
-    private double risotto = 0;
+public class MainCourse implements Available {
+    private double Price;
+    private final String Name;
+    private boolean available = true;
 
-    public void setPizza(double pizza) {
-        this.pizza = pizza;
+    MainCourse(String Name, double Price) {
+        this.Name = Name;
+        this.setPrice(Price);
     }
 
-    public void setPasta(double pasta) {
-        this.pasta = pasta;
+    public String getName() {
+        return this.Name;
     }
 
-    public void setLasagna(double lasagna) {
-        this.lasagna = lasagna;
+    public double getPrice() {
+        return this.Price;
     }
 
-    public void setRisotto(double risotto) {
-        this.risotto = risotto;
+    public void setPrice(double Price) {
+        // will implement it with exception handling later
+        if(Price > 0) {
+            this.Price = Price;
+        }
+        else {
+            this.Price = 0;
+        }
     }
 
-    public double getItemPrice(String item) {
-        return switch (item) {
-            case "Pizza" -> pizza;
-            case "Pasta" -> pasta;
-            case "Lasagna" -> lasagna;
-            case "Risotto" -> risotto;
-            default -> 0;
-        };
+    public void setAvailability(boolean available) {
+        this.available = available;
+    }
+
+    @Override
+    public boolean checkIfAvailable() {
+        return available;
     }
 }

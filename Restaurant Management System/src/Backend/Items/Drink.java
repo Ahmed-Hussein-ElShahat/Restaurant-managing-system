@@ -1,28 +1,39 @@
 package Backend.Items;
 
-public class Drink {
-    private double water = 0;
-    private double soda = 0;
-    private double coffee = 0;
+public class Drink implements Available {
+    private double Price;
+    private final String Name;
+    private boolean available = true;
 
-    public void setWater(double water) {
-        this.water = water;
+    Drink(String Name, double Price) {
+        this.Name = Name;
+        this.setPrice(Price);
     }
 
-    public void setSoda(double soda) {
-        this.soda = soda;
+    public String getName() {
+        return this.Name;
     }
 
-    public void setCoffee(double coffee) {
-        this.coffee = coffee;
+    public double getPrice() {
+        return this.Price;
     }
 
-    public double getItemPrice(String item){
-        return switch (item) {
-            case "water" -> water;
-            case "soda" -> soda;
-            case "coffee" -> coffee;
-            default -> 0;
-        };
+    public void setPrice(double Price) {
+        // will implement it with exception handling later
+        if(Price > 0) {
+            this.Price = Price;
+        }
+        else {
+            this.Price = 0;
+        }
+    }
+
+    public void setAvailability(boolean available) {
+        this.available = available;
+    }
+
+    @Override
+    public boolean checkIfAvailable() {
+        return available;
     }
 }
