@@ -31,4 +31,10 @@ public class Visa extends Payment {
     public String getMethod() {
         return "Visa";
     }
+    
+    @Override
+    public double calcRest (double amount) {  //الباقي
+        return super.getAmount() - amount;
+    }
+
 }
