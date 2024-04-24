@@ -19,8 +19,8 @@ public class OrderScene implements Template {
         GridPane btngrid = new GridPane();
         configureGridpane(btngrid);
         
-        Button tkeButton = getButton("Onsite");
-        Button onSiteButton = getButton("Take\nAway");
+        Button tkeButton = getButton("Take\nAway");
+        Button onSiteButton = getButton("Onsite");
 
 
         btngrid.add(tkeButton, 0,0);
@@ -44,7 +44,7 @@ public class OrderScene implements Template {
             else {
                 Alert messageAlert = new Alert(Alert.AlertType.INFORMATION);
                 messageAlert.setHeaderText("Sorry, no table available");
-                messageAlert.setContentText("Please wait until a table is available");
+                messageAlert.setContentText("Please wait until a table is available!");
                 messageAlert.show();
                 App.returnToMain();
             }

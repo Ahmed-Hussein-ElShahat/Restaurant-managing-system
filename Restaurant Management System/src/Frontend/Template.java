@@ -29,7 +29,7 @@ public interface Template {
         Label label1 = new Label(str);
         Font hfont = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
         label1.setFont(hfont);
-        label1.setTextFill(Color.BEIGE);
+        label1.setTextFill(Color.BISQUE);
         return label1;
     }
     default void configureGridpane(GridPane pane){

@@ -8,6 +8,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.image.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.lang.IllegalArgumentException;
@@ -16,7 +18,7 @@ import Backend.*;
 public class App extends Application implements Template{
 
     private static ArrayList<Table> tables = new ArrayList<Table>();
-    private static ArrayList<Item> menu = new ArrayList<Item>();
+    private static ObservableList<Item> menu = FXCollections.observableArrayList();
     private static ArrayList<Order> pastOrders = new ArrayList<Order>();
     private static Background background = App.loadBackground("Assets/food.jpg");
     private static Scene scene;
@@ -34,6 +36,9 @@ public class App extends Application implements Template{
             scene.setFill(Color.ALICEBLUE);
             alert.showAndWait();
         }
+
+        menu.addAll(new Item("Salad", 20, "Appetizer"), new Item("Sushi", 100, "Main Course"));
+
         pane.setAlignment(Pos.CENTER);
         stage.setTitle("Application");
         stage.setScene(scene);
@@ -80,7 +85,7 @@ public class App extends Application implements Template{
 
         });
         menuButton.setOnAction(e -> {
-
+            new MenuScene();
         });
         tableButton.setOnAction(e -> {
 
@@ -100,7 +105,7 @@ public class App extends Application implements Template{
     protected static ArrayList<Table> getTables() {
         return tables;
     }
-    protected static ArrayList<Item> getMenu() {
+    protected static ObservableList<Item> getMenu() {
         return menu;
     }
     protected static ArrayList<Order> getPastOrders() {
