@@ -35,4 +35,13 @@ public class Order {
 
     public void updatingOrder(int n,Item update){guestOrder.set(n,update);}
     // Same here
+
+    double getTotalPrice ( Order order ) {
+        double total = 0 ;
+        for (int i = 0; i < order.getNumOfItems(); i++) {
+            total += order.getOrder(i).getPrice() ;
+        }
+        return total ;
+    }
+
 }
