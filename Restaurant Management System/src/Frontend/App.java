@@ -2,40 +2,120 @@ package Frontend;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
-//import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.image.*;
 
+import java.util.ArrayList;
+import java.lang.IllegalArgumentException;
+import Backend.*;
 
-import java.io.IOException;
+public class App extends Application implements Template{
 
-public class App extends Application {
+    private static ArrayList<Table> tables = new ArrayList<Table>();
+    private static ArrayList<Item> menu = new ArrayList<Item>();
+    private static ArrayList<Order> pastOrders = new ArrayList<Order>();
+    private static Background background = App.loadBackground("Assets/food.jpg");
+    private static Scene scene;
+    private static VBox pane = new VBox();
     @Override
-    public void start(Stage stage) throws IOException {
-        FlowPane pane = new FlowPane();
-        Image bkgrndimage = new Image("Assets/food.jpg");
-        BackgroundSize size = new BackgroundSize(1280,720, false, false, true, true);
-        BackgroundImage backgroundimage = new BackgroundImage(bkgrndimage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, null, size);
-        Background bg = new Background(backgroundimage);
-        Label label1 = new Label("Welcome to our restaurant");
-        Font hfont = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
-        label1.setFont(hfont);
-        label1.setTextFill(Color.BEIGE);
-        pane.getChildren().add(label1);
-        pane.setAlignment(Pos.BASELINE_CENTER);
-        Scene scene = new Scene(pane, 1280, 720);
-        pane.setBackground(bg);
+    public void start(Stage stage) {
+        scene = new Scene(pane, 1024, 576);
+        pane.getChildren().addAll(getHeader("Restaurant management system"), getmainBtnGrid());
+        try {
+            pane.setBackground(background);
+        } catch (IllegalArgumentException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Failed to load background image!");
+            alert.setContentText("Path was not found!");
+            scene.setFill(Color.ALICEBLUE);
+            alert.showAndWait();
+        }
+        pane.setAlignment(Pos.CENTER);
         stage.setTitle("Application");
         stage.setScene(scene);
+        stage.setMinHeight(576);        //*Sets minimum window size
+        stage.setMinWidth(1024);        //*
+        try {
+            stage.getIcons().add(new Image("Assets/restaurant.png"));   // Adds icon   
+        } catch (IllegalArgumentException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Failed to load Icon image!");
+            alert.setContentText("Path was not found!");
+            alert.show();
+        }
         //stage.setResizable(false);
+        //stage.setFullScreen(true);
         stage.show();
     }
     public static void main(String[] args) {
         launch(args);
+    }
+    private GridPane getmainBtnGrid() {
+        GridPane btngrid = new GridPane();
+        configureGridpane(btngrid);
+        
+        Button strtButton = getButton("Start\nOrder");
+        Button historyButton = getButton("Order\nHistory");
+        Button menuButton = getButton("Modify\nMenu");
+        Button tableButton = getButton("Modify\nTables");
+        // Button statsButton = getButton("Plate\nStats");  //Optional until main scenes are finished
+        // Button finceButton = getButton("Finances");
+
+
+        btngrid.add(strtButton, 0,0);
+        btngrid.add(historyButton, 0,1);
+        btngrid.add(menuButton,1,0);
+        btngrid.add(tableButton, 1,1);
+        //btngrid.add(statsButton, 2,0);    //Optional until main scenes are finished
+        //btngrid.add(finceButton, 2,1);
+
+        strtButton.setOnAction(e -> {
+            new OrderScene();
+        });
+        historyButton.setOnAction(e -> {
+
+        });
+        menuButton.setOnAction(e -> {
+
+        });
+        tableButton.setOnAction(e -> {
+
+        });
+        //statsButton.getOnAction(e -> );
+        //finceButton.getOnAction(e -> );
+        return btngrid;
+    }
+    protected static Background loadBackground(String path) throws IllegalArgumentException {
+        Image bkgrndimage = new Image(path);
+        BackgroundSize size = new BackgroundSize(1280,720, false, false, true, true);
+        BackgroundImage backgroundimage = new BackgroundImage(bkgrndimage,
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, null, size);
+        Background bg = new Background(backgroundimage);
+        return bg;
+    }
+    protected static ArrayList<Table> getTables() {
+        return tables;
+    }
+    protected static ArrayList<Item> getMenu() {
+        return menu;
+    }
+    protected static ArrayList<Order> getPastOrders() {
+        return pastOrders;
+    }
+    protected static Background getBackground() {
+        return background;
+    }
+    protected static Scene getScene() {
+        return scene;
+    }
+    public static void setBackground(Background background) {
+        App.background = background;
+    }
+    public static void returnToMain() {
+        scene.setRoot(pane);
     }
 }
