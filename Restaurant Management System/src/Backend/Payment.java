@@ -1,7 +1,8 @@
 package Backend;
 
 public abstract class Payment {
-    double amount;
+    private double amount;
+    
 
     public Payment() {
     }
@@ -28,5 +29,7 @@ public abstract class Payment {
     }
     
     public abstract double calcRest (double amount) ;
+
+
 
 }
