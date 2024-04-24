@@ -1,4 +1,4 @@
-package Backend.Items;
+package Backend;
 
 public interface Available {
     boolean checkIfAvailable();
