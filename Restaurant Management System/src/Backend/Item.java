@@ -5,16 +5,20 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 public class Item implements Available {
-    private SimpleStringProperty category;
-    private SimpleDoubleProperty price;
-    private SimpleStringProperty name;
+    private SimpleStringProperty category = new SimpleStringProperty();
+    private SimpleDoubleProperty price = new SimpleDoubleProperty();
+    private SimpleStringProperty name = new SimpleStringProperty();
     private SimpleBooleanProperty available = new SimpleBooleanProperty(true);
 
-    Item(String Name, double Price) {
+    public Item(String Name, double Price) {
         this.name.set(Name);
         this.setPrice(Price);
     }
-    
+    public Item(String Name, double Price, String category) {
+        this.name.set(Name);
+        this.setPrice(Price);
+        this.category.set(category);
+    }
     public SimpleStringProperty getNameProperty() {
         return name;
     }
