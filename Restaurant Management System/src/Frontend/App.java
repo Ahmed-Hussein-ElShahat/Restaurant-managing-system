@@ -41,6 +41,8 @@ public class App extends Application implements Template{
 
         menu.addAll(new Item("Salad", 20, "Appetizer"), new Item("Sushi", 100, "Main Course"));
 
+        //System.out.println(menu.get(1).getName());
+
         pane.setAlignment(Pos.CENTER);
         stage.setTitle("Application");
         stage.setScene(scene);

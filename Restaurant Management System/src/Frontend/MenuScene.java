@@ -208,7 +208,12 @@ public class MenuScene implements Template {
           comboBox.setConverter(new StringBooleanConverter());
           comboBox.getItems().addAll(new SimpleBooleanProperty(true), new SimpleBooleanProperty(false));
           setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-          //graphicProperty().setValue(comboBox);
+          comboBox.setOnAction(e -> {
+            if (getItem()!= null) {
+              App.getMenu().get(this.getTableRow().getIndex()).getAvailableProperty().set(comboBox.getSelectionModel().getSelectedItem().get());
+              commitEdit(getItem());
+            }
+          });
         }
       
         @Override
@@ -220,6 +225,7 @@ public class MenuScene implements Template {
           } else {
             comboBox.getSelectionModel().select(item);
             // Bind selection or update property
+            
             setText(null);
             setGraphic(comboBox);
           }
