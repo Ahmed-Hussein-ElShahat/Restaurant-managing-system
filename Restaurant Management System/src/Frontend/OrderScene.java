@@ -40,6 +40,7 @@ public class OrderScene implements Template {
             }
             if (flag) {
                 // Go to the item selection scene
+                new selectionScene();
             }
             else {
                 Alert messageAlert = new Alert(Alert.AlertType.INFORMATION);

@@ -69,7 +69,6 @@ public class Item implements Available, Cloneable, Comparable<Item> {
     }
 
     public void setPrice(double Price) throws IllegalArgumentException {
-        // will implement it with exception handling later
         if(Price > 0) {
             this.price.set(Price);
         }
@@ -93,5 +92,5 @@ public class Item implements Available, Cloneable, Comparable<Item> {
 
     public void setCategory(String category) {
         this.category.set(category);
-    }    
+    }
 }
