@@ -25,6 +25,9 @@ public class App extends Application implements Template{
     @Override
     public void start(Stage stage) {
         scene = new Scene(pane, 1024, 576);
+        // scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        String css = this.getClass().getResource("application.css").toExternalForm();
+        scene.getStylesheets().add(css);
         pane.getChildren().addAll(getHeader("Restaurant management system"), getmainBtnGrid());
         try {
             pane.setBackground(background);

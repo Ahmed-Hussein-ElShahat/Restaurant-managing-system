@@ -31,21 +31,21 @@ public class MenuScene implements Template {
     }
     private TableView<Item> getTable() {
         TableView<Item> table = new TableView<Item>();
-
+        table.setMaxWidth(1000);
         TableColumn nameCol = new TableColumn("Name");
-        nameCol.setPrefWidth(100);
+        nameCol.prefWidthProperty().bind(table.widthProperty().divide(4));
         nameCol.setCellValueFactory(new PropertyValueFactory<Item, String>("Name"));
         
         TableColumn categoryCol = new TableColumn("Category");
-        categoryCol.setPrefWidth(100);
+        categoryCol.prefWidthProperty().bind(table.widthProperty().divide(4));
         categoryCol.setCellValueFactory(new PropertyValueFactory<Item, String>("Category"));
         
         TableColumn priceCol = new TableColumn("Price");
-        priceCol.setPrefWidth(100);
+        priceCol.prefWidthProperty().bind(table.widthProperty().divide(4).subtract(3));
         priceCol.setCellValueFactory(new PropertyValueFactory<Item, Double>("Price"));
         
         TableColumn ratingCol = new TableColumn("Rating");
-        ratingCol.setPrefWidth(100);
+        ratingCol.prefWidthProperty().bind(table.widthProperty().divide(4));
         ratingCol.setCellValueFactory(new PropertyValueFactory<Item, String>("Rating"));
         //TableColumn editCol = new TableColumn("Edit");
         //editCol.setCellValueFactory(new PropertyValueFactory<Item, Button>("Edit"));
@@ -59,6 +59,7 @@ public class MenuScene implements Template {
     private HBox getFooter() {
         HBox footer = new HBox();
         footer.setSpacing(3);
+        footer.setAlignment(Pos.CENTER);
         final TextField addName = new TextField();
         addName.setPromptText("Name");
         addName.setMinWidth(100);
