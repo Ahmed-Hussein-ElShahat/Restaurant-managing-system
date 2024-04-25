@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
-public class Order  {
+public class Order implements Comparable<Order> {
     private LocalDate date;
     private LocalTime time;
     private ArrayList<Item> guestOrder = new ArrayList<>();        // Guest's order
@@ -30,7 +30,14 @@ public class Order  {
         orderNum.set(++TotalNumberOfOrders);
     }
 
-    
+    //Compared by the time they were created.
+    @Override
+    public int compareTo(Order o) {
+        if (this.date.equals(o.date)) {
+            return this.time.compareTo(o.time);
+        }
+        return this.date.compareTo(o.date);
+    }
     
     public SimpleIntegerProperty getOrderNumProperty() {
         return orderNum;

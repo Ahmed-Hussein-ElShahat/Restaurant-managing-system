@@ -33,26 +33,27 @@ class HistoryScene implements Template {
         header.getChildren().addAll(getHeader("Past Orders"),  returnbtn);
         return header;
     }
+    
     private TableView<Order> getTable() {
         TableView<Order> table = new TableView<Order>();
 
-        TableColumn numCol = new TableColumn("Order Number");
+        TableColumn<Order, Integer> numCol = new TableColumn<>("Order Number");
         numCol.setCellValueFactory(new PropertyValueFactory<Order, Integer>("orderNum"));
         numCol.prefWidthProperty().bind(table.widthProperty().divide(4));
 
-        TableColumn priceCol = new TableColumn("Total Price");
+        TableColumn<Order, Double> priceCol = new TableColumn<>("Total Price");
         priceCol.setCellValueFactory(new PropertyValueFactory<Order, Double>("totalPrice"));
         priceCol.prefWidthProperty().bind(table.widthProperty().divide(4).subtract(3));
 
-        TableColumn dateCol = new TableColumn("Date");
+        TableColumn<Order, LocalDate> dateCol = new TableColumn<>("Date");
         dateCol.setCellValueFactory(new PropertyValueFactory<Order, LocalDate>("date"));
         dateCol.prefWidthProperty().bind(table.widthProperty().divide(4));
 
-        TableColumn timeCol = new TableColumn("Time");
+        TableColumn<Order, LocalTime> timeCol = new TableColumn<>("Time");
         timeCol.prefWidthProperty().bind(table.widthProperty().divide(4));
         timeCol.setCellValueFactory(new PropertyValueFactory<Order, LocalTime>("time"));
 
-
+        
         table.getColumns().addAll(numCol, priceCol, dateCol, timeCol);
         table.autosize();
         table.setItems(App.getPastOrders());
