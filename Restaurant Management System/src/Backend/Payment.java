@@ -28,7 +28,7 @@ public abstract class Payment {
         return this.getMethod() + " " + this.getAmount();
     }
     
-    public abstract double calcRest (double amount) ;
+    
 
 
 
