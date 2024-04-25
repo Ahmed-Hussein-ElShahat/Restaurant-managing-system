@@ -54,6 +54,12 @@ public class MenuScene implements Template {
         table.autosize();
         table.setEditable(true);
         table.setItems(App.getMenu());
+        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if(newSelection != null) {
+                Item selectedItem = newSelection;
+                System.out.println("Name: " + selectedItem.getName());
+            }
+        });
         return table;
     }
     private HBox getFooter() {
