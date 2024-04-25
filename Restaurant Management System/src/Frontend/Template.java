@@ -13,8 +13,7 @@ public interface Template {
         Button btn = new Button(str);
         btn.widthProperty().addListener((observable, oldValue, newValue) -> {
         double width = (double) newValue;
-        // Adjust calculation based on your desired font size for different widths
-        double fontSize = Math.min(width * 0.1, 55);  // Example calculation (adjust max size)
+        double fontSize = Math.min(width * 0.1, 55);
         btn.setStyle("-fx-font-size: " + fontSize + "px;" +
                     "-fx-font-weight: bold;" +
                     "-fx-font-family: Serif;" +
