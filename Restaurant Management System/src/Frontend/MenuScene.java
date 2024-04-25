@@ -2,11 +2,14 @@ package Frontend;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.scene.control.cell.PropertyValueFactory;
-
+import javafx.scene.image.Image;
 import Backend.Item;
 public class MenuScene implements Template {
     MenuScene() {
@@ -58,6 +61,8 @@ public class MenuScene implements Template {
             if(newSelection != null) {
                 Item selectedItem = newSelection;
                 System.out.println("Name: " + selectedItem.getName());
+                editItem(selectedItem, table);
+                table.refresh();
             }
         });
         return table;
@@ -112,5 +117,71 @@ public class MenuScene implements Template {
             alert.showAndWait();
             return 0;
         }
+    }
+    private void editItem(Item selectedItem, TableView table) {
+        Stage stage = new Stage();
+        VBox pane = new VBox();
+        pane.setSpacing(10);
+        HBox buttons = new HBox();
+        buttons.setAlignment(Pos.CENTER);
+        buttons.setSpacing(10);
+
+        String css = "-fx-padding: 20px;" + 
+        "-fx-font-size: 18px;" +
+        "-fx-font-weight: bold;";
+        
+        final TextField editprice = new TextField();
+        editprice.setStyle(css);
+        editprice.setMinWidth(100);
+        editprice.setMaxWidth(150);
+        editprice.setPromptText("New Price");
+        
+        Button editButton = new Button("Edit Price");
+        Button deleteButton = new Button("Delete Item");
+
+        editButton.setStyle(css);
+        deleteButton.setStyle(css);
+        editButton.setMinWidth(150);
+        deleteButton.setMinWidth(150);
+
+        editButton.setOnAction(e -> {
+            if (editprice.getText().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setHeaderText("Field Empty");
+                alert.setContentText("Please fill in the price field");
+                alert.showAndWait();
+            }
+            else {
+                selectedItem.setPrice(stringToDouble(editprice));
+                table.refresh();
+                stage.close();
+            }
+        });
+        pane.setAlignment(Pos.CENTER);
+        buttons.getChildren().addAll(editButton, deleteButton);
+        pane.getChildren().addAll(editprice, buttons);
+
+        deleteButton.setOnAction(e -> {
+            App.getMenu().remove(selectedItem);
+            table.refresh();
+            stage.close();
+        });
+
+        Scene scene = new Scene(pane, 500,300);
+
+        try {
+            stage.getIcons().add(new Image("Assets/restaurant.png"));   // Adds icon   
+        } catch (IllegalArgumentException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Failed to load Icon image!");
+            alert.setContentText("Path was not found!");
+            alert.show();
+        }
+        stage.setTitle("Edit Item");
+        stage.setScene(scene);
+        stage.setMinHeight(300);
+        stage.setMinWidth(400);
+        stage.show();
     }
 }
