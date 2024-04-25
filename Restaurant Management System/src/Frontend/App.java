@@ -11,15 +11,14 @@ import javafx.scene.image.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
 import java.lang.IllegalArgumentException;
 import Backend.*;
 
 public class App extends Application implements Template{
 
-    private static ArrayList<Table> tables = new ArrayList<Table>();
+    private static ObservableList<Table> tables = FXCollections.observableArrayList();
     private static ObservableList<Item> menu = FXCollections.observableArrayList();
-    private static ArrayList<Order> pastOrders = new ArrayList<Order>();
+    private static ObservableList<Order> pastOrders = FXCollections.observableArrayList();
     private static Background background = App.loadBackground("Assets/food.jpg");
     private static Scene scene;
     private static VBox pane = new VBox();
@@ -82,13 +81,13 @@ public class App extends Application implements Template{
             new OrderScene();
         });
         historyButton.setOnAction(e -> {
-
+            new HistoryScene();
         });
         menuButton.setOnAction(e -> {
             new MenuScene();
         });
         tableButton.setOnAction(e -> {
-
+            new TableScene();
         });
         //statsButton.getOnAction(e -> );
         //finceButton.getOnAction(e -> );
@@ -102,13 +101,13 @@ public class App extends Application implements Template{
         Background bg = new Background(backgroundimage);
         return bg;
     }
-    protected static ArrayList<Table> getTables() {
+    protected static ObservableList<Table> getTables() {
         return tables;
     }
     protected static ObservableList<Item> getMenu() {
         return menu;
     }
-    protected static ArrayList<Order> getPastOrders() {
+    protected static ObservableList<Order> getPastOrders() {
         return pastOrders;
     }
     protected static Background getBackground() {
