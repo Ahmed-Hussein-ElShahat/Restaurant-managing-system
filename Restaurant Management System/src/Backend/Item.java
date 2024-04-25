@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
-public class Item implements Available {
+public class Item implements Available, Cloneable {
     private SimpleStringProperty category = new SimpleStringProperty();
     private SimpleDoubleProperty price = new SimpleDoubleProperty();
     private SimpleStringProperty name = new SimpleStringProperty();
@@ -35,6 +35,16 @@ public class Item implements Available {
         return available;
     }
     
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        try{
+        return (Item) super.clone();
+        }
+        catch(CloneNotSupportedException e){
+            return null;
+        }
+    }
+
     public void setName(String Name) {
         this.name.set(Name);
     }

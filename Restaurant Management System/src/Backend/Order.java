@@ -7,15 +7,15 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
-public class Order {
+public class Order  {
     private LocalDate date;
     private LocalTime time;
     private ArrayList<Item> guestOrder = new ArrayList<>();        // Guest's order
     private SimpleDoubleProperty totalPrice = new SimpleDoubleProperty();
     private final SimpleIntegerProperty orderNum = new SimpleIntegerProperty();
     private static int TotalNumberOfOrders = 0;     // number of orders by all guests
-
 
     public Order(Item[] guestOrder){
         date = LocalDate.now();
@@ -30,6 +30,7 @@ public class Order {
         orderNum.set(++TotalNumberOfOrders);
     }
 
+    
     
     public SimpleIntegerProperty getOrderNumProperty() {
         return orderNum;
@@ -91,6 +92,6 @@ public class Order {
         return date;
     }
     public LocalTime getTime() {
-        return time;
+        return time.truncatedTo(ChronoUnit.SECONDS);
     }
 }

@@ -37,20 +37,21 @@ class HistoryScene implements Template {
         TableView<Order> table = new TableView<Order>();
 
         TableColumn numCol = new TableColumn("Order Number");
-        numCol.setPrefWidth(100);
         numCol.setCellValueFactory(new PropertyValueFactory<Order, Integer>("orderNum"));
-        
+        numCol.prefWidthProperty().bind(table.widthProperty().divide(4));
+
         TableColumn priceCol = new TableColumn("Total Price");
-        priceCol.setPrefWidth(100);
         priceCol.setCellValueFactory(new PropertyValueFactory<Order, Double>("totalPrice"));
-        
+        priceCol.prefWidthProperty().bind(table.widthProperty().divide(4).subtract(3));
+
         TableColumn dateCol = new TableColumn("Date");
-        dateCol.setPrefWidth(100);
-        dateCol.setCellValueFactory(new PropertyValueFactory<Order, LocalDate>("localdate"));
-        
+        dateCol.setCellValueFactory(new PropertyValueFactory<Order, LocalDate>("date"));
+        dateCol.prefWidthProperty().bind(table.widthProperty().divide(4));
+
         TableColumn timeCol = new TableColumn("Time");
-        timeCol.setPrefWidth(100);
-        timeCol.setCellValueFactory(new PropertyValueFactory<Order, LocalTime>("localtime"));
+        timeCol.prefWidthProperty().bind(table.widthProperty().divide(4));
+        timeCol.setCellValueFactory(new PropertyValueFactory<Order, LocalTime>("time"));
+
 
         table.getColumns().addAll(numCol, priceCol, dateCol, timeCol);
         table.autosize();
