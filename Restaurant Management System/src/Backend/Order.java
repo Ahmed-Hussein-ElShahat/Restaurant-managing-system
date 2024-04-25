@@ -40,7 +40,7 @@ public class Order {
 
     public Item getOrder(int n){return guestOrder.get(n);}          //return 1 specific item only
 
-    public Item[] getOrder(){return new Item[guestOrder.size()];}   //return the total order in the shape of an array
+    public ArrayList<Item> getGuestOrder() {return guestOrder;}   //return the total order in the shape of an array
 
     public static int getTotalNumberOfOrders() {return TotalNumberOfOrders;}
 

@@ -1,6 +1,7 @@
 package Frontend;
 
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -15,7 +16,7 @@ public class OrderScene implements Template {
         orderPane.setAlignment(Pos.CENTER);
         App.getScene().setRoot(orderPane);
     }
-    private GridPane getOrderMethodpane() {
+    private GridPane getOrderMethodpane(){
         GridPane btngrid = new GridPane();
         configureGridpane(btngrid);
         
@@ -27,7 +28,7 @@ public class OrderScene implements Template {
         btngrid.add(onSiteButton, 1,0);
 
         tkeButton.setOnAction(e -> {    //Go directly to item selection scene
-            
+            new TakeAwayScene();
         });
         onSiteButton.setOnAction(e -> { 
             //Check if there is a table available

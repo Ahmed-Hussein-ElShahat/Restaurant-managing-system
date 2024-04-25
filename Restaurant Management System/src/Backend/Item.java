@@ -9,7 +9,7 @@ public class Item implements Available {
     private SimpleDoubleProperty price = new SimpleDoubleProperty();
     private SimpleStringProperty name = new SimpleStringProperty();
     private SimpleBooleanProperty available = new SimpleBooleanProperty(true);
-
+    private String itemDescription;
     public Item(String Name, double Price) {
         this.name.set(Name);
         this.setPrice(Price);
@@ -71,5 +71,15 @@ public class Item implements Available {
 
     public void setCategory(String category) {
         this.category.set(category);
-    }    
+    }
+
+    public String getItemDescription() {return itemDescription;}
+
+    public void setItemDescription(String itemDescription) {this.itemDescription = itemDescription;}
+
+    @Override
+    public String toString() {
+        return this.getItemDescription();
+    }
 }
+
