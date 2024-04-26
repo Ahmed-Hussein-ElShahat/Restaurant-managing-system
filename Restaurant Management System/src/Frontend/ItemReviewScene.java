@@ -3,7 +3,7 @@ package Frontend;
 import Backend.Payments.Cash;
 import Backend.Payments.Visa;
 import Backend.Order;
-import Backend.Payment;
+//import Backend.Payment;
 import Backend.Item;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 
@@ -112,6 +113,7 @@ public class ItemReviewScene implements Template {
 
     private void cashScene (Order order , Visa v){
         VBox vb = new VBox();
+        vb.setBackground(App.getBackground());
         vb.setSpacing(50);
         vb.setPadding(new Insets(20, 20, 20, 20));
         vb.setAlignment(Pos.CENTER);
@@ -145,15 +147,29 @@ public class ItemReviewScene implements Template {
         rest.setMinWidth(100);
         addAmount.setOnKeyPressed(f -> {
             if (f.getCode() == KeyCode.ENTER) {
-                addAmount.setEditable(false);
                 try{
                     amount = Double.parseDouble(addAmount.getText());
+                    if (amount >= order.calcTotalPrice()){
+                        rest.setEditable(true);
+                        rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice(), amount)));
+                        rest.setEditable(false);
+                    }
+                    else {
+                        addAmount.clear();
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Invalid input!");
+                        alert.setContentText("Please enter a valid amount.");
+                        alert.showAndWait();
+                        
+                    }
                 }catch(NumberFormatException e) {
-                    System.out.println("Error parsing amount!");
+                    //System.out.println("Error parsing amount!");
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Invalid input!");
+                    alert.setContentText("Please enter a valid amount.");
                 }
-                rest.setEditable(true);
-                rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice(), amount)));
-                rest.setEditable(false);
             }
         });
     }

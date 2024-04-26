@@ -9,7 +9,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 //import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import Backend.Item;
@@ -19,20 +18,9 @@ public class MenuScene implements Template {
         root.setSpacing(50);
         root.setPadding(new Insets(20,20,20,20));
         root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(getheader(), getTable(), getFooter());
+        root.getChildren().addAll(getHheader("Restaurant menu"), getTable(), getFooter());
         root.setBackground(App.getBackground());
         App.getScene().setRoot(root);
-    }
-    private HBox getheader() {
-        HBox header = new HBox();
-        header.setAlignment(Pos.CENTER);
-        Button returnbtn = new Button("Return to Main Menu");
-        returnbtn.setOnAction(e -> {
-            App.returnToMain();
-        });
-        header.setSpacing(100);
-        header.getChildren().addAll(getHeader("Restaurant Menu"),  returnbtn);
-        return header;
     }
     private TableView<Item> getTable() {
         TableView<Item> table = new TableView<Item>();
@@ -52,7 +40,7 @@ public class MenuScene implements Template {
         TableColumn<Item, SimpleBooleanProperty> avaCol = new TableColumn<>("Availability");
         avaCol.prefWidthProperty().bind(table.widthProperty().divide(5));
         avaCol.setCellValueFactory(new PropertyValueFactory<Item, SimpleBooleanProperty>("availableProperty"));
-        avaCol.setCellFactory(col -> new BooleanComboBoxTableCell());
+        avaCol.setCellFactory(col -> new BooleanComboBoxTableCell("item"));
 
         TableColumn<Item, Integer> ratingCol = new TableColumn<>("Rating");
         ratingCol.prefWidthProperty().bind(table.widthProperty().divide(5));
@@ -210,50 +198,5 @@ public class MenuScene implements Template {
         stage.setMinHeight(300);
         stage.setMinWidth(400);
         stage.show();
-    }
-    public static class BooleanComboBoxTableCell extends TableCell<Item, SimpleBooleanProperty> {
-
-        private final ComboBox<SimpleBooleanProperty> comboBox;
-      
-        public BooleanComboBoxTableCell() {
-          comboBox = new ComboBox<>();
-          comboBox.setConverter(new StringBooleanConverter());
-          comboBox.getItems().addAll(new SimpleBooleanProperty(true), new SimpleBooleanProperty(false));
-          setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-          comboBox.setOnAction(e -> {
-            if (getItem()!= null) {
-              App.getMenu().get(this.getTableRow().getIndex()).getAvailableProperty().set(comboBox.getSelectionModel().getSelectedItem().get());
-              commitEdit(getItem());
-            }
-          });
-        }
-      
-        @Override
-        protected void updateItem(SimpleBooleanProperty item, boolean empty) {
-          super.updateItem(item, empty);
-          if (empty || item == null) {
-            setText(null);
-            setGraphic(null);
-          } else {
-            comboBox.getSelectionModel().select(item);
-            // Bind selection or update property
-            
-            setText(null);
-            setGraphic(comboBox);
-          }
-        }
-        class StringBooleanConverter extends StringConverter<SimpleBooleanProperty> {
-            @Override
-            public String toString(SimpleBooleanProperty object) {
-                if (object == null) {
-                    return null;
-                }
-                return object.getValue()? "Available" : "Not Available";
-            }
-            @Override
-            public SimpleBooleanProperty fromString(String string) {
-                return new SimpleBooleanProperty(Boolean.parseBoolean(string));
-            }
-        }
     }
 }
