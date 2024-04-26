@@ -7,7 +7,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert;
 import Backend.Order;
-import Backend.Payments.Visa;
 
 public class OrderScene implements Template {
 
@@ -33,7 +32,8 @@ public class OrderScene implements Template {
         tkeButton.setOnAction(e -> {    //Go directly to item selection scene
             Item [] items = {new Item("Salad", 20, "Appetizer"), new Item("Sushi", 100, "Main Course")} ;
             Order order = new Order(items);
-            new ItemReviewScene(order);
+            new ItemSelectionScene();
+            //new ItemReviewScene(order);
         });
         onSiteButton.setOnAction(e -> { 
             //Check if there is a table available

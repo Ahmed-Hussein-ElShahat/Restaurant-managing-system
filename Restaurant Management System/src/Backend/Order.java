@@ -69,6 +69,13 @@ public class Order implements Comparable<Order> {
         totalPrice.set(calcTotalPrice());
     }
 
+    public void addnOrder(Item multiItem, int n) {
+        for (int i = 0; i < n; i++) {
+            guestOrder.add(multiItem);
+        }
+        totalPrice.set(calcTotalPrice());
+    }
+
     public void removeOrder(int n) {
         guestOrder.remove(n);
         totalPrice.set(calcTotalPrice());
