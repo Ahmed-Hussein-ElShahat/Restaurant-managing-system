@@ -10,8 +10,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 
 public class ItemReviewScene implements Template {
+
+    private double amount = 0.0;
+
     ItemReviewScene(Order order){
         VBox review = new VBox();
         review.setSpacing(50);
@@ -110,18 +114,28 @@ public class ItemReviewScene implements Template {
         final TextField addAmount = new TextField();
         addAmount.setPromptText("amount");
         addAmount.setMinWidth(100);
-        double amount ;
-        try{
-            amount = Double.parseDouble(addAmount.getText()) ;
-        }catch(NumberFormatException e){
-            System.out.println("Error parsing amount ");
-        }
         Label l2 = new Label("The Rest:") ;
         final TextField rest = new TextField();
+
+        rest.setEditable(false);
         rest.setPromptText("rest");
         rest.setMinWidth(100);
-        rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice() , amount)));
-
+        addAmount.setOnKeyPressed(f -> {
+            if (f.getCode().equals(KeyCode.ENTER)) {
+                addAmount.setEditable(false);
+                if (amount > 0) {
+                    try{
+                        amount = Double.parseDouble(addAmount.getText());
+                    }catch(NumberFormatException e) {
+                        System.out.println("Error parsing amount ");
+                        amount = 0;
+                    }
+                    rest.setEditable(true);
+                    rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice() , amount)));
+                    rest.setEditable(false);
+                }
+            }
+        });
         vb.getChildren().addAll(l1 , addAmount , l2 , rest);
         App.getScene().setRoot(vb);
     }
