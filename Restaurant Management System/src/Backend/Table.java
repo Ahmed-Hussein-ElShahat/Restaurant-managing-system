@@ -2,7 +2,7 @@ package Backend;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
-public class Table {
+public class Table implements Available{
     static private int table_num = 0;   // Total number of tables
     private Order order;                // On table order
     private SimpleIntegerProperty table_id = new SimpleIntegerProperty();            // Table number
@@ -76,4 +76,13 @@ public class Table {
     //     available = true;
     //     return order.getTotalPrice();
     // }
+
+    @Override
+    public boolean checkIfAvailable() {
+        return available;
+    }
+
+    public void setAvailability(boolean available) {
+        this.available = available;
+    }
 }
