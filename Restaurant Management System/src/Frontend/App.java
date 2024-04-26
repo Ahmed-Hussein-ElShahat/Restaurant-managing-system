@@ -40,6 +40,15 @@ public class App extends Application implements Template{
         }
 
         menu.addAll(new Item("Salad", 20, "Appetizer"), new Item("Sushi", 100, "Main Course"));
+        pastOrders.add(new Order());
+        try {
+        pastOrders.get(0).addOrder((Item)App.getMenu().get(0).clone());
+        pastOrders.get(0).addOrder((Item)App.getMenu().get(1).clone());
+        }
+        catch (CloneNotSupportedException e) {
+            System.out.println("Adding Order failed");
+        }
+        //System.out.println(menu.get(1).getName());
 
         pane.setAlignment(Pos.CENTER);
         stage.setTitle("Application");

@@ -20,16 +20,11 @@ public abstract class Payment {
             this.amount = amount;
         }
         else {
-            throw new IllegalArgumentException ("the amount can't be negative");
+            throw new IllegalArgumentException("the amount can't be negative");
         }
     }
     @Override
     public String toString(){
         return this.getMethod() + " " + this.getAmount();
     }
-    
-    public abstract double calcRest (double amount) ;
-
-
-
 }

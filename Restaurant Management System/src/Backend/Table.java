@@ -1,13 +1,14 @@
 package Backend;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
-public class Table {
+public class Table implements Available{
     static private int table_num = 0;   // Total number of tables
     private Order order;                // On table order
     private SimpleIntegerProperty table_id = new SimpleIntegerProperty();            // Table number
     private SimpleIntegerProperty table_capacity = new SimpleIntegerProperty(5);     // Default capacity
-    private boolean available = true;   // Whether the table is occupied  
+    private SimpleBooleanProperty available = new SimpleBooleanProperty(true);   // Whether the table is occupied  
 
 
     public Table () {
@@ -43,7 +44,7 @@ public class Table {
     public SimpleIntegerProperty getTable_CapacityProperty() {
         return table_capacity;
     }
-    public boolean isAvailable() {
+    public SimpleBooleanProperty getAvailableProperty() {
         return available;
     }
     public static void resetTable_num() {
@@ -51,7 +52,7 @@ public class Table {
     }
     public boolean isAvailable(int people) throws IllegalArgumentException {
         if (people <= 0) throw new IllegalArgumentException("people must be positive");
-        return available && people <= table_capacity.get();
+        return available.get() && people <= table_capacity.get();
     }
     public static void remove_table() {
         Table.table_num--;
@@ -62,18 +63,24 @@ public class Table {
     public void setTable_capacity(int table_capacity) {
         this.table_capacity.set(table_capacity);
     }
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
     public void preserve() {
-        this.available = false;
+        this.available.set(false);
     }
     public void preserve(Order order) {
-        available = false;
+        available.set(false);
         this.order = order;
     }
     // public double checkout() {
     //     available = true;
     //     return order.getTotalPrice();
     // }
+
+    @Override
+    public boolean checkIfAvailable() {
+        return available.get();
+    }
+
+    public void setAvailability(boolean available) {
+        this.available.set(available);
+    }
 }
