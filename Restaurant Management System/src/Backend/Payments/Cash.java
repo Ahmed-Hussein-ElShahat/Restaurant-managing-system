@@ -8,8 +8,8 @@ public class Cash extends Payment{
     public String getMethod() {
         return "Cash";
     }
-    @Override
-    public double calcRest (double amount) {  //الباقي
-        return super.getAmount() - amount;
+    
+    public static double calcRest (double totalPrice , double amount) {  //الباقي
+        return amount - totalPrice; 
     }
 }

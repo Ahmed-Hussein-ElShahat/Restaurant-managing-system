@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+//import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -37,26 +37,26 @@ public class MenuScene implements Template {
     private TableView<Item> getTable() {
         TableView<Item> table = new TableView<Item>();
         table.setMaxWidth(1000);
-        TableColumn nameCol = new TableColumn("Name");
+        TableColumn<Item, String> nameCol = new TableColumn<>("Name");
         nameCol.prefWidthProperty().bind(table.widthProperty().divide(5));
         nameCol.setCellValueFactory(new PropertyValueFactory<Item, String>("Name"));
         
-        TableColumn categoryCol = new TableColumn("Category");
+        TableColumn<Item, String> categoryCol = new TableColumn<>("Category");
         categoryCol.prefWidthProperty().bind(table.widthProperty().divide(5).subtract(3));
         categoryCol.setCellValueFactory(new PropertyValueFactory<Item, String>("Category"));
         
-        TableColumn priceCol = new TableColumn("Price");
+        TableColumn<Item, Double> priceCol = new TableColumn<>("Price");
         priceCol.prefWidthProperty().bind(table.widthProperty().divide(5).subtract(3));
         priceCol.setCellValueFactory(new PropertyValueFactory<Item, Double>("Price"));
         
-        TableColumn avaCol = new TableColumn("Availability");
+        TableColumn<Item, SimpleBooleanProperty> avaCol = new TableColumn<>("Availability");
         avaCol.prefWidthProperty().bind(table.widthProperty().divide(5));
-        avaCol.setCellValueFactory(new PropertyValueFactory<Item, Button>("availableProperty"));
+        avaCol.setCellValueFactory(new PropertyValueFactory<Item, SimpleBooleanProperty>("availableProperty"));
         avaCol.setCellFactory(col -> new BooleanComboBoxTableCell());
 
-        TableColumn ratingCol = new TableColumn("Rating");
+        TableColumn<Item, Integer> ratingCol = new TableColumn<>("Rating");
         ratingCol.prefWidthProperty().bind(table.widthProperty().divide(5));
-        //ratingCol.setCellValueFactory(new PropertyValueFactory<Item, String>("Rating"));
+        ratingCol.setCellValueFactory(new PropertyValueFactory<Item, Integer>("Rating"));
 
         //avaCol.setSortable(false);
         table.getColumns().addAll(nameCol, categoryCol, priceCol, avaCol ,ratingCol);
@@ -66,7 +66,7 @@ public class MenuScene implements Template {
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if(newSelection != null) {
                 Item selectedItem = newSelection;
-                System.out.println("Name: " + selectedItem.getName());
+                //System.out.println("Name: " + selectedItem.getName());
                 editItem(selectedItem, table);
                 table.refresh();
             }
@@ -144,6 +144,9 @@ public class MenuScene implements Template {
         String css = "-fx-padding: 20px;" + 
         "-fx-font-size: 18px;" +
         "-fx-font-weight: bold;";
+
+        final Label label = new Label("Enter the new price:");
+        label.setStyle(css);
         
         final TextField editprice = new TextField();
         editprice.setStyle(css);
@@ -168,14 +171,23 @@ public class MenuScene implements Template {
                 alert.showAndWait();
             }
             else {
-                selectedItem.setPrice(stringToDouble(editprice));
-                table.refresh();
-                stage.close();
+                try {
+                    selectedItem.setPrice(stringToDouble(editprice));
+                    table.refresh();
+                    stage.close();
+                } catch (IllegalArgumentException i) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning");
+                    alert.setHeaderText(i.getMessage());
+                    alert.setContentText("Please enter a valid input");
+                    alert.showAndWait();
+                }
             }
-        });
+            });            
+            
         pane.setAlignment(Pos.CENTER);
         buttons.getChildren().addAll(editButton, deleteButton);
-        pane.getChildren().addAll(editprice, buttons);
+        pane.getChildren().addAll(label, editprice, buttons);
 
         deleteButton.setOnAction(e -> {
             App.getMenu().remove(selectedItem);
@@ -193,7 +205,7 @@ public class MenuScene implements Template {
             alert.setContentText("Path was not found!");
             alert.show();
         }
-        stage.setTitle("Edit Item");
+        stage.setTitle("Edit " + selectedItem.getName());
         stage.setScene(scene);
         stage.setMinHeight(300);
         stage.setMinWidth(400);
@@ -208,7 +220,12 @@ public class MenuScene implements Template {
           comboBox.setConverter(new StringBooleanConverter());
           comboBox.getItems().addAll(new SimpleBooleanProperty(true), new SimpleBooleanProperty(false));
           setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-          //graphicProperty().setValue(comboBox);
+          comboBox.setOnAction(e -> {
+            if (getItem()!= null) {
+              App.getMenu().get(this.getTableRow().getIndex()).getAvailableProperty().set(comboBox.getSelectionModel().getSelectedItem().get());
+              commitEdit(getItem());
+            }
+          });
         }
       
         @Override
@@ -220,6 +237,7 @@ public class MenuScene implements Template {
           } else {
             comboBox.getSelectionModel().select(item);
             // Bind selection or update property
+            
             setText(null);
             setGraphic(comboBox);
           }

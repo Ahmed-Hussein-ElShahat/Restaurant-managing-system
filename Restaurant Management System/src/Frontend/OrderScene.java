@@ -1,10 +1,12 @@
 package Frontend;
 
+import Backend.Item;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert;
+import Backend.Order;
 
 public class OrderScene implements Template {
 
@@ -27,7 +29,9 @@ public class OrderScene implements Template {
         btngrid.add(onSiteButton, 1,0);
 
         tkeButton.setOnAction(e -> {    //Go directly to item selection scene
-            
+            Item [] items = {new Item("Salad", 20, "Appetizer"), new Item("Sushi", 100, "Main Course")} ;
+            Order order = new Order(items);
+            new ItemReviewScene(order);
         });
         onSiteButton.setOnAction(e -> { 
             //Check if there is a table available
@@ -40,6 +44,7 @@ public class OrderScene implements Template {
             }
             if (flag) {
                 // Go to the item selection scene
+                new selectionScene();
             }
             else {
                 Alert messageAlert = new Alert(Alert.AlertType.INFORMATION);
