@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
+import javafx.scene.control.Alert.AlertType;
 
 public class ItemReviewScene implements Template {
 
@@ -112,7 +113,6 @@ public class ItemReviewScene implements Template {
     }
 
     private void cashScene (Order order){
-        Visa v = new Visa();
         VBox vb = new VBox();
         vb.setSpacing(50);
         vb.setPadding(new Insets(20, 20, 20, 20));
@@ -147,15 +147,29 @@ public class ItemReviewScene implements Template {
         rest.setMinWidth(100);
         addAmount.setOnKeyPressed(f -> {
             if (f.getCode() == KeyCode.ENTER) {
-                addAmount.setEditable(false);
                 try{
                     amount = Double.parseDouble(addAmount.getText());
+                    if (amount >= order.calcTotalPrice()){
+                        rest.setEditable(true);
+                        rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice(), amount)));
+                        rest.setEditable(false);
+                    }
+                    else {
+                        addAmount.clear();
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Invalid input!");
+                        alert.setContentText("Please enter a valid amount.");
+                        alert.showAndWait();
+                        
+                    }
                 }catch(NumberFormatException e) {
-                    System.out.println("Error parsing amount!");
+                    //System.out.println("Error parsing amount!");
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Invalid input!");
+                    alert.setContentText("Please enter a valid amount.");
                 }
-                rest.setEditable(true);
-                rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice(), amount)));
-                rest.setEditable(false);
             }
         });
     }
@@ -194,6 +208,7 @@ public class ItemReviewScene implements Template {
         });
         hb.setBackground(App.getBackground());
         hb.getChildren().addAll(l1 , VisaNo , returnbtn);
+
         App.getScene().setRoot(hb);
 
     }
