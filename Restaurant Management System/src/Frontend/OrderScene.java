@@ -12,7 +12,8 @@ public class OrderScene implements Template {
 
     public OrderScene() {
         VBox orderPane = new VBox();
-        orderPane.getChildren().addAll(getHeader("Select order method"), getOrderMethodpane());
+        
+        orderPane.getChildren().addAll(getHheader("Select order method"), getOrderMethodpane());
         orderPane.setBackground(App.getBackground());
         orderPane.setAlignment(Pos.CENTER);
         App.getScene().setRoot(orderPane);
@@ -37,7 +38,7 @@ public class OrderScene implements Template {
             //Check if there is a table available
             boolean flag = false;
             for (int i = 0; i < App.getTables().size(); i++) {
-                if (App.getTables().get(i).isAvailable()){
+                if (App.getTables().get(i).checkIfAvailable()){
                     flag = true;
                     break;
                 }

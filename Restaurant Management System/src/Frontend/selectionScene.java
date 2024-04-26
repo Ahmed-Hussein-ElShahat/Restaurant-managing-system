@@ -11,6 +11,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class selectionScene implements Template {
+
+
     selectionScene() {
         ScrollPane pane = new ScrollPane();
         GridPane tables = new GridPane();
@@ -37,14 +39,15 @@ public class selectionScene implements Template {
             }
         }
         pane.setContent(tables);
-        box.getChildren().addAll(getHeader("Select Table:"),pane);
+        box.getChildren().addAll(getHheader("Select Table:"),pane);
+        box.setBackground(App.getBackground());
         App.getScene().setRoot(box);
     }
-    public Label getHeader(String str){
-        Label label1 = new Label(str);
-        Font hfont = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
-        label1.setFont(hfont);
-        label1.setTextFill(Color.BLACK);
-        return label1;
-    }
+    // public Label getHeader(String str){
+    //     Label label1 = new Label(str);
+    //     Font hfont = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
+    //     label1.setFont(hfont);
+    //     label1.setTextFill(Color.BLACK);
+    //     return label1;
+    // }
 }
