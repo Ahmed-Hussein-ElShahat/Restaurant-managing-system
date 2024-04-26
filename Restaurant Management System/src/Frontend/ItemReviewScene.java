@@ -3,7 +3,7 @@ package Frontend;
 import Backend.Payments.Cash;
 import Backend.Payments.Visa;
 import Backend.Order;
-//import Backend.Payment;
+import Backend.Payment;
 import Backend.Item;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,7 +14,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 
@@ -22,12 +21,12 @@ public class ItemReviewScene implements Template {
 
     private double amount = 0.0;
 
-    ItemReviewScene(Order order, Visa v ){
+    ItemReviewScene(Order order ){
         VBox review = new VBox();
         review.setSpacing(50);
         review.setPadding(new Insets(20, 20, 20, 20));
         review.setAlignment(Pos.CENTER);
-        review.getChildren().addAll( getheader(), getTable() , paymentTextBox(order , v) );
+        review.getChildren().addAll( getheader(), getTable() , paymentTextBox(order ) );
         review.setBackground(App.getBackground());
         App.getScene().setRoot(review);
     }
@@ -67,7 +66,8 @@ public class ItemReviewScene implements Template {
         return table;
     }
 
-    private HBox paymentTextBox (Order order, Visa v) {
+    private HBox paymentTextBox (Order order) {
+        Visa v = new Visa();
         HBox totalpayment = new HBox();
         totalpayment.setSpacing(3);
         totalpayment.setAlignment(Pos.CENTER);
@@ -92,11 +92,11 @@ public class ItemReviewScene implements Template {
         bt.setOnAction( e -> {
             //System.out.println(method.getSelectionModel().getSelectedItem());
             if ( method.getSelectionModel().getSelectedItem() .equals("Cash")  ){
-                cashScene(order ,v);
+                cashScene(order);
                 //System.out.println("cash");
             }
             else if( method.getSelectionModel().getSelectedItem() .equals("Visa")  ){
-                visaScene(order , v);
+                visaScene(order);
             }
             else{
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -111,9 +111,9 @@ public class ItemReviewScene implements Template {
         return totalpayment ;
     }
 
-    private void cashScene (Order order , Visa v){
+    private void cashScene (Order order){
+        Visa v = new Visa();
         VBox vb = new VBox();
-        vb.setBackground(App.getBackground());
         vb.setSpacing(50);
         vb.setPadding(new Insets(20, 20, 20, 20));
         vb.setAlignment(Pos.CENTER);
@@ -137,7 +137,7 @@ public class ItemReviewScene implements Template {
 
         Button returnbtn = new Button("Return to Review Page");
         returnbtn.setOnAction(e -> {
-            new ItemReviewScene(order , v);
+            new ItemReviewScene(order);
         });
 
         vb.getChildren().addAll(l1 , addAmount , l2 , rest , returnbtn);
@@ -147,33 +147,20 @@ public class ItemReviewScene implements Template {
         rest.setMinWidth(100);
         addAmount.setOnKeyPressed(f -> {
             if (f.getCode() == KeyCode.ENTER) {
+                addAmount.setEditable(false);
                 try{
                     amount = Double.parseDouble(addAmount.getText());
-                    if (amount >= order.calcTotalPrice()){
-                        rest.setEditable(true);
-                        rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice(), amount)));
-                        rest.setEditable(false);
-                    }
-                    else {
-                        addAmount.clear();
-                        Alert alert = new Alert(AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setHeaderText("Invalid input!");
-                        alert.setContentText("Please enter a valid amount.");
-                        alert.showAndWait();
-                        
-                    }
                 }catch(NumberFormatException e) {
-                    //System.out.println("Error parsing amount!");
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Invalid input!");
-                    alert.setContentText("Please enter a valid amount.");
+                    System.out.println("Error parsing amount!");
                 }
+                rest.setEditable(true);
+                rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice(), amount)));
+                rest.setEditable(false);
             }
         });
     }
-    private void visaScene (Order order , Visa v){
+    private void visaScene (Order order){
+        Visa v = new Visa();
         HBox hb = new HBox();
         hb.setSpacing(50);
         hb.setPadding(new Insets(20, 20, 20, 20));
@@ -203,7 +190,7 @@ public class ItemReviewScene implements Template {
         } );
         Button returnbtn = new Button("Return to Review Page");
         returnbtn.setOnAction(e -> {
-            new ItemReviewScene(order , v);
+            new ItemReviewScene(order);
         });
         hb.setBackground(App.getBackground());
         hb.getChildren().addAll(l1 , VisaNo , returnbtn);
