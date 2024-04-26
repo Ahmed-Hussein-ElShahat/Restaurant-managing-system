@@ -2,6 +2,7 @@ package Frontend;
 
 import Backend.Payments.Cash;
 import Backend.Order;
+import Backend.Payment;
 import Backend.Item;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -116,28 +117,25 @@ public class ItemReviewScene implements Template {
         addAmount.setMinWidth(100);
         Label l2 = new Label("The Rest:") ;
         final TextField rest = new TextField();
-
+        vb.getChildren().addAll(l1 , addAmount , l2 , rest);
+        App.getScene().setRoot(vb);
         rest.setEditable(false);
         rest.setPromptText("rest");
         rest.setMinWidth(100);
         addAmount.setOnKeyPressed(f -> {
-            if (f.getCode().equals(KeyCode.ENTER)) {
+            if (f.getCode() == KeyCode.ENTER) {
                 addAmount.setEditable(false);
-                if (amount > 0) {
-                    try{
-                        amount = Double.parseDouble(addAmount.getText());
-                    }catch(NumberFormatException e) {
-                        System.out.println("Error parsing amount ");
-                        amount = 0;
-                    }
-                    rest.setEditable(true);
-                    rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice() , amount)));
-                    rest.setEditable(false);
+                try{
+                    amount = Double.parseDouble(addAmount.getText());
+                }catch(NumberFormatException e) {
+                    System.out.println("Error parsing amount ");
+                    amount = 0;
                 }
+                rest.setEditable(true);
+                rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice(), amount)));
+                rest.setEditable(false);
             }
         });
-        vb.getChildren().addAll(l1 , addAmount , l2 , rest);
-        App.getScene().setRoot(vb);
     }
     private void visaScene (){
         VBox vb = new VBox();
