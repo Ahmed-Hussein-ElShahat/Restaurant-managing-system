@@ -128,8 +128,7 @@ public class ItemReviewScene implements Template {
                 try{
                     amount = Double.parseDouble(addAmount.getText());
                 }catch(NumberFormatException e) {
-                    System.out.println("Error parsing amount ");
-                    amount = 0;
+                    System.out.println("Error parsing amount!");
                 }
                 rest.setEditable(true);
                 rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice(), amount)));
