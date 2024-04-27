@@ -40,6 +40,7 @@ public class App extends Application implements Template{
         }
 
         menu.addAll(new Item("Salad", 20, "Appetizer"), new Item("Sushi", 100, "Main Course"));
+        getMenu().get(1).setImage("ssets/food.jpg");
         pastOrders.add(new Order());
         try {
         pastOrders.get(0).addOrder((Item)App.getMenu().get(0).clone());
