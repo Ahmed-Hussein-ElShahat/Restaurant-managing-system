@@ -12,6 +12,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.lang.IllegalArgumentException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import Backend.*;
 
 public class App extends Application implements Template{
@@ -22,6 +25,7 @@ public class App extends Application implements Template{
     private static Background background = App.loadBackground("Assets/food.jpg");
     private static Scene scene;
     private static VBox pane = new VBox();
+    private static Path imgDistPath = Paths.get("temp/"); // Distination directory for storing item images
     @Override
     public void start(Stage stage) {
         scene = new Scene(pane, 1024, 576);
@@ -42,7 +46,6 @@ public class App extends Application implements Template{
         menu.addAll(new Item("Salad", 20, "Appetizer"), new Item("Sushi", 100, "Main Course"));
         getMenu().get(1).setImage("temp/1.jpg");
         pastOrders.add(new Order());
-
         try {
         pastOrders.get(0).addOrder((Item)App.getMenu().get(0).clone());
         pastOrders.get(0).addOrder((Item)App.getMenu().get(1).clone());
