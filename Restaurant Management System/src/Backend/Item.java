@@ -1,8 +1,11 @@
 package Backend;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.image.Image;
 import javafx.beans.property.SimpleDoubleProperty;
+import java.lang.IllegalArgumentException;
 import javafx.beans.property.SimpleBooleanProperty;
+
 
 public class Item implements Available, Cloneable, Comparable<Item> {
     private SimpleStringProperty category = new SimpleStringProperty();
@@ -10,6 +13,7 @@ public class Item implements Available, Cloneable, Comparable<Item> {
     private SimpleStringProperty name = new SimpleStringProperty();
     private SimpleBooleanProperty available = new SimpleBooleanProperty(true);
     private int rating = 0;
+    private Image image;
 
     public void setRating(int rating) {
         this.rating = rating;
@@ -49,12 +53,7 @@ public class Item implements Available, Cloneable, Comparable<Item> {
     }
     @Override
     public Object clone() throws CloneNotSupportedException {
-        try{
         return (Item) super.clone();
-        }
-        catch(CloneNotSupportedException e){
-            return null;
-        }
     }
 
     public void setName(String Name) {
@@ -92,5 +91,14 @@ public class Item implements Available, Cloneable, Comparable<Item> {
 
     public void setCategory(String category) {
         this.category.set(category);
+    }
+    public Image getImage() {
+        return image;
+    }
+    public void setImage(String path) throws IllegalArgumentException {
+        this.image = new Image("Assets/food.jpg");
+    }
+    public Boolean getIsImage() {
+        return (image != null) ? true : false;
     }
 }

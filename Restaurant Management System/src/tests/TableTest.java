@@ -42,9 +42,9 @@ public class TableTest {
     void testIsAvailable1() {
         Table testTable1 = new Table();
         Table testTable2 = new Table(10);
-        Assertions.assertEquals(true, testTable1.isAvailable());
+        Assertions.assertEquals(true, testTable1.checkIfAvailable());
         testTable2.preserve();
-        Assertions.assertEquals(false, testTable2.isAvailable());
+        Assertions.assertEquals(false, testTable2.checkIfAvailable());
     }
 
     @Test
@@ -54,7 +54,7 @@ public class TableTest {
         Assertions.assertEquals(true, testTable1.isAvailable(1));
         Assertions.assertEquals(true, testTable1.isAvailable(5));
         Assertions.assertEquals(false, testTable1.isAvailable(10));
-        testTable2.setAvailable(true);
+        testTable2.setAvailability(true);
         Assertions.assertEquals(true, testTable2.isAvailable(10));
     }
 
@@ -71,10 +71,10 @@ public class TableTest {
     void testSetAvailable() {
         Table testTable1 = new Table();
         Table testTable2 = new Table(10);
-        testTable1.setAvailable(false);
-        Assertions.assertEquals(false, testTable1.isAvailable());
-        testTable1.setAvailable(true);
-        Assertions.assertEquals(true, testTable1.isAvailable());
+        testTable1.setAvailability(false);
+        Assertions.assertEquals(false, testTable1.checkIfAvailable());
+        testTable1.setAvailability(true);
+        Assertions.assertEquals(true, testTable1.checkIfAvailable());
     }
 
     @Test
