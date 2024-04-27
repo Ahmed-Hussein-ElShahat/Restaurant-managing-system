@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 //import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,6 +16,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import Backend.Item;
 
@@ -252,7 +257,7 @@ public class MenuScene implements Template {
             ImageView addView = new ImageView(addImg);
             addBtn.setGraphic(addView);
             addBtn.setOnAction(e1 -> {
-
+                selectImg();
             });
 
             ImageView viewView = new ImageView(viewImg);
@@ -280,13 +285,14 @@ public class MenuScene implements Template {
                 confirm.showAndWait();
                 if (confirm.getResult() == ButtonType.OK) {
                     deleteExistingImg();
+                    updateItem(false, false);
                 }
             });
         }
         private void deleteExistingImg() {
             int lastIndex = App.getMenu().get(this.getTableRow().getIndex()).getImage().getUrl().lastIndexOf(".");
             String extension = App.getMenu().get(this.getTableRow().getIndex()).getImage().getUrl().substring(lastIndex);
-            File fileToDelete = new File("temp/" +((Integer)this.getTableRow().getIndex()).toString() + extension);
+            File fileToDelete = new File("bin/temp/" +((Integer)this.getTableRow().getIndex()).toString() + extension);
             if (fileToDelete.exists()) {
                 boolean deleted = fileToDelete.delete();
             if (deleted) {
@@ -308,7 +314,46 @@ public class MenuScene implements Template {
                     + fileToDelete.getAbsolutePath());
             }
             App.getMenu().get(this.getTableRow().getIndex()).deleteImage();
-            updateItem(false, false);
+        }
+        private void selectImg(){
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open Image File");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg"));
+            File file = fileChooser.showOpenDialog(App.getPrimaryStage());
+            Path destinationPath = Paths.get(App.getImgDistPath().toString(), this.getTableRow().getIndex() + getExtension(file.toPath()));
+
+            if (file!= null) {
+                try {
+                    Files.copy(file.toPath(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
+                    if (App.getMenu().get(this.getTableRow().getIndex()).getImage() != null) {
+                        if (getExtension(file.toPath()) != getExtension(App.getMenu().get(this.getTableRow().getIndex()).getImage().getUrl())) deleteExistingImg();
+                    }
+                    App.getMenu().get(this.getTableRow().getIndex()).setImage(destinationPath.toString().substring(3));
+                    updateItem(true, false);
+                } catch (Exception e) {
+                    Template.getError("Copy Failed", "Failed to copy", "");
+                }
+                //deleteExistingImg();
+            }
+        }
+        public String getExtension(Path path) { 
+            String fileName = path.getFileName().toString(); 
+            int dotIndex = fileName.lastIndexOf('.'); 
+            // handle cases with no extension or multiple dots 
+            if (dotIndex == -1 || dotIndex == fileName.length() - 1) { 
+                return "";          // no extension found 
+            } else { 
+                return fileName.substring(dotIndex); 
+            } 
+        }
+        public String getExtension(String strpath) {
+            int dotIndex = strpath.lastIndexOf('.'); 
+            // handle cases with no extension or multiple dots 
+            if (dotIndex == -1 || dotIndex == strpath.length() - 1) { 
+                return "";          // no extension found 
+            } else { 
+                return strpath.substring(dotIndex); 
+            }
         }
     }
 }

@@ -114,7 +114,7 @@ public class Item implements Available, Cloneable, Comparable<Item> {
         return image;
     }
     public void setImage(String path) throws IllegalArgumentException {
-        this.image = new Image("Assets/food.jpg");
+        this.image = new Image(path);
     }
     public void deleteImage() {
         image = null;

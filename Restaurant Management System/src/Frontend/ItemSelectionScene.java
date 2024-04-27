@@ -25,7 +25,7 @@ public class ItemSelectionScene implements Template{
     final private ScrollPane sp = new ScrollPane();
     private Image[] images;
     private final Order order = new Order();
-    private final File folder = new File("temp");
+    private final File folder = new File("bin/temp");
     private final File[] files = folder.listFiles();
     private Item wantedItem;
     private Item previtem = new Item("",1,"");

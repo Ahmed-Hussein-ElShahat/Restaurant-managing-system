@@ -25,10 +25,12 @@ public class App extends Application implements Template{
     private static Background background = App.loadBackground("Assets/food.jpg");
     private static Scene scene;
     private static VBox pane = new VBox();
-    private static Path imgDistPath = Paths.get("temp/"); // Distination directory for storing item images
+    private static Path imgDistPath = Paths.get("bin/temp/"); // Distination directory for storing item images
+    private static Stage primaryStage;
     @Override
     public void start(Stage stage) {
         scene = new Scene(pane, 1024, 576);
+        primaryStage = stage;
         // scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         String css = this.getClass().getResource("application.css").toExternalForm();
         scene.getStylesheets().add(css);
@@ -44,7 +46,6 @@ public class App extends Application implements Template{
         }
 
         menu.addAll(new Item("Salad", 20, "Appetizer"), new Item("Sushi", 100, "Main Course"));
-        getMenu().get(1).setImage("temp/1.jpg");
         pastOrders.add(new Order());
         try {
         pastOrders.get(0).addOrder((Item)App.getMenu().get(0).clone());
@@ -138,5 +139,11 @@ public class App extends Application implements Template{
     }
     public static void returnToMain() {
         scene.setRoot(pane);
+    }
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
+    public static Path getImgDistPath() {
+        return imgDistPath;
     }
 }
