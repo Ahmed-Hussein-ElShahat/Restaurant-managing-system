@@ -1,5 +1,6 @@
 package Frontend;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -14,33 +15,28 @@ public class TableScene implements Template {
         root.setSpacing(50);
         root.setPadding(new Insets(100,100,100,100));
         root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(getheader(), getTable(), getFooter());
+        root.getChildren().addAll(getHheader("Restaurant Tables"), getTable(), getFooter());
         root.setBackground(App.getBackground());
         App.getScene().setRoot(root);
     }
-    private HBox getheader() {
-        HBox header = new HBox();
-        header.setAlignment(Pos.CENTER);
-        Button returnbtn = new Button("Return to Main Menu");
-        returnbtn.setOnAction(e -> {
-            App.returnToMain();
-        });
-        header.setSpacing(100);
-        header.getChildren().addAll(getHeader("Restaurant Tables"),  returnbtn);
-        return header;
-    }
+    
     private TableView<Table> getTable() {
         TableView<Table> table = new TableView<Table>();
         table.setMaxWidth(400);
         TableColumn numCol = new TableColumn("Table Number");
-        numCol.prefWidthProperty().bind(table.widthProperty().divide(2).subtract(2));
+        numCol.prefWidthProperty().bind(table.widthProperty().divide(3).subtract(2));
         numCol.setCellValueFactory(new PropertyValueFactory<Table, Integer>("Table_id"));
         
         TableColumn capacityCol = new TableColumn("Capacity");
-        capacityCol.prefWidthProperty().bind(table.widthProperty().divide(2));
+        capacityCol.prefWidthProperty().bind(table.widthProperty().divide(3).subtract(2));
         capacityCol.setCellValueFactory(new PropertyValueFactory<Table, Integer>("table_capacity"));
+
+        TableColumn avlCol = new TableColumn("Availability");
+        avlCol.prefWidthProperty().bind(table.widthProperty().divide(3));
+        avlCol.setCellValueFactory(new PropertyValueFactory<Table, SimpleBooleanProperty>("availableProperty"));
+        avlCol.setCellFactory(col -> new BooleanComboBoxTableCell("table"));
         
-        table.getColumns().addAll(numCol, capacityCol);
+        table.getColumns().addAll(numCol, capacityCol, avlCol);
         table.setItems(App.getTables());
         return table;
     }

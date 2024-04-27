@@ -1,15 +1,20 @@
 package Backend;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.image.Image;
 import javafx.beans.property.SimpleDoubleProperty;
+import java.lang.IllegalArgumentException;
 import javafx.beans.property.SimpleBooleanProperty;
+
 
 public class Item implements Available, Cloneable, Comparable<Item> {
     private SimpleStringProperty category = new SimpleStringProperty();
     private SimpleDoubleProperty price = new SimpleDoubleProperty();
     private SimpleStringProperty name = new SimpleStringProperty();
+    private SimpleStringProperty description = new SimpleStringProperty();
     private SimpleBooleanProperty available = new SimpleBooleanProperty(true);
     private int rating = 0;
+    private Image image;
 
     public void setRating(int rating) {
         this.rating = rating;
@@ -21,12 +26,21 @@ public class Item implements Available, Cloneable, Comparable<Item> {
     public Item(String Name, double Price) {
         this.name.set(Name);
         this.setPrice(Price);
+        this.setDescription("No description available");
     }
     public Item(String Name, double Price, String category) {
         this.name.set(Name);
         this.setPrice(Price);
         this.category.set(category);
+        this.setDescription("No description available");
     }
+    public Item(String Name, double Price, String category, String description) {
+        this.name.set(Name);
+        this.setPrice(Price);
+        this.category.set(category);
+        this.setDescription(description);
+    }
+
     public SimpleStringProperty getNameProperty() {
         return name;
     }
@@ -49,12 +63,7 @@ public class Item implements Available, Cloneable, Comparable<Item> {
     }
     @Override
     public Object clone() throws CloneNotSupportedException {
-        try{
         return (Item) super.clone();
-        }
-        catch(CloneNotSupportedException e){
-            return null;
-        }
     }
 
     public void setName(String Name) {
@@ -92,5 +101,25 @@ public class Item implements Available, Cloneable, Comparable<Item> {
 
     public void setCategory(String category) {
         this.category.set(category);
+    }
+
+    public String getDescription() {return this.description.get();}
+
+    public void setDescription(String description) {this.description.set(description);}
+
+    public boolean equalsCategory(Object obj) {
+        return this.getCategory().equals(((Item) obj).getCategory());
+    }
+    public Image getImage() {
+        return image;
+    }
+    public void setImage(String path) throws IllegalArgumentException {
+        this.image = new Image("Assets/food.jpg");
+    }
+    public void deleteImage() {
+        image = null;
+    }
+    public Boolean getIsImage() {
+        return (image != null) ? true : false;
     }
 }

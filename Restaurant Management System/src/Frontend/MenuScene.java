@@ -6,33 +6,27 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 //import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.io.File;
+
 import Backend.Item;
+
 public class MenuScene implements Template {
     MenuScene() {
         VBox root = new VBox();
         root.setSpacing(50);
         root.setPadding(new Insets(20,20,20,20));
         root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(getheader(), getTable(), getFooter());
+        root.getChildren().addAll(getHheader("Restaurant menu"), getTable(), getFooter());
         root.setBackground(App.getBackground());
         App.getScene().setRoot(root);
-    }
-    private HBox getheader() {
-        HBox header = new HBox();
-        header.setAlignment(Pos.CENTER);
-        Button returnbtn = new Button("Return to Main Menu");
-        returnbtn.setOnAction(e -> {
-            App.returnToMain();
-        });
-        header.setSpacing(100);
-        header.getChildren().addAll(getHeader("Restaurant Menu"),  returnbtn);
-        return header;
     }
     private TableView<Item> getTable() {
         TableView<Item> table = new TableView<Item>();
@@ -42,24 +36,29 @@ public class MenuScene implements Template {
         nameCol.setCellValueFactory(new PropertyValueFactory<Item, String>("Name"));
         
         TableColumn<Item, String> categoryCol = new TableColumn<>("Category");
-        categoryCol.prefWidthProperty().bind(table.widthProperty().divide(5).subtract(3));
+        categoryCol.prefWidthProperty().bind(table.widthProperty().divide(6).subtract(3));
         categoryCol.setCellValueFactory(new PropertyValueFactory<Item, String>("Category"));
         
         TableColumn<Item, Double> priceCol = new TableColumn<>("Price");
-        priceCol.prefWidthProperty().bind(table.widthProperty().divide(5).subtract(3));
+        priceCol.prefWidthProperty().bind(table.widthProperty().divide(6).subtract(3));
         priceCol.setCellValueFactory(new PropertyValueFactory<Item, Double>("Price"));
         
         TableColumn<Item, SimpleBooleanProperty> avaCol = new TableColumn<>("Availability");
-        avaCol.prefWidthProperty().bind(table.widthProperty().divide(5));
+        avaCol.prefWidthProperty().bind(table.widthProperty().divide(6));
         avaCol.setCellValueFactory(new PropertyValueFactory<Item, SimpleBooleanProperty>("availableProperty"));
-        avaCol.setCellFactory(col -> new BooleanComboBoxTableCell());
+        avaCol.setCellFactory(col -> new BooleanComboBoxTableCell("item"));
 
         TableColumn<Item, Integer> ratingCol = new TableColumn<>("Rating");
-        ratingCol.prefWidthProperty().bind(table.widthProperty().divide(5));
+        ratingCol.prefWidthProperty().bind(table.widthProperty().divide(6).subtract(70));
         ratingCol.setCellValueFactory(new PropertyValueFactory<Item, Integer>("Rating"));
 
+        TableColumn<Item, Boolean> imgCol = new TableColumn<>("Image");
+        imgCol.prefWidthProperty().bind(table.widthProperty().divide(6).add(40));
+        imgCol.setCellValueFactory(new PropertyValueFactory<Item, Boolean>("isImage"));
+        imgCol.setCellFactory(col -> new ImgEditTableCell());
+
         //avaCol.setSortable(false);
-        table.getColumns().addAll(nameCol, categoryCol, priceCol, avaCol ,ratingCol);
+        table.getColumns().addAll(nameCol, categoryCol, priceCol, avaCol ,ratingCol, imgCol);
         table.autosize();
         table.setEditable(true);
         table.setItems(App.getMenu());
@@ -211,49 +210,103 @@ public class MenuScene implements Template {
         stage.setMinWidth(400);
         stage.show();
     }
-    public static class BooleanComboBoxTableCell extends TableCell<Item, SimpleBooleanProperty> {
+    public static class ImgEditTableCell<T> extends TableCell<T, Boolean> {
 
-        private final ComboBox<SimpleBooleanProperty> comboBox;
-      
-        public BooleanComboBoxTableCell() {
-          comboBox = new ComboBox<>();
-          comboBox.setConverter(new StringBooleanConverter());
-          comboBox.getItems().addAll(new SimpleBooleanProperty(true), new SimpleBooleanProperty(false));
-          setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-          comboBox.setOnAction(e -> {
-            if (getItem()!= null) {
-              App.getMenu().get(this.getTableRow().getIndex()).getAvailableProperty().set(comboBox.getSelectionModel().getSelectedItem().get());
-              commitEdit(getItem());
-            }
-          });
+        private HBox container = new HBox();
+        private Button addBtn = new Button();
+        private static Image addImg;
+        private Button viewBtn = new Button();
+        private static Image viewImg;
+        private Button removeBtn = new Button();
+        private static Image removeImg;
+        //IMPORTANT NOTE: you need to specify the items in the list in the constructor.
+        public ImgEditTableCell() {
+        if (addImg == null || viewImg == null || removeImg == null) loadImgs();
+        setupButtons();
+        container.setAlignment(Pos.CENTER);
+        container.setSpacing(10);
+        container.getChildren().addAll(addBtn, viewBtn, removeBtn);
+        
         }
-      
         @Override
-        protected void updateItem(SimpleBooleanProperty item, boolean empty) {
-          super.updateItem(item, empty);
-          if (empty || item == null) {
-            setText(null);
-            setGraphic(null);
-          } else {
-            comboBox.getSelectionModel().select(item);
-            // Bind selection or update property
-            
-            setText(null);
-            setGraphic(comboBox);
-          }
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            setGraphic(container);
+            if (this.getTableRow().getIndex() >= App.getMenu().size()){
+                setGraphic(null);
+            }
+            else if (empty || !item) {
+                viewBtn.setVisible(false);
+                removeBtn.setVisible(false);
+            } else {
+                viewBtn.setVisible(true);
+                removeBtn.setVisible(true);
+            }
         }
-        class StringBooleanConverter extends StringConverter<SimpleBooleanProperty> {
-            @Override
-            public String toString(SimpleBooleanProperty object) {
-                if (object == null) {
-                    return null;
+        private void loadImgs() {
+            addImg = new Image("Assets/add.png");
+            viewImg = new Image("Assets/view.png");
+            removeImg = new Image("Assets/remove.png");
+        }
+        private void setupButtons() {
+            ImageView addView = new ImageView(addImg);
+            addBtn.setGraphic(addView);
+            addBtn.setOnAction(e1 -> {
+
+            });
+
+            ImageView viewView = new ImageView(viewImg);
+            viewBtn.setGraphic(viewView);
+            viewBtn.setOnAction(e1 -> {
+                Stage imageViewStage = new Stage();
+                ImageView imageView = new ImageView(App.getMenu().get(this.getTableRow().getIndex()).getImage());
+                imageView.setFitHeight(300);
+                imageView.setFitWidth(300);
+                StackPane pane = new StackPane(imageView);
+                Scene scene = new Scene(pane);
+                imageViewStage.setScene(scene);
+                imageViewStage.setTitle(App.getMenu().get(this.getTableRow().getIndex()).getName() + " image");
+                imageViewStage.setResizable(false); // Resizing disabled
+                imageViewStage.show();
+            });
+            
+            ImageView removeView = new ImageView(removeImg);
+            removeBtn.setGraphic(removeView);
+            removeBtn.setOnAction(e1 -> {
+                Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+                confirm.setTitle("Delete image");
+                confirm.setHeaderText("Are you sure you want to delete "
+                     + App.getMenu().get(this.getTableRow().getIndex()).getName() + "'s image?");
+                confirm.showAndWait();
+                if (confirm.getResult() == ButtonType.OK) {
+                    deleteExistingImg();
+                    updateItem(false, false);
                 }
-                return object.getValue()? "Available" : "Not Available";
+            });
+        }
+        private void deleteExistingImg() {
+            File fileToDelete = new File("temp/" +((Integer)this.getTableRow().getIndex()).toString() + ".jpg");
+            if (fileToDelete.exists()) {
+                boolean deleted = fileToDelete.delete();
+            if (deleted) {
+                // File deleted successfully!
+                // You can show a confirmation message or perform further actions.
+                Template.getInfo("File deletion", "File deleted successfully",
+                "confirmation").show();
+                
+            } else {
+                // Deletion failed!
+                // Handle the error scenario (e.g., show an error message to the user)
+                Template.getError("File deletion", "File deletion failed",
+                    "Error deleting file: " + fileToDelete.getPath()).show();
             }
-            @Override
-            public SimpleBooleanProperty fromString(String string) {
-                return new SimpleBooleanProperty(Boolean.parseBoolean(string));
+            } else {
+                // File doesn't exist!
+                // Inform the user that the file couldn't be found.
+                Template.getWarning("File deletion", "File not found", "File not found: "
+                    + fileToDelete.getAbsolutePath()).show();
             }
+            App.getMenu().get(this.getTableRow().getIndex()).deleteImage();
         }
     }
 }

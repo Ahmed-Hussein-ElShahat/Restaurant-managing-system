@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.control.Alert;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -48,7 +49,7 @@ public class Order implements Comparable<Order> {
 
     public Item getOrder(int n){return guestOrder.get(n);}          //return 1 specific item only
 
-    public Item[] getOrder(){return new Item[guestOrder.size()];}   //return the total order in the shape of an array
+    public ArrayList<Item> getGuestOrder() {return guestOrder;}   //return the total order in the shape of an array
 
     public static int getTotalNumberOfOrders() {return TotalNumberOfOrders;}
 
@@ -67,6 +68,15 @@ public class Order implements Comparable<Order> {
     public void addOrder(Item newOrder) {
         guestOrder.add(newOrder);
         totalPrice.set(calcTotalPrice());
+    }
+
+    public void addnOrder(Item multiItem, int n) throws IllegalArgumentException{
+
+            if (n < 0) throw new IllegalArgumentException();
+            for (int i = 0; i < n; i++) {
+                this.addOrder(multiItem);
+            }
+            totalPrice.set(calcTotalPrice());
     }
 
     public void removeOrder(int n) {

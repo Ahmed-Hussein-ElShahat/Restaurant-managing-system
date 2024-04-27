@@ -6,7 +6,9 @@ import java.lang.IllegalArgumentException;
 public class Visa extends Payment {
     private String id ;
 
-    public Visa(){}
+    public Visa(){
+        this.id = "0000000000000000";
+    }
     
     public Visa(String id) {
         this.id = id;
@@ -16,7 +18,7 @@ public class Visa extends Payment {
         return id;
     }
 // make exception 
-    public void setId(String id) throws Exception {
+    public void setId(String id) throws IllegalArgumentException {
         
         if ( id.length() == 16 ) {
             for ( int i = 0; i < id.length() ; i++ ) {
@@ -30,11 +32,6 @@ public class Visa extends Payment {
     @Override
     public String getMethod() {
         return "Visa";
-    }
-    
-    @Override
-    public double calcRest (double amount) {  //الباقي
-        return super.getAmount() - amount;
     }
 
 }
