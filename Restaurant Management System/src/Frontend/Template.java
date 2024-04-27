@@ -53,6 +53,27 @@ public interface Template {
         pane.setVgap(10);
         pane.setPadding(new Insets(10, 10, 10, 10));
     }
+    static Alert getError(String title, String header, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        return alert;
+    }
+    static Alert getInfo(String title, String header, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        return alert;
+    }
+    static Alert getWarning(String title, String header, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        return alert;
+    }
     public static class BooleanComboBoxTableCell<T> extends TableCell<T, SimpleBooleanProperty> {
 
         private final ComboBox<SimpleBooleanProperty> comboBox;

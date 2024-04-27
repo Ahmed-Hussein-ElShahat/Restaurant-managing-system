@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.io.File;
+
 import Backend.Item;
 
 public class MenuScene implements Template {
@@ -270,9 +273,40 @@ public class MenuScene implements Template {
             ImageView removeView = new ImageView(removeImg);
             removeBtn.setGraphic(removeView);
             removeBtn.setOnAction(e1 -> {
-
+                Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+                confirm.setTitle("Delete image");
+                confirm.setHeaderText("Are you sure you want to delete "
+                     + App.getMenu().get(this.getTableRow().getIndex()).getName() + "'s image?");
+                confirm.showAndWait();
+                if (confirm.getResult() == ButtonType.OK) {
+                    deleteExistingImg();
+                    updateItem(false, false);
+                }
             });
-            
+        }
+        private void deleteExistingImg() {
+            File fileToDelete = new File("temp/" +((Integer)this.getTableRow().getIndex()).toString() + ".jpg");
+            if (fileToDelete.exists()) {
+                boolean deleted = fileToDelete.delete();
+            if (deleted) {
+                // File deleted successfully!
+                // You can show a confirmation message or perform further actions.
+                Template.getInfo("File deletion", "File deleted successfully",
+                "confirmation").show();
+                
+            } else {
+                // Deletion failed!
+                // Handle the error scenario (e.g., show an error message to the user)
+                Template.getError("File deletion", "File deletion failed",
+                    "Error deleting file: " + fileToDelete.getPath()).show();
+            }
+            } else {
+                // File doesn't exist!
+                // Inform the user that the file couldn't be found.
+                Template.getWarning("File deletion", "File not found", "File not found: "
+                    + fileToDelete.getAbsolutePath()).show();
+            }
+            App.getMenu().get(this.getTableRow().getIndex()).deleteImage();
         }
     }
 }
