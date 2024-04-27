@@ -280,33 +280,35 @@ public class MenuScene implements Template {
                 confirm.showAndWait();
                 if (confirm.getResult() == ButtonType.OK) {
                     deleteExistingImg();
-                    updateItem(false, false);
                 }
             });
         }
         private void deleteExistingImg() {
-            File fileToDelete = new File("temp/" +((Integer)this.getTableRow().getIndex()).toString() + ".jpg");
+            int lastIndex = App.getMenu().get(this.getTableRow().getIndex()).getImage().getUrl().lastIndexOf(".");
+            String extension = App.getMenu().get(this.getTableRow().getIndex()).getImage().getUrl().substring(lastIndex);
+            File fileToDelete = new File("temp/" +((Integer)this.getTableRow().getIndex()).toString() + extension);
             if (fileToDelete.exists()) {
                 boolean deleted = fileToDelete.delete();
             if (deleted) {
                 // File deleted successfully!
                 // You can show a confirmation message or perform further actions.
                 Template.getInfo("File deletion", "File deleted successfully",
-                "confirmation").show();
+                "confirmation");
                 
             } else {
                 // Deletion failed!
                 // Handle the error scenario (e.g., show an error message to the user)
                 Template.getError("File deletion", "File deletion failed",
-                    "Error deleting file: " + fileToDelete.getPath()).show();
+                    "Error deleting file: " + fileToDelete.getPath());
             }
             } else {
                 // File doesn't exist!
                 // Inform the user that the file couldn't be found.
                 Template.getWarning("File deletion", "File not found", "File not found: "
-                    + fileToDelete.getAbsolutePath()).show();
+                    + fileToDelete.getAbsolutePath());
             }
             App.getMenu().get(this.getTableRow().getIndex()).deleteImage();
+            updateItem(false, false);
         }
     }
 }
