@@ -5,6 +5,9 @@ import Backend.Payments.Visa;
 import Backend.Order;
 import Backend.Payment;
 import Backend.Item;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
@@ -19,7 +22,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.control.Alert.AlertType;
 
 public class ItemReviewScene implements Template {
-
     private double amount = 0.0;
 
     ItemReviewScene(Order order ){
@@ -27,7 +29,7 @@ public class ItemReviewScene implements Template {
         review.setSpacing(50);
         review.setPadding(new Insets(20, 20, 20, 20));
         review.setAlignment(Pos.CENTER);
-        review.getChildren().addAll( getheader(), getTable() , paymentTextBox(order ) );
+        review.getChildren().addAll( getheader(), getTable(order) , paymentTextBox(order ) );
         review.setBackground(App.getBackground());
         App.getScene().setRoot(review);
     }
@@ -44,7 +46,7 @@ public class ItemReviewScene implements Template {
         return header;
     }
 
-    private TableView<Item> getTable (){
+    private TableView<Item> getTable (Order order){
         TableView<Item> table = new TableView<Item>();
         table.setMaxWidth(1000);
 
@@ -63,7 +65,7 @@ public class ItemReviewScene implements Template {
         table.getColumns().addAll(nameCol , categoryCol , priceCol);
         table.autosize();
         table.setEditable(true);
-        table.setItems(App.getMenu());
+        table.setItems(FXCollections.observableArrayList(order.getGuestOrder()));
         return table;
     }
 

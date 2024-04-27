@@ -24,12 +24,12 @@ import static javafx.scene.text.Font.font;
 public class ItemSelectionScene implements Template{
     final private ScrollPane sp = new ScrollPane();
     private Image[] images;
-    private Order order = new Order();
+    private final Order order = new Order();
     private final File folder = new File("src/Assets");
     private final File[] files = folder.listFiles();
-    Item wantedItem;
-    Item previtem = new Item("",1,"");
-
+    private Item wantedItem;
+    private Item previtem = new Item("",1,"");
+    private ListView<GridPane> lv;
     public ItemSelectionScene() {
         openImageFolder();
         ObservableList<GridPane> ov = FXCollections.observableArrayList();
@@ -44,13 +44,11 @@ public class ItemSelectionScene implements Template{
             alert.showAndWait();
         }
 
-        ListView<GridPane> lv = new ListView<>(ov);
-        Order order = new Order();
+        lv = new ListView<>(ov);
 
         lv.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         lv.getSelectionModel().selectedItemProperty().addListener(o -> {
             wantedItem = App.getMenu().get(lv.getSelectionModel().getSelectedIndex());
-            order.addOrder(wantedItem);
         });
 
         //Configure the scroll pane and set items to it
@@ -84,6 +82,12 @@ public class ItemSelectionScene implements Template{
         //create a GridPane and configure it
         GridPane gpane = new GridPane();
         gpane.setPadding(new Insets(10,10,10,10));
+        gpane.setVgap(10);
+        gpane.prefWidthProperty().bind(sp.widthProperty().divide(3));
+        gpane.prefHeightProperty().bind(sp.heightProperty().divide(3));
+        gpane.hgapProperty().bind(sp.widthProperty().divide(2).subtract(30));
+        gpane.setVgap(10);
+        gpane.setStyle("-fx-background-color: #f0f8ff");
 
         //create a VBox and configure it
         VBox vbox = new VBox();
@@ -96,23 +100,7 @@ public class ItemSelectionScene implements Template{
         Label lbl4 = new Label(item.getPrice() + "");
 
         //create a text field and configure it
-        TextField tf = new TextField();
-        tf.setPromptText("Number of items");
-        tf.setOnKeyPressed(e ->{
-            if(e.getCode().equals(KeyCode.ENTER)){
-                try{
-                    order.addnOrder(wantedItem, Integer.parseInt(tf.getText())- 1);
-                    tf.clear();
-                    tf.setPromptText("Number of items");
-                }
-                catch(NumberFormatException ex){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Invalid input!");
-                    alert.setContentText("Please enter a valid number.");
-                    alert.show();
-                }
-            }
-        });
+        TextField tf = getTextField();
 
         //create a font and set it to the labels and the text field
         Font font = new Font("Freestyle Script", 40);
@@ -142,18 +130,9 @@ public class ItemSelectionScene implements Template{
 
         //create an ImageView and configure it
         ImageView iv = new ImageView(img);
-        iv.fitHeightProperty().bind(sp.heightProperty().divide(2).add(20));
+        iv.fitHeightProperty().bind(sp.heightProperty().divide(3).add(50));
         iv.setPreserveRatio(true);
 
-        //create a borderpane and put the nodes in it
-        GridPane.setHalignment(vbox, HPos.CENTER);
-        GridPane.setHalignment(iv, HPos.RIGHT);
-
-        gpane.setVgap(10);
-        gpane.setPrefSize(200,200);
-        gpane.setHgap(30);
-        gpane.setVgap(10);
-        gpane.setStyle("-fx-background-color: #f0f8ff");
         gpane.add(vbox, 0, 1);
         gpane.add(iv, 1, 1);
         gpane.add(tf,0,2);
@@ -161,7 +140,41 @@ public class ItemSelectionScene implements Template{
         return gpane;
     }
 
-    //private GridPane
+    private TextField getTextField() {
+        TextField tf = new TextField();
+        tf.setPromptText("Number of items");
+        tf.setOnKeyPressed(e ->{
+
+            if(e.getCode().equals(KeyCode.ENTER)){
+                int n = Integer.parseInt(tf.getText());
+                try{
+                    wantedItem = App.getMenu().get(lv.getSelectionModel().getSelectedIndex());
+                    order.addnOrder(wantedItem, Integer.parseInt(tf.getText()));
+
+                    tf.clear();
+                    tf.setPromptText("Number of items");
+
+                    sp.requestFocus();
+                }
+                catch (IllegalArgumentException ex){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Invalid Input");
+                    alert.setContentText("Number of items must be a positive integer.");
+                    alert.showAndWait();
+                }
+                catch (IndexOutOfBoundsException ex){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("No item selected");
+                    alert.setContentText("Please select an item first.");
+                    alert.showAndWait();
+                }
+
+
+
+            }
+        });
+        return tf;
+    }
 
     private void openImageFolder() throws NullPointerException{
 
