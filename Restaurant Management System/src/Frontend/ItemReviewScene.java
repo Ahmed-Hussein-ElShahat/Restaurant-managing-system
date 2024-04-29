@@ -21,27 +21,27 @@ import javafx.scene.control.Alert.AlertType;
 public class ItemReviewScene implements Template {
     private double amount = 0.0;
 
-    ItemReviewScene(Order order ){
+    ItemReviewScene(Order order){
         VBox review = new VBox();
         review.setSpacing(50);
         review.setPadding(new Insets(20, 20, 20, 20));
         review.setAlignment(Pos.CENTER);
-        review.getChildren().addAll( getheader(), getTable(order) , paymentTextBox(order ) );
+        review.getChildren().addAll(getHheader("Return to Main Menu"), getTable(order) , paymentTextBox(order ) );
         review.setBackground(App.getBackground());
         App.getScene().setRoot(review);
     }
 
-    private HBox getheader() { //not sure we will use it or not 
-        HBox header = new HBox();
-        header.setAlignment(Pos.CENTER);
-        Button returnbtn = new Button("Return to Main Menu");
-        returnbtn.setOnAction(e -> {
-            App.returnToMain();
-        });
-        header.setSpacing(100);
-        header.getChildren().addAll(getHeader("Restaurant Menu"),  returnbtn);
-        return header;
-    }
+    // private HBox getheader() { //not sure we will use it or not 
+    //     HBox header = new HBox();
+    //     header.setAlignment(Pos.CENTER);
+    //     Button returnbtn = new Button("Return to Main Menu");
+    //     returnbtn.setOnAction(e -> {
+    //         App.returnToMain();
+    //     });
+    //     header.setSpacing(100);
+    //     header.getChildren().addAll(getHeader("Restaurant Menu"),  returnbtn);
+    //     return header;
+    // }
 
     private TableView<Item> getTable (Order order){
         TableView<Item> table = new TableView<Item>();
@@ -179,7 +179,7 @@ public class ItemReviewScene implements Template {
         hb.setPadding(new Insets(20, 20, 20, 20));
         hb.setAlignment(Pos.CENTER);
 
-        Label l1 = new Label("Enter Visa Numper :") ;
+        Label l1 = new Label("Enter Visa Number :") ;
         Font hfont = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
         l1.setFont(hfont);
         l1.setTextFill(Color.WHITE);

@@ -13,11 +13,16 @@ import javafx.scene.text.FontWeight;
 public class TableSelectionScene implements Template {
     TableSelectionScene() {
         ScrollPane pane = new ScrollPane();
+        pane.setStyle("-fx-background-color: transparent;");
         GridPane tables = new GridPane();
+        tables.setStyle("-fx-background-color: transparent;");
         VBox box = new VBox();
         box.setAlignment(Pos.CENTER);
         box.setSpacing(50);
+        box.setBackground(App.getBackground());
         configureGridpane(tables);
+        pane.setContent(tables);
+        box.getChildren().addAll(getHheader("Select Table:"),pane);
         int row = 0, column = 0;
         for(int i = 0; i < App.getTables().size(); i++) {
             Table table = App.getTables().get(i);
@@ -31,18 +36,16 @@ public class TableSelectionScene implements Template {
                 "\n" + "Capacity: " + 
                 table.getTable_capacity();
                 Button tableBtn = new Button(tableInfo);
-                tableBtn.setStyle("-fx-padding: 20px 0; -fx-alignment: center;-fx-font-weight: bold; -fx-font-size:20px;" + 
+                String BtnStyle = "-fx-padding: 20px 0; -fx-alignment: center;-fx-font-weight: bold; -fx-font-size:20px;" + 
                 "-fx-background-color:white; -fx-text-fill:black; -fx-background-radius: 20px; -fx-border-radius: 20px;" +
-                "-fx-border-width: 2px; -fx-border-color:black");
+                "-fx-border-width: 2px; -fx-border-color:black;";
+
+                tableBtn.setStyle(BtnStyle + "-fx-background-color:white; -fx-text-fill:black;");
                 tableBtn.setOnMouseEntered(e -> {
-                    tableBtn.setStyle("-fx-padding: 20px 0; -fx-alignment: center;-fx-font-weight: bold; -fx-font-size:20px;" + 
-                    "-fx-background-color:black; -fx-text-fill:white; -fx-background-radius: 20px; -fx-border-radius: 20px;" +
-                    "-fx-border-width: 2px; -fx-border-color:black");
+                    tableBtn.setStyle(BtnStyle + "-fx-background-color:black; -fx-text-fill:white;");
                 });
                 tableBtn.setOnMouseExited(e -> {
-                    tableBtn.setStyle("-fx-padding: 20px 0; -fx-alignment: center;-fx-font-weight: bold; -fx-font-size:20px;" + 
-                    "-fx-background-color:white; -fx-text-fill:black; -fx-background-radius: 20px; -fx-border-radius: 20px;" +
-                    "-fx-border-width: 2px; -fx-border-color:black");
+                    tableBtn.setStyle(BtnStyle + "-fx-background-color:white; -fx-text-fill:black;");
                 });
                 tableBtn.prefWidthProperty().bind(pane.widthProperty().divide(3).subtract(20));
                 tableBtn.setOnAction(e -> {
@@ -53,15 +56,8 @@ public class TableSelectionScene implements Template {
                 column++;
             }
         }
-        pane.setContent(tables);
-        box.getChildren().addAll(getHeader("Select Table:"),pane);
+
         App.getScene().setRoot(box);
         
-    }
-    public Label getHeader(String str){
-        Label label1 = new Label(str);
-        Font hfont = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
-        label1.setFont(hfont);
-        return label1;
     }
 }

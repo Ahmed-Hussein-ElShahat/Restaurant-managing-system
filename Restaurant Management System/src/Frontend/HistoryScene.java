@@ -18,20 +18,9 @@ class HistoryScene implements Template {
         root.setSpacing(50);
         root.setPadding(new Insets(20,20,20,20));
         root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(getheader(), getTable());
+        root.getChildren().addAll(getHheader("Past Orders"), getTable());
         root.setBackground(App.getBackground());
         App.getScene().setRoot(root);
-    }
-    private HBox getheader() {
-        HBox header = new HBox();
-        header.setAlignment(Pos.CENTER);
-        Button returnbtn = new Button("Return to Main Menu");
-        returnbtn.setOnAction(e -> {
-            App.returnToMain();
-        });
-        header.setSpacing(100);
-        header.getChildren().addAll(getHeader("Past Orders"),  returnbtn);
-        return header;
     }
     
     private TableView<Order> getTable() {

@@ -18,6 +18,11 @@ public interface Template {
         HBox Hheader = new HBox();
         Hheader.setAlignment(Pos.CENTER);
         Button returnbtn = new Button("Return to Main Menu");
+        returnbtn.setStyle("-fx-padding: 10px;" +
+            "-fx-font-size: 16px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-background-radius: 20px;" +
+            " -fx-border-radius: 20px;");
         returnbtn.setOnAction(e -> {
             App.returnToMain();
         });
@@ -33,7 +38,9 @@ public interface Template {
         btn.setStyle("-fx-font-size: " + fontSize + "px;" +
                     "-fx-font-weight: bold;" +
                     "-fx-font-family: Serif;" +
-                    "-fx-opacity: 0.8;");
+                    "-fx-opacity: 0.8;" + 
+                    "-fx-background-radius: 20px;" +
+                    "-fx-border-radius: 20px;");
         });
         btn.setPrefHeight(400);
         btn.setPrefWidth(600);
@@ -44,7 +51,8 @@ public interface Template {
         Label label1 = new Label(str);
         Font hfont = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
         label1.setFont(hfont);
-        label1.setTextFill(Color.BISQUE);
+        label1.setTextFill(Color.WHITE);
+        label1.setStyle("-fx-background-color:linear-gradient(from 0% 0% to 100% 100%, #1f3a4d, #597d97); -fx-padding:15px; -fx-background-radius: 20px;");
         return label1;
     }
     default void configureGridpane(GridPane pane){
