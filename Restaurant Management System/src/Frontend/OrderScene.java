@@ -32,7 +32,7 @@ public class OrderScene implements Template {
         tkeButton.setOnAction(e -> {    //Go directly to item selection scene
             Item [] items = {new Item("Salad", 20, "Appetizer"), new Item("Sushi", 100, "Main Course")} ;
             Order order = new Order(items);
-            new ItemSelectionScene();
+            new ItemSelectionScene(null);
             //new ItemReviewScene(order);
         });
         onSiteButton.setOnAction(e -> { 
@@ -45,8 +45,8 @@ public class OrderScene implements Template {
                 }
             }
             if (flag) {
-                // Go to the item selection scene
-                new selectionScene();
+                // Go to the table selection scene
+                new TableSelectionScene();
             }
             else {
                 Alert messageAlert = new Alert(Alert.AlertType.INFORMATION);

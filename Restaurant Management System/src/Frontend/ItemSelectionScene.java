@@ -24,13 +24,21 @@ import static javafx.scene.text.Font.font;
 public class ItemSelectionScene implements Template{
     final private ScrollPane sp = new ScrollPane();
     private Image[] images;
-    private final Order order = new Order();
+    private Order order;
     private final File folder = new File("bin/temp");
     private final File[] files = folder.listFiles();
     private Item wantedItem;
     private Item previtem = new Item("",1,"");
     private ListView<GridPane> lv;
-    public ItemSelectionScene() {
+    public ItemSelectionScene(Order tableOrder) {
+        // Check if its on site
+        if(tableOrder != null) {
+            order = tableOrder;
+        }
+        else {
+            order = new Order();
+        }
+
         openImageFolder();
         ObservableList<GridPane> ov = FXCollections.observableArrayList();
 
