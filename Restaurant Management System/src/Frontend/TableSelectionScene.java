@@ -3,19 +3,16 @@ package Frontend;
 import Backend.Table;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 public class TableSelectionScene implements Template {
     TableSelectionScene() {
         ScrollPane pane = new ScrollPane();
-        pane.setStyle("-fx-background-color: transparent;");
+        // pane.setStyle("-fx-background-color: linear-gradient(to top, #00C9FF 0%, #92FE9D 100%);");
         GridPane tables = new GridPane();
-        tables.setStyle("-fx-background-color: transparent;");
+        tables.setStyle("-fx-background-color: transparent");
         VBox box = new VBox();
         box.setAlignment(Pos.CENTER);
         box.setSpacing(50);
