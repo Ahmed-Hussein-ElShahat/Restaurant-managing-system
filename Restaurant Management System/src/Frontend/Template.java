@@ -83,22 +83,31 @@ public interface Template {
         alert.show();
     }
     public static class BooleanComboBoxTableCell<T> extends TableCell<T, SimpleBooleanProperty> {
+    // Custom Table cell for modifiction of boolean properties
 
-        private final ComboBox<SimpleBooleanProperty> comboBox;
+        private final ComboBox<SimpleBooleanProperty> comboBox; // Combo box for boolean values
+        private int rowNum;
         //IMPORTANT NOTE: you need to specify the items in the list in the constructor.
         public BooleanComboBoxTableCell(String type) {
           comboBox = new ComboBox<>();
-          comboBox.setConverter(new StringBooleanConverter());
+          comboBox.setConverter(new StringBooleanConverter("Available", "Not Available")); 
+          // sets the display values of the comboBox to (Available/ Not Available)
+
           comboBox.getItems().addAll(new SimpleBooleanProperty(true), new SimpleBooleanProperty(false));
+
           setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+          
+          // Action taken when interacting with the comboBox
           comboBox.setOnAction(e -> {
             if (getItem()!= null) {
+                rowNum = this.getTableRow().getIndex();
                 if (type == "item") {
-                    App.getMenu().get(this.getTableRow().getIndex()).getAvailableProperty().set(comboBox.getSelectionModel().getSelectedItem().get());
-                    commitEdit(getItem());
+                    // Sets the item availability to the selected value
+                    App.getMenu().get(rowNum).getAvailableProperty().set(getSelection());
                 }
                 else if (type == "table") {
-                    App.getTables().get(this.getTableRow().getIndex()).getAvailableProperty().set(comboBox.getSelectionModel().getSelectedItem().get());
+                    // Sets the table availability to the selected value
+                    App.getTables().get(rowNum).getAvailableProperty().set(getSelection());
                 }
             }
           });
@@ -107,23 +116,36 @@ public interface Template {
         protected void updateItem(SimpleBooleanProperty item, boolean empty) {
           super.updateItem(item, empty);
           if (empty || item == null) {
+            // Empty the table cells that has no Item
             setText(null);
             setGraphic(null);
           } else {
+            // Set the comboBox to the availability value and shows it
             comboBox.getSelectionModel().select(item);
-            // Bind selection or update property
-            
             setText(null);
             setGraphic(comboBox);
           }
         }
+        private boolean getSelection() {
+            // Returns the selected value of the comboBox
+            return comboBox.getSelectionModel().getSelectedItem().get();
+        }
         class StringBooleanConverter extends StringConverter<SimpleBooleanProperty> {
+        // Custom made Boolean property to string converter for selection display
+            private final String trueValue;
+            private final String falseValue;
+
+            StringBooleanConverter(String trueValue, String falseValue) {
+                super();
+                this.trueValue = trueValue;
+                this.falseValue = falseValue;
+            }
             @Override
             public String toString(SimpleBooleanProperty object) {
                 if (object == null) {
                     return null;
                 }
-                return object.getValue()? "Available" : "Not Available";
+                return object.getValue()? trueValue : falseValue;
             }
             @Override
             public SimpleBooleanProperty fromString(String string) {

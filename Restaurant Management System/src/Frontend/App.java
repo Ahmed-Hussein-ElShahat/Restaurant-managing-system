@@ -11,26 +11,39 @@ import javafx.scene.image.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.File;
 import java.lang.IllegalArgumentException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import Backend.*;
 
 public class App extends Application implements Template{
 
-    private static ObservableList<Table> tables = FXCollections.observableArrayList();
-    private static ObservableList<Item> menu = FXCollections.observableArrayList();
-    private static ObservableList<Order> pastOrders = FXCollections.observableArrayList();
-    private static Background background = App.loadBackground("Assets/food.jpg");
-    private static Scene scene;
+    private static ObservableList<Table> tables = FXCollections.observableArrayList();  // List of available tables
+    private static ObservableList<Item> menu = FXCollections.observableArrayList();     // List of menu items
+    private static ObservableList<Order> pastOrders = FXCollections.observableArrayList();  // List of past orders
+    private static Background background = App.loadBackground("Assets/food.jpg"); // Default background for the program
+    private static Scene scene; // Default scene
     private static VBox pane = new VBox();
-    private static Path imgDistPath = Paths.get("bin/temp/"); // Distination directory for storing item images
+    private static Path imgDistPath = Paths.get("temp/"); // Distination directory for storing item images
+    private static Path savedPath = Paths.get("saved/");
+    private static File menuFile = new File(savedPath.toString()+"/menu.json");
+    private static File tableFile = new File(savedPath.toString()+"/tables.json");
+    private static File orderFile = new File(savedPath.toString()+"/pastOrders.json");
     private static Stage primaryStage;
     @Override
     public void start(Stage stage) {
         scene = new Scene(pane, 1024, 576);
-        primaryStage = stage;
+        ObjectMapper mapper = new ObjectMapper();
+        loadSavedData(mapper);
         // scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         String css = this.getClass().getResource("application.css").toExternalForm();
         scene.getStylesheets().add(css);
@@ -38,23 +51,17 @@ public class App extends Application implements Template{
         try {
             pane.setBackground(background);
         } catch (IllegalArgumentException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Failed to load background image!");
-            alert.setContentText("Path was not found!");
+            Template.getError("Loading Error","Failed to load background image", "Path was not found!");
             scene.setFill(Color.ALICEBLUE);
-            alert.showAndWait();
         }
 
-        menu.addAll(new Item("Salad", 20, "Appetizer"), new Item("Sushi", 100, "Main Course"));
         pastOrders.add(new Order());
         try {
         pastOrders.get(0).addOrder((Item)App.getMenu().get(0).clone());
-        pastOrders.get(0).addOrder((Item)App.getMenu().get(1).clone());
         }
         catch (CloneNotSupportedException e) {
             System.out.println("Adding Order failed");
         }
-        //System.out.println(menu.get(1).getName());
 
         pane.setAlignment(Pos.CENTER);
         stage.setTitle("Application");
@@ -69,6 +76,29 @@ public class App extends Application implements Template{
             alert.setContentText("Path was not found!");
             alert.show();
         }
+        stage.setOnCloseRequest(e -> {
+            try {
+                mapper.writerWithDefaultPrettyPrinter().writeValue(menuFile, menu);
+            } catch (Exception e1) {
+                Template.getError("Saving Error","Failed to save menu file!", e1.getMessage());
+                // System.out.println(e1.getMessage());
+                // e1.printStackTrace();
+            }
+            try {
+                mapper.writerWithDefaultPrettyPrinter().writeValue(tableFile, tables);
+            } catch (Exception e2) {
+                Template.getError("Saving Error","Failed to seve table file!", e2.getMessage());
+                // System.out.println(e2.getMessage());
+                // e2.printStackTrace();
+            }
+            try {
+                mapper.writeValue(orderFile, pastOrders);                
+            } catch (Exception e3) {
+                Template.getError("Saving Error","Failed to seve order file.", e3.getMessage());
+                // System.out.println(e3.getMessage());
+                // e3.printStackTrace();
+            }
+        });
         //stage.setResizable(false);
         //stage.setFullScreen(true);
         stage.show();
@@ -145,5 +175,41 @@ public class App extends Application implements Template{
     }
     public static Path getImgDistPath() {
         return imgDistPath;
+    }
+    private void loadSavedData(ObjectMapper mapper) {
+        JavaType menuType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, Item.class);
+        JavaType tableType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, Table.class);
+        JavaType orderType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, Order.class);
+        mapper.registerModule(new JavaTimeModule());
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        if (savedPath.toFile().exists()) {
+            try {
+                if(menuFile.exists())
+                {
+                    ArrayList<Item> items = mapper.readValue(menuFile, menuType);
+                    menu = FXCollections.observableArrayList(items);
+                for (Item item : menu) {
+                    item.reloadImg();
+                }
+                }
+                if(tableFile.exists()) {
+                    ArrayList<Table> tbles = mapper.readValue(tableFile, tableType);
+                    tables = FXCollections.observableArrayList(tbles);
+                }
+                if (orderFile.exists()) {
+                    ArrayList<Order> orders = mapper.readValue(orderFile, orderType);
+                    pastOrders = FXCollections.observableArrayList(orders);
+                }
+            } catch(Exception e){
+                Template.getError("Loading Error","Failed to load saved files", e.getMessage());
+            }
+        }
+        else {
+            try {
+                Files.createDirectory(savedPath);
+            } catch (Exception e) {
+                Template.getError("Loading Error","Failed to create directory", e.getMessage());
+            }
+        }
     }
 }
