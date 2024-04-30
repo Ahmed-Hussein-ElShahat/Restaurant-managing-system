@@ -1,0 +1,17 @@
+[ {
+  "rating" : 0,
+  "path" : "file:/C:/Users/bodi7/Documents/Spring%2024/AdvProgProj/Restaurant-managing-system/Restaurant%20Management%20System/temp/0.jpg",
+  "category" : "Appetizer",
+  "price" : 20.0,
+  "name" : "Salad",
+  "description" : "No description available",
+  "available" : true
+}, {
+  "rating" : 0,
+  "path" : "file:/C:/Users/bodi7/Documents/Spring%2024/AdvProgProj/Restaurant-managing-system/Restaurant%20Management%20System/temp/1.jpg",
+  "category" : "Main Course",
+  "price" : 220.0,
+  "name" : "Sushi",
+  "description" : "No description available",
+  "available" : true
+} ]

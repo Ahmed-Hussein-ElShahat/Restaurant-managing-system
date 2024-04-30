@@ -2,14 +2,20 @@ package Backend;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.control.Alert;
+
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
+@JsonIncludeProperties({"date", "time", "total price", "order number"})
 public class Order implements Comparable<Order> {
     private LocalDate date;
     private LocalTime time;
@@ -43,10 +49,14 @@ public class Order implements Comparable<Order> {
     public SimpleIntegerProperty getOrderNumProperty() {
         return orderNum;
     }
+    @JsonProperty("order number")
     public int getOrderNum() {
         return orderNum.get();
     }
-
+    @JsonProperty("order number")
+    public void setOrderNum(int orderNum) {
+        this.orderNum.set(orderNum);
+    }
     public Item getOrder(int n){return guestOrder.get(n);}          //return 1 specific item only
 
     public ArrayList<Item> getGuestOrder() {return guestOrder;}   //return the total order in the shape of an array
@@ -98,17 +108,31 @@ public class Order implements Comparable<Order> {
         }
         return total ;
     }
+    @JsonProperty("total price")
     public double getTotalPrice() {
         return totalPrice.get();
+    }
+    @JsonProperty("total price")
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice.set(totalPrice);
     }
     public SimpleDoubleProperty getTotalPriceProperty() {
         return totalPrice;
     }
-
+    @JsonProperty("date")
     public LocalDate getDate() {
         return date;
     }
+    @JsonProperty("date")
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+    @JsonProperty("time")
     public LocalTime getTime() {
         return time.truncatedTo(ChronoUnit.SECONDS);
+    }
+    @JsonProperty("time")
+    public void setTime(LocalTime time) {
+        this.time = time.truncatedTo(ChronoUnit.SECONDS);
     }
 }

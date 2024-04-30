@@ -9,7 +9,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-//import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -20,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.net.MalformedURLException;
 
 import Backend.Item;
 
@@ -70,17 +70,10 @@ public class MenuScene implements Template {
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if(newSelection != null) {
                 Item selectedItem = newSelection;
-                //System.out.println("Name: " + selectedItem.getName());
                 editItem(selectedItem, table);
                 table.refresh();
             }
         });
-        // table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-        //     if(newSelection != null) {
-        //         Item selectedItem = newSelection;
-        //         System.out.println("Name: " + selectedItem.getName());
-        //     }
-        // });
         return table;
     }
     private HBox getFooter() {
@@ -118,7 +111,6 @@ public class MenuScene implements Template {
                 addName.clear();
                 addprice.clear();
                 addcategory.getSelectionModel().clearSelection();
-                addButton.setText("Category");
             }
         });
         footer.getChildren().addAll(addName, addprice, addcategory, addButton);
@@ -224,6 +216,7 @@ public class MenuScene implements Template {
         private static Image viewImg;
         private Button removeBtn = new Button();
         private static Image removeImg;
+        private int rowNum;
         //IMPORTANT NOTE: you need to specify the items in the list in the constructor.
         public ImgEditTableCell() {
         if (addImg == null || viewImg == null || removeImg == null) loadImgs();
@@ -231,13 +224,13 @@ public class MenuScene implements Template {
         container.setAlignment(Pos.CENTER);
         container.setSpacing(10);
         container.getChildren().addAll(addBtn, viewBtn, removeBtn);
-        
         }
         @Override
         protected void updateItem(Boolean item, boolean empty) {
             super.updateItem(item, empty);
             setGraphic(container);
-            if (this.getTableRow().getIndex() >= App.getMenu().size()){
+            rowNum = this.getTableRow().getIndex();
+            if (rowNum >= App.getMenu().size()){
                 setGraphic(null);
             }
             else if (empty || !item) {
@@ -264,13 +257,13 @@ public class MenuScene implements Template {
             viewBtn.setGraphic(viewView);
             viewBtn.setOnAction(e1 -> {
                 Stage imageViewStage = new Stage();
-                ImageView imageView = new ImageView(App.getMenu().get(this.getTableRow().getIndex()).getImage());
+                ImageView imageView = new ImageView(App.getMenu().get(rowNum).getImage());
                 imageView.setFitHeight(300);
                 imageView.setFitWidth(300);
                 StackPane pane = new StackPane(imageView);
                 Scene scene = new Scene(pane);
                 imageViewStage.setScene(scene);
-                imageViewStage.setTitle(App.getMenu().get(this.getTableRow().getIndex()).getName() + " image");
+                imageViewStage.setTitle(App.getMenu().get(rowNum).getName() + " image");
                 imageViewStage.setResizable(false); // Resizing disabled
                 imageViewStage.show();
             });
@@ -281,7 +274,7 @@ public class MenuScene implements Template {
                 Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
                 confirm.setTitle("Delete image");
                 confirm.setHeaderText("Are you sure you want to delete "
-                     + App.getMenu().get(this.getTableRow().getIndex()).getName() + "'s image?");
+                     + App.getMenu().get(rowNum).getName() + "'s image?");
                 confirm.showAndWait();
                 if (confirm.getResult() == ButtonType.OK) {
                     deleteExistingImg();
@@ -290,60 +283,59 @@ public class MenuScene implements Template {
             });
         }
         private void deleteExistingImg() {
-            int lastIndex = App.getMenu().get(this.getTableRow().getIndex()).getImage().getUrl().lastIndexOf(".");
-            String extension = App.getMenu().get(this.getTableRow().getIndex()).getImage().getUrl().substring(lastIndex);
-            File fileToDelete = new File("bin/temp/" +((Integer)this.getTableRow().getIndex()).toString() + extension);
+            String extension = getExtension(App.getMenu().get(rowNum).getImage().getUrl());
+            File fileToDelete = new File(App.getImgDistPath().toString() + "/" + rowNum + extension);
             if (fileToDelete.exists()) {
                 boolean deleted = fileToDelete.delete();
             if (deleted) {
                 // File deleted successfully!
-                // You can show a confirmation message or perform further actions.
                 Template.getInfo("File deletion", "File deleted successfully",
                 "confirmation");
-                
             } else {
                 // Deletion failed!
-                // Handle the error scenario (e.g., show an error message to the user)
                 Template.getError("File deletion", "File deletion failed",
                     "Error deleting file: " + fileToDelete.getPath());
             }
             } else {
                 // File doesn't exist!
-                // Inform the user that the file couldn't be found.
                 Template.getWarning("File deletion", "File not found", "File not found: "
                     + fileToDelete.getAbsolutePath());
             }
-            App.getMenu().get(this.getTableRow().getIndex()).deleteImage();
+            App.getMenu().get(rowNum).deleteImage();
         }
         private void selectImg(){
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open Image File");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg"));
             File file = fileChooser.showOpenDialog(App.getPrimaryStage());
-            Path destinationPath = Paths.get(App.getImgDistPath().toString(), this.getTableRow().getIndex() + getExtension(file.toPath()));
 
             if (file!= null) {
                 try {
+                    // Create the image folder if it doesn't exist
+                    if (!App.getImgDistPath().toFile().exists()) Files.createDirectory(App.getImgDistPath());
+                    Path destinationPath = Paths.get(App.getImgDistPath().toString(), rowNum + getExtension(file.toPath()));
                     Files.copy(file.toPath(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
-                    if (App.getMenu().get(this.getTableRow().getIndex()).getImage() != null) {
-                        if (getExtension(file.toPath()) != getExtension(App.getMenu().get(this.getTableRow().getIndex()).getImage().getUrl())) deleteExistingImg();
+                    if (App.getMenu().get(rowNum).getImage() != null) {
+                        if (getExtension(file.toPath()) != getExtension(App.getMenu().get(rowNum).getImage().getUrl())) deleteExistingImg();
                     }
-                    App.getMenu().get(this.getTableRow().getIndex()).setImage(destinationPath.toString().substring(3));
+                    App.getMenu().get(rowNum).setImage(getURLString(destinationPath));
                     updateItem(true, false);
                 } catch (Exception e) {
                     Template.getError("Copy Failed", "Failed to copy", "");
                 }
-                //deleteExistingImg();
             }
         }
-        public String getExtension(Path path) { 
+        private String getURLString(Path path) throws MalformedURLException {
+            return path.toUri().toURL().toString();
+        }
+        private String getExtension(Path path) { 
             String fileName = path.getFileName().toString(); 
             int dotIndex = fileName.lastIndexOf('.'); 
             // handle cases with no extension or multiple dots 
             if (dotIndex == -1 || dotIndex == fileName.length() - 1) { 
                 return "";          // no extension found 
             } else { 
-                return fileName.substring(dotIndex); 
+                return fileName.substring(dotIndex);
             } 
         }
         public String getExtension(String strpath) {

@@ -1,20 +1,30 @@
 package Backend;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
+@JsonIncludeProperties({"id", "capacity", "available"})
 public class Table implements Available{
     static private int table_num = 0;   // Total number of tables
-    private Order order;                // On table order
+    @JsonIgnore
+    private Order order;            // On table order
     private SimpleIntegerProperty table_id = new SimpleIntegerProperty();            // Table number
     private SimpleIntegerProperty table_capacity = new SimpleIntegerProperty(5);     // Default capacity
     private SimpleBooleanProperty available = new SimpleBooleanProperty(true);   // Whether the table is occupied  
 
-
     public Table () {
         table_id.set(++table_num);
     }
-
+    public Table (int id, int capacity, boolean available) {
+        table_id.set(id);
+        this.table_capacity.set(capacity);
+        this.available.set(available);
+    }
     // Maybe needed
 /*     Table (Order order) {
         this.order = order;
@@ -31,13 +41,19 @@ public class Table implements Available{
     public Order getOrder() {
         return order;
     }
+    @JsonProperty("id")
     public int getTable_id() {
         return table_id.get();
     }
+    @JsonProperty("id")
+    public void setTable_id(int table_id) {
+        this.table_id.set(table_id);
+    }
+    @JsonIgnore
     public SimpleIntegerProperty getTable_IDProperty() {
         return table_id;
     }
-
+    @JsonProperty("capacity")
     public int getTable_capacity() {
         return table_capacity.get();
     }
@@ -60,6 +76,7 @@ public class Table implements Available{
     public void setOrder(Order order) {
         this.order = order;
     }
+    @JsonProperty("capacity")
     public void setTable_capacity(int table_capacity) {
         this.table_capacity.set(table_capacity);
     }
@@ -75,11 +92,11 @@ public class Table implements Available{
     //     return order.getTotalPrice();
     // }
 
-    @Override
+    @JsonProperty("available")
     public boolean checkIfAvailable() {
         return available.get();
     }
-
+    @JsonProperty("available")
     public void setAvailability(boolean available) {
         this.available.set(available);
     }

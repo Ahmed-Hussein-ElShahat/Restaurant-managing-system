@@ -1,0 +1,13 @@
+[ {
+  "id" : 1,
+  "capacity" : 4,
+  "available" : true
+}, {
+  "id" : 2,
+  "capacity" : 10,
+  "available" : true
+}, {
+  "id" : 3,
+  "capacity" : 12,
+  "available" : true
+} ]
