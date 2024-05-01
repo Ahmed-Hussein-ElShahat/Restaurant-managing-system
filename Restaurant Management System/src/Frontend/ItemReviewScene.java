@@ -4,6 +4,7 @@ import Backend.Payments.Cash;
 import Backend.Payments.Visa;
 import Backend.Order;
 import Backend.Payment;
+import Backend.Table;
 import Backend.Item;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -78,7 +79,7 @@ public class ItemReviewScene implements Template {
         final TextField payment = new TextField();
         payment.setPromptText("Name");
         payment.setMinWidth(100);
-        payment.setText(Double.toString(order.calcTotalPrice()));
+        payment.setText(Double.toString(order.calcTotalPrice())); // we can make an alert if the total price = 0
         payment.setEditable(false);
 
         ComboBox method = new ComboBox();
@@ -91,14 +92,23 @@ public class ItemReviewScene implements Template {
 
         bt.setOnAction( e -> {
             //System.out.println(method.getSelectionModel().getSelectedItem());
-            if ( method.getSelectionModel().getSelectedItem() .equals("Cash")  ){
-                cashScene(order);
-                //System.out.println("cash");
-            }
-            else if( method.getSelectionModel().getSelectedItem() .equals("Visa")  ){
-                visaScene(order);
-            }
-            else{
+            try {
+                //System.out.println(payment.getText());
+                if ( payment.getText().equals("0.0") ){
+                    //System.out.println(payment.getText());
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning");
+                    alert.setHeaderText("No Payment");
+                    alert.setContentText("Make an Order First");
+                    alert.showAndWait();
+                }
+                else if ( method.getSelectionModel().getSelectedItem() .equals("Cash")  ){
+                    cashScene(order);
+                }
+                else if( method.getSelectionModel().getSelectedItem() .equals("Visa")  ){
+                    visaScene(order);
+                }
+            } catch (NullPointerException g) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning");
                 alert.setHeaderText("Not Choosen");
@@ -138,8 +148,17 @@ public class ItemReviewScene implements Template {
         returnbtn.setOnAction(e -> {
             new ItemReviewScene(order);
         });
+        Button returnmain = new Button("Cancel the Order");
+        returnmain.setOnAction(e -> {
+            App.returnToMain();
+            // if the customer cancels the order
+            // we must clear the order and the order history 
+            // Table t = new Table();
+            // t.setAvailability(true);
+            App.getTables().getLast().setAvailability(true);
+        });
 
-        vb.getChildren().addAll(l1 , addAmount , l2 , rest , returnbtn);
+        vb.getChildren().addAll(l1 , addAmount , l2 , rest , returnbtn , returnmain);
         App.getScene().setRoot(vb);
         rest.setEditable(false);
         rest.setPromptText("rest");
@@ -152,6 +171,7 @@ public class ItemReviewScene implements Template {
                         rest.setEditable(true);
                         rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice(), amount)));
                         rest.setEditable(false);
+                        addAmount.setEditable(false);
                     }
                     else {
                         addAmount.clear();
@@ -190,7 +210,6 @@ public class ItemReviewScene implements Template {
                 try{
                     v.setId(VisaNo.getText());
                     thanksScene() ;
-                    // i want to wait or take an action from ENTER and return to the first bage (App.returnToMain();)
                 }catch(IllegalArgumentException e){
                     System.out.println(e.getLocalizedMessage());
                     Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -205,8 +224,14 @@ public class ItemReviewScene implements Template {
         returnbtn.setOnAction(e -> {
             new ItemReviewScene(order);
         });
+        Button returnmain = new Button("Cancel the Order");
+        returnmain.setOnAction(e -> {
+            App.returnToMain();
+            // if the customer cancels the order
+            // we must clear the order and the order history 
+        });
         hb.setBackground(App.getBackground());
-        hb.getChildren().addAll(l1 , VisaNo , returnbtn);
+        hb.getChildren().addAll(l1 , VisaNo , returnbtn , returnmain);
 
         App.getScene().setRoot(hb);
 
