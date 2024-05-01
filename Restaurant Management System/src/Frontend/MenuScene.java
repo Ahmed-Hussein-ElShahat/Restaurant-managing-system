@@ -258,9 +258,10 @@ public class MenuScene implements Template {
             viewBtn.setOnAction(e1 -> {
                 Stage imageViewStage = new Stage();
                 ImageView imageView = new ImageView(App.getMenu().get(rowNum).getImage());
-                imageView.setFitHeight(300);
-                imageView.setFitWidth(300);
+                imageView.setPreserveRatio(true);
                 StackPane pane = new StackPane(imageView);
+                pane.setMaxHeight(500);
+                pane.setMaxWidth(700);
                 Scene scene = new Scene(pane);
                 imageViewStage.setScene(scene);
                 imageViewStage.setTitle(App.getMenu().get(rowNum).getName() + " image");
@@ -306,7 +307,7 @@ public class MenuScene implements Template {
         private void selectImg(){
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open Image File");
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg"));
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg", "*.jpeg"));
             File file = fileChooser.showOpenDialog(App.getPrimaryStage());
 
             if (file!= null) {

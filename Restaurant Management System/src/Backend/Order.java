@@ -22,19 +22,19 @@ public class Order implements Comparable<Order> {
     private ArrayList<Item> guestOrder = new ArrayList<>();        // Guest's order
     private SimpleDoubleProperty totalPrice = new SimpleDoubleProperty();
     private final SimpleIntegerProperty orderNum = new SimpleIntegerProperty();
-    private static int TotalNumberOfOrders = 0;     // number of orders by all guests
+    private static int TotalNumberOfOrders = 1;     // number of orders by all guests
 
     public Order(Item[] guestOrder){
         date = LocalDate.now();
         time = LocalTime.now();
-        orderNum.set(++TotalNumberOfOrders);
+        orderNum.set(TotalNumberOfOrders++);
         this.guestOrder = new ArrayList<>(Arrays.asList(guestOrder));
     }
 
     public Order(){
         date = LocalDate.now();
         time = LocalTime.now();
-        orderNum.set(++TotalNumberOfOrders);
+        orderNum.set(TotalNumberOfOrders++);
     }
 
     //Compared by the time they were created.
@@ -62,6 +62,8 @@ public class Order implements Comparable<Order> {
     public ArrayList<Item> getGuestOrder() {return guestOrder;}   //return the total order in the shape of an array
 
     public static int getTotalNumberOfOrders() {return TotalNumberOfOrders;}
+
+    public static void setTotalNumberOfOrders(int numberOfOrders) {TotalNumberOfOrders = numberOfOrders;}
 
     public int getNumOfItems(){return guestOrder.size();}
 

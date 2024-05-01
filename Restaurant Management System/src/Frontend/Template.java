@@ -66,6 +66,10 @@ public interface Template {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(message);
+        alert.getDialogPane().getChildren().stream()
+            .filter(node -> node instanceof Label)
+            .map(node -> (Label)node)
+            .forEach(label -> label.setWrapText(true));
         alert.show();
     }
     static void getInfo(String title, String header, String message) {
@@ -73,6 +77,10 @@ public interface Template {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(message);
+        alert.getDialogPane().getChildren().stream()
+            .filter(node -> node instanceof Label)
+            .map(node -> (Label)node)
+            .forEach(label -> label.setWrapText(true));
         alert.show();
     }
     static void getWarning(String title, String header, String message) {

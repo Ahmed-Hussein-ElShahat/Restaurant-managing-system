@@ -5,11 +5,9 @@ import Backend.Item;
 import Backend.Order;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
@@ -17,16 +15,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-import java.io.File;
-
-import static javafx.scene.text.Font.font;
 
 public class ItemSelectionScene implements Template{
     final private ScrollPane sp = new ScrollPane();
-    private Image[] images;
+    // private Image[] images;
     private Order order;
-    private final File folder = new File("bin/temp");
-    private final File[] files = folder.listFiles();
     private Item wantedItem;
     private Item previtem = new Item("",1,"");
     private ListView<GridPane> lv;
@@ -39,25 +32,17 @@ public class ItemSelectionScene implements Template{
             order = new Order();
         }
 
-        openImageFolder();
+        // openImageFolder();
         ObservableList<GridPane> ov = FXCollections.observableArrayList();
 
-        try{
-            for (int i = 0; i < images.length; i++) ov.add(showItem(App.getMenu().get(i), images[i]));
-        }
-        catch(NullPointerException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Failed to load images!");
-            alert.setContentText("Images not found!");
-            alert.showAndWait();
-        }
+        for (int i = 0; i < App.getMenu().size(); i++) ov.add(showItem(App.getMenu().get(i)));
 
         lv = new ListView<>(ov);
 
-        lv.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        lv.getSelectionModel().selectedItemProperty().addListener(o -> {
-            wantedItem = App.getMenu().get(lv.getSelectionModel().getSelectedIndex());
-        });
+        // lv.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        // lv.getSelectionModel().selectedItemProperty().addListener(o -> {
+        //     wantedItem = App.getMenu().get(lv.getSelectionModel().getSelectedIndex());
+        // });
 
         //Configure the scroll pane and set items to it
         sp.setContent(lv);
@@ -84,7 +69,7 @@ public class ItemSelectionScene implements Template{
         App.getScene().setRoot(vbox);
     }
 
-    private GridPane showItem(Item item, Image img){
+    private GridPane showItem(Item item){
 
 
         //create a GridPane and configure it
@@ -115,11 +100,14 @@ public class ItemSelectionScene implements Template{
         lbl2.setFont(font);
         lbl4.setFont(font);
         lbl3.setFont(Font.font("Helvetica"));
+        lbl3.setWrapText(true);
+        lbl3.setMaxWidth(500);
 
         Label lbl1;
         if(!item.equalsCategory(previtem)) {
             lbl1 = new Label(item.getCategory());
             lbl1.setStyle("-fx-font-size: 40px; -fx-font-weight: bold;-fx-font-family: Freestyle Script");
+            GridPane.setColumnSpan(lbl1, 2);
             gpane.add(lbl1,0,0);
             previtem = item;
         }
@@ -127,6 +115,7 @@ public class ItemSelectionScene implements Template{
         //create a wrapper vbox
         VBox wrapper = new VBox();
         wrapper.getChildren().addAll(lbl2, lbl3);
+        GridPane.setColumnSpan(vbox, 2);
 
         //create a border pane for the labels and the text field
         BorderPane bp = new BorderPane();
@@ -137,14 +126,18 @@ public class ItemSelectionScene implements Template{
         vbox.getChildren().addAll(bp, tf);
 
         //create an ImageView and configure it
-        ImageView iv = new ImageView(img);
-        iv.fitHeightProperty().bind(sp.heightProperty().divide(3).add(50));
-        iv.setPreserveRatio(true);
-
+       ;
+        if (item.getIsImage()){
+            ImageView iv = new ImageView(item.getImage());
+            iv.fitHeightProperty().bind(sp.heightProperty().divide(3).add(50));
+            //GridPane.setRowSpan(iv, 2);
+            iv.setPreserveRatio(true);
+            gpane.add(iv, 1, 1);
+        }
         gpane.add(vbox, 0, 1);
-        gpane.add(iv, 1, 1);
         gpane.add(tf,0,2);
-
+        // For debuging purposes
+        // gpane.setGridLinesVisible(true);
         return gpane;
     }
 
@@ -155,9 +148,10 @@ public class ItemSelectionScene implements Template{
 
             if(e.getCode().equals(KeyCode.ENTER)){
                 int n = Integer.parseInt(tf.getText());
+                int index = lv.getItems().indexOf((GridPane)tf.getParent());
                 try{
-                    wantedItem = App.getMenu().get(lv.getSelectionModel().getSelectedIndex());
-                    order.addnOrder(wantedItem, Integer.parseInt(tf.getText()));
+                    wantedItem = App.getMenu().get(index);
+                    order.addnOrder(wantedItem, n);
 
                     tf.clear();
                     tf.setPromptText("Number of items");
@@ -165,13 +159,13 @@ public class ItemSelectionScene implements Template{
                     sp.requestFocus();
                 }
                 catch (IllegalArgumentException ex){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setHeaderText("Invalid Input");
                     alert.setContentText("Number of items must be a positive integer.");
                     alert.showAndWait();
                 }
                 catch (IndexOutOfBoundsException ex){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setHeaderText("No item selected");
                     alert.setContentText("Please select an item first.");
                     alert.showAndWait();
@@ -184,14 +178,14 @@ public class ItemSelectionScene implements Template{
         return tf;
     }
 
-    private void openImageFolder() throws NullPointerException{
+    // private void openImageFolder() throws NullPointerException{
 
-        File[] files = folder.listFiles();
+    //     File[] files = folder.listFiles();
 
-        if (files != null)
-        {
-            images = new Image[files.length];
-            for(int i = 0; i< files.length; i++) images[i] = new Image(files[i].toURI().toString());
-        }
-    }
+    //     if (files != null)
+    //     {
+    //         images = new Image[files.length];
+    //         for(int i = 0; i< files.length; i++) images[i] = new Image(files[i].toURI().toString());
+    //     }
+    // }
 }

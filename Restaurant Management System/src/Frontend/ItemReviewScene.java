@@ -67,7 +67,6 @@ public class ItemReviewScene implements Template {
     }
 
     private HBox paymentTextBox (Order order) {
-        Visa v = new Visa();
         HBox totalpayment = new HBox();
         totalpayment.setSpacing(3);
         totalpayment.setAlignment(Pos.CENTER);
@@ -152,6 +151,7 @@ public class ItemReviewScene implements Template {
                         rest.setEditable(true);
                         rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice(), amount)));
                         rest.setEditable(false);
+                        App.getPastOrders().add(order);
                     }
                     else {
                         addAmount.clear();

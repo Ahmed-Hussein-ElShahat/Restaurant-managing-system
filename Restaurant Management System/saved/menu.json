@@ -14,4 +14,12 @@
   "name" : "Sushi",
   "description" : "No description available",
   "available" : true
+}, {
+  "rating" : 0,
+  "path" : "file:/C:/Users/bodi7/Documents/Spring%2024/AdvProgProj/Restaurant-managing-system/Restaurant%20Management%20System/temp/2.jpeg",
+  "category" : "Main Course",
+  "price" : 50.0,
+  "name" : "Koshary",
+  "description" : "Koshari is a traditional Egyptian dish that consists of a variety of ingredients as: chickpeas, pasta, rice, tomatosauce and fried onions",
+  "available" : true
 } ]

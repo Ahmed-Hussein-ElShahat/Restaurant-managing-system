@@ -25,12 +25,12 @@ public class TableScene implements Template {
     private TableView<Table> getTable() {
         TableView<Table> table = new TableView<Table>();
         table.setMaxWidth(400);
-        TableColumn numCol = new TableColumn("Table Number");
-        numCol.prefWidthProperty().bind(table.widthProperty().divide(3).subtract(2));
+        TableColumn numCol = new TableColumn("Table ID");
+        numCol.prefWidthProperty().bind(table.widthProperty().divide(3));
         numCol.setCellValueFactory(new PropertyValueFactory<Table, Integer>("Table_id"));
         
         TableColumn capacityCol = new TableColumn("Capacity");
-        capacityCol.prefWidthProperty().bind(table.widthProperty().divide(3).subtract(2));
+        capacityCol.prefWidthProperty().bind(table.widthProperty().divide(3).subtract(4));
         capacityCol.setCellValueFactory(new PropertyValueFactory<Table, Integer>("table_capacity"));
 
         TableColumn avlCol = new TableColumn("Availability");

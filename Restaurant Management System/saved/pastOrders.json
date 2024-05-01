@@ -1,1 +1,16 @@
-[{"date":[2024,5,1],"time":[0,47,47],"total price":20.0,"order number":1},{"date":[2024,5,1],"time":[0,48,40],"total price":0.0,"order number":2}]
+[ {
+  "date" : [ 2024, 5, 1 ],
+  "time" : [ 0, 47, 47 ],
+  "total price" : 20.0,
+  "order number" : 1
+}, {
+  "date" : [ 2024, 5, 1 ],
+  "time" : [ 10, 53, 18 ],
+  "total price" : 340.0,
+  "order number" : 2
+}, {
+  "date" : [ 2024, 5, 1 ],
+  "time" : [ 11, 2, 33 ],
+  "total price" : 1100.0,
+  "order number" : 3
+} ]
