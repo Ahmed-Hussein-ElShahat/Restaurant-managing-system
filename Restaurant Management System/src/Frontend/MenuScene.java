@@ -326,7 +326,7 @@ public class MenuScene implements Template {
                     if (App.getMenu().get(rowNum).getImage() != null) {
                         if (getExtension(file.toPath()) != getExtension(App.getMenu().get(rowNum).getImage().getUrl())) deleteExistingImg();
                     }
-                    App.getMenu().get(rowNum).setImage(getURLString(destinationPath));
+                    App.getMenu().get(rowNum).setPath(getURLString(destinationPath));
                     updateItem(true, false);
                 } catch (Exception e) {
                     Template.getError("Copy Failed", "Failed to copy", "");

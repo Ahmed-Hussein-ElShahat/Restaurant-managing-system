@@ -179,9 +179,6 @@ public class App extends Application implements Template{
                 {
                     ArrayList<Item> items = mapper.readValue(menuFile, menuType);
                     menu = FXCollections.observableArrayList(items);
-                for (Item item : menu) {
-                    item.reloadImg();
-                }
                 }
                 if(tableFile.exists()) {
                     ArrayList<Table> tbles = mapper.readValue(tableFile, tableType);

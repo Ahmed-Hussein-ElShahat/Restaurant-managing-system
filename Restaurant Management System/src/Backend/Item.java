@@ -5,28 +5,27 @@ import javafx.scene.image.Image;
 import javafx.beans.property.SimpleDoubleProperty;
 import java.lang.IllegalArgumentException;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import javafx.beans.property.SimpleBooleanProperty;
 
-
+@JsonIncludeProperties({"name", "category", "price", "description", "rating", "path", "available"})
 public class Item implements Available, Cloneable, Comparable<Item> {
-    @JsonIgnore
-    private SimpleStringProperty category = new SimpleStringProperty();
-    @JsonIgnore
-    private SimpleDoubleProperty price = new SimpleDoubleProperty();
-    @JsonIgnore
-    private SimpleStringProperty name = new SimpleStringProperty();
-    @JsonIgnore
-    private SimpleStringProperty description = new SimpleStringProperty();
 
-    @JsonIgnore
+    private SimpleStringProperty category = new SimpleStringProperty();
+    
+    private SimpleDoubleProperty price = new SimpleDoubleProperty();
+    
+    private SimpleStringProperty name = new SimpleStringProperty();
+    
+    private SimpleStringProperty description = new SimpleStringProperty();
+    
     private SimpleBooleanProperty available = new SimpleBooleanProperty(true);
+    
     private int rating = 0;
-    private String path;
-    @JsonIgnore
+    
     private Image image;
 
     public void setRating(int rating) {
@@ -53,19 +52,17 @@ public class Item implements Available, Cloneable, Comparable<Item> {
         this.category.set(category);
         this.setDescription(description);
     }
-    @JsonIgnore
     public SimpleStringProperty getNameProperty() {
         return name;
     }
-    @JsonIgnore
+
     public SimpleStringProperty getCategoryProperty() {
         return category;
     }
-    @JsonIgnore
+
     public SimpleDoubleProperty getPriceProperty() {
         return price;
     }
-    @JsonIgnore
     public SimpleBooleanProperty getAvailableProperty() {
         return available;
     }
@@ -76,7 +73,7 @@ public class Item implements Available, Cloneable, Comparable<Item> {
     }
     @Override
     public Object clone() throws CloneNotSupportedException {
-        return (Item) super.clone();
+        return super.clone();
     }
     @JsonProperty("name")
     public void setName(String Name) {
@@ -127,27 +124,20 @@ public class Item implements Available, Cloneable, Comparable<Item> {
     public Image getImage() {
         return image;
     }
-    public void setImage(String path) throws IllegalArgumentException {
-        this.image = new Image(path);
-        this.path = path;
-    }
-    public void deleteImage() {
-        image = null;
-        path = null;
-    }
-    @JsonIgnore
-    public Boolean getIsImage() {
-        return (image != null) ? true : false;
-    }
-    public String getPath() {
-        return path;
-    }
-    public void setPath(String path) {
-        this.path = path;
-    }
-    public void reloadImg() {
+    @JsonProperty(value = "path")
+    public void setPath(String path) throws IllegalArgumentException {
         if (path != null) {
             this.image = new Image(path);
         }
+    }
+    public void deleteImage() {
+        image = null;
+    }
+    public Boolean getIsImage() {
+        return (image != null) ? true : false;
+    }
+    @JsonProperty(value = "path")
+    public String getpath() {
+        return (image != null) ? image.getUrl().toString() : null;
     }
 }
