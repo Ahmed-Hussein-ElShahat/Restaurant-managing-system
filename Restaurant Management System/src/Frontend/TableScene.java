@@ -6,9 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.converter.IntegerStringConverter;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import Backend.Table;
 
 public class TableScene implements Template {
@@ -52,11 +50,7 @@ public class TableScene implements Template {
         final Button addButton = new Button("Add Table");
         addButton.setOnAction(e -> {
             if (addCapacity.getText().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning");
-                alert.setHeaderText("Field Empty");
-                alert.setContentText("Please fill in all fields");
-                alert.showAndWait();
+                Template.getWarning("Warning", "Field(s) empty", "Please fill all the fields");
             }
             else {
                 App.getTables().add(new Table(stringToInt(addCapacity)));
@@ -71,12 +65,8 @@ public class TableScene implements Template {
         try {
             return Integer.parseInt(txt.getText());
         } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
             txt.clear();
-            alert.setTitle("Warning");
-            alert.setHeaderText("Invalid price entered!");
-            alert.setContentText("Please enter a valid Capacity!");
-            alert.showAndWait();
+            Template.getWarning("Warning", "Invalid capacity entered!", "Please enter a valid Capacity!");
             return 0;
         }
     }

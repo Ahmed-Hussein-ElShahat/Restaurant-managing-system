@@ -159,16 +159,10 @@ public class ItemSelectionScene implements Template{
                     sp.requestFocus();
                 }
                 catch (IllegalArgumentException ex){
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setHeaderText("Invalid Input");
-                    alert.setContentText("Number of items must be a positive integer.");
-                    alert.showAndWait();
+                    Template.getWarning("Warning", "Invalid Input", "Number of items must be a positive integer.");
                 }
                 catch (IndexOutOfBoundsException ex){
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setHeaderText("No item selected");
-                    alert.setContentText("Please select an item first.");
-                    alert.showAndWait();
+                    Template.getWarning("Warning", "No item selected", "Please select an item first.");
                 }
 
 

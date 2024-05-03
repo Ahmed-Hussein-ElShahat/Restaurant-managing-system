@@ -30,4 +30,6 @@ README.md
 ### Mac OS ###
 .DS_Store
 
-### Temporary Images in assets ###
+### Temporary saving folders ###
+temp/
+saved/

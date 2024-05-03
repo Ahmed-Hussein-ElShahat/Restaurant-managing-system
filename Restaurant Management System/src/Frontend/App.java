@@ -54,9 +54,10 @@ public class App extends Application implements Template{
             Template.getError("Loading Error","Failed to load background image", "Path was not found!");
             scene.setFill(Color.ALICEBLUE);
         }
+        /* // Test for warnings
         Template.getWarning("Loading Error","Mock error",
              "It is good practice to wrap the sleep method in a try/catch block in case another thread interrupts the sleeping thread. In this case, we catch the InterruptedException and explicitly interrupt the current thread, so it can be caught later and handled. This is more important in a multi-threaded program, but still good practice in a single-threaded program in case we add other threads later.");
-
+        */
         pane.setAlignment(Pos.CENTER);
         stage.setTitle("Application");
         stage.setScene(scene);
@@ -92,6 +93,7 @@ public class App extends Application implements Template{
                 // System.out.println(e3.getMessage());
                 // e3.printStackTrace();
             }
+            System.exit(0);
         });
         //stage.setResizable(false);
         //stage.setFullScreen(true);
