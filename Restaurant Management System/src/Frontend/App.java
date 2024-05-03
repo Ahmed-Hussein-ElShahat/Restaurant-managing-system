@@ -54,15 +54,10 @@ public class App extends Application implements Template{
             Template.getError("Loading Error","Failed to load background image", "Path was not found!");
             scene.setFill(Color.ALICEBLUE);
         }
-
-        pastOrders.add(new Order());
-        try {
-        pastOrders.get(0).addOrder((Item)App.getMenu().get(0).clone());
-        }
-        catch (CloneNotSupportedException e) {
-            System.out.println("Adding Order failed");
-        }
-
+        /* // Test for warnings
+        Template.getWarning("Loading Error","Mock error",
+             "It is good practice to wrap the sleep method in a try/catch block in case another thread interrupts the sleeping thread. In this case, we catch the InterruptedException and explicitly interrupt the current thread, so it can be caught later and handled. This is more important in a multi-threaded program, but still good practice in a single-threaded program in case we add other threads later.");
+        */
         pane.setAlignment(Pos.CENTER);
         stage.setTitle("Application");
         stage.setScene(scene);
@@ -92,12 +87,13 @@ public class App extends Application implements Template{
                 // e2.printStackTrace();
             }
             try {
-                mapper.writeValue(orderFile, pastOrders);                
+                mapper.writerWithDefaultPrettyPrinter().writeValue(orderFile, pastOrders);                
             } catch (Exception e3) {
                 Template.getError("Saving Error","Failed to seve order file.", e3.getMessage());
                 // System.out.println(e3.getMessage());
                 // e3.printStackTrace();
             }
+            System.exit(0);
         });
         //stage.setResizable(false);
         //stage.setFullScreen(true);
@@ -114,16 +110,11 @@ public class App extends Application implements Template{
         Button historyButton = getButton("Order\nHistory");
         Button menuButton = getButton("Modify\nMenu");
         Button tableButton = getButton("Modify\nTables");
-        // Button statsButton = getButton("Plate\nStats");  //Optional until main scenes are finished
-        // Button finceButton = getButton("Finances");
-
 
         btngrid.add(strtButton, 0,0);
         btngrid.add(historyButton, 0,1);
         btngrid.add(menuButton,1,0);
         btngrid.add(tableButton, 1,1);
-        //btngrid.add(statsButton, 2,0);    //Optional until main scenes are finished
-        //btngrid.add(finceButton, 2,1);
 
         strtButton.setOnAction(e -> {
             new OrderScene();
@@ -199,6 +190,7 @@ public class App extends Application implements Template{
                 if (orderFile.exists()) {
                     ArrayList<Order> orders = mapper.readValue(orderFile, orderType);
                     pastOrders = FXCollections.observableArrayList(orders);
+                    Order.setTotalNumberOfOrders(pastOrders.size());
                 }
             } catch(Exception e){
                 Template.getError("Loading Error","Failed to load saved files", e.getMessage());

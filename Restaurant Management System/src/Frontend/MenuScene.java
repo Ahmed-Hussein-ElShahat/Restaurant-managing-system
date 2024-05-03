@@ -141,16 +141,27 @@ public class MenuScene implements Template {
         "-fx-font-size: 18px;" +
         "-fx-font-weight: bold;";
 
-        final Label label = new Label("Enter the new price:");
-        label.setStyle(css);
+        final Label priceLabel = new Label("Enter the new price:");
+        priceLabel.setStyle(css);
         
+        final Label descriptionLabel = new Label("Enter a description:");
+        descriptionLabel.setStyle(css);
+
         final TextField editprice = new TextField();
         editprice.setStyle(css);
         editprice.setMinWidth(100);
         editprice.setMaxWidth(150);
         editprice.setPromptText("New Price");
         
-        Button editButton = new Button("Edit Price");
+        TextArea editDescription = new TextArea();
+        //editDescription.setStyle(css);
+        editDescription.setMinWidth(350);
+        editDescription.setMaxWidth(450);
+        editDescription.setMaxHeight(100);
+        editDescription.setWrapText(true);
+        editDescription.setText(selectedItem.getDescription());
+
+        Button editButton = new Button("Edit Item");
         Button deleteButton = new Button("Delete Item");
 
         editButton.setStyle(css);
@@ -159,31 +170,28 @@ public class MenuScene implements Template {
         deleteButton.setMinWidth(150);
 
         editButton.setOnAction(e -> {
-            if (editprice.getText().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning");
-                alert.setHeaderText("Field Empty");
-                alert.setContentText("Please fill in the price field");
-                alert.showAndWait();
-            }
-            else {
+            if (!editprice.getText().isBlank()) {
                 try {
                     selectedItem.setPrice(stringToDouble(editprice));
-                    table.refresh();
-                    stage.close();
                 } catch (IllegalArgumentException i) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Warning");
-                    alert.setHeaderText(i.getMessage());
-                    alert.setContentText("Please enter a valid input");
-                    alert.showAndWait();
+
+                    Template.getWarning("Warning", i.getMessage(), "Please enter a valid input");
                 }
             }
-            });            
-            
+            if (!editDescription.getText().equals(selectedItem.getDescription())) {
+                if (editDescription.getText().isBlank()){
+                    selectedItem.setDescription("No description available");
+                }
+                else {
+                    selectedItem.setDescription(editDescription.getText());
+                }
+            }
+            table.refresh();
+            stage.close();
+            });
         pane.setAlignment(Pos.CENTER);
         buttons.getChildren().addAll(editButton, deleteButton);
-        pane.getChildren().addAll(label, editprice, buttons);
+        pane.getChildren().addAll(priceLabel, editprice, descriptionLabel, editDescription, buttons);
 
         deleteButton.setOnAction(e -> {
             App.getMenu().remove(selectedItem);
@@ -191,7 +199,7 @@ public class MenuScene implements Template {
             stage.close();
         });
 
-        Scene scene = new Scene(pane, 500,300);
+        Scene scene = new Scene(pane, 500,450);
 
         try {
             stage.getIcons().add(new Image("Assets/restaurant.png"));   // Adds icon   
@@ -203,8 +211,7 @@ public class MenuScene implements Template {
         }
         stage.setTitle("Edit " + selectedItem.getName());
         stage.setScene(scene);
-        stage.setMinHeight(300);
-        stage.setMinWidth(400);
+        stage.setResizable(false);
         stage.show();
     }
     public static class ImgEditTableCell<T> extends TableCell<T, Boolean> {
@@ -258,9 +265,10 @@ public class MenuScene implements Template {
             viewBtn.setOnAction(e1 -> {
                 Stage imageViewStage = new Stage();
                 ImageView imageView = new ImageView(App.getMenu().get(rowNum).getImage());
-                imageView.setFitHeight(300);
-                imageView.setFitWidth(300);
+                imageView.setPreserveRatio(true);
                 StackPane pane = new StackPane(imageView);
+                pane.setMaxHeight(500);
+                pane.setMaxWidth(700);
                 Scene scene = new Scene(pane);
                 imageViewStage.setScene(scene);
                 imageViewStage.setTitle(App.getMenu().get(rowNum).getName() + " image");
@@ -306,7 +314,7 @@ public class MenuScene implements Template {
         private void selectImg(){
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open Image File");
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg"));
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg", "*.jpeg"));
             File file = fileChooser.showOpenDialog(App.getPrimaryStage());
 
             if (file!= null) {
