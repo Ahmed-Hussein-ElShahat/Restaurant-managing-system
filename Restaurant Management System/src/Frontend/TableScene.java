@@ -1,6 +1,7 @@
 package Frontend;
 
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -12,8 +13,8 @@ import Backend.Table;
 public class TableScene implements Template {
     TableScene() {
         VBox root = new VBox();
-        root.setSpacing(50);
-        root.setPadding(new Insets(100,100,100,100));
+        root.setSpacing(30);
+        root.setPadding(new Insets(50,50,50,50));
         root.setAlignment(Pos.CENTER);
         root.getChildren().addAll(getHheader("Restaurant Tables"), getTable(), getFooter());
         root.setBackground(App.getBackground());
@@ -22,21 +23,32 @@ public class TableScene implements Template {
     
     private TableView<Table> getTable() {
         TableView<Table> table = new TableView<Table>();
-        table.setMaxWidth(400);
+        table.setMaxWidth(550);
         TableColumn numCol = new TableColumn("Table ID");
-        numCol.prefWidthProperty().bind(table.widthProperty().divide(3));
+        numCol.prefWidthProperty().bind(table.widthProperty().divide(4));
         numCol.setCellValueFactory(new PropertyValueFactory<Table, Integer>("Table_id"));
         
         TableColumn capacityCol = new TableColumn("Capacity");
-        capacityCol.prefWidthProperty().bind(table.widthProperty().divide(3).subtract(4));
+        capacityCol.prefWidthProperty().bind(table.widthProperty().divide(4).subtract(4));
         capacityCol.setCellValueFactory(new PropertyValueFactory<Table, Integer>("table_capacity"));
 
         TableColumn avlCol = new TableColumn("Availability");
-        avlCol.prefWidthProperty().bind(table.widthProperty().divide(3));
+        avlCol.prefWidthProperty().bind(table.widthProperty().divide(4).add(20));
         avlCol.setCellValueFactory(new PropertyValueFactory<Table, SimpleBooleanProperty>("availableProperty"));
         avlCol.setCellFactory(col -> new BooleanComboBoxTableCell("table"));
+
+        TableColumn removeCol = new TableColumn("Remove");
+        removeCol.prefWidthProperty().bind(table.widthProperty().divide(4).subtract(20));
+        removeCol.setCellValueFactory(new PropertyValueFactory<Table, SimpleBooleanProperty>("availableProperty"));
+        removeCol.setCellFactory(col -> new RemoveButtonTableCell());
+
+        // Update the table IDs when a table is removed
+        App.getTables().addListener((ListChangeListener.Change<? extends Table> e) -> {
+            Table.updateTtableID(App.getTables());
+        });
         
-        table.getColumns().addAll(numCol, capacityCol, avlCol);
+        
+        table.getColumns().addAll(numCol, capacityCol, avlCol, removeCol);
         table.setItems(App.getTables());
         return table;
     }

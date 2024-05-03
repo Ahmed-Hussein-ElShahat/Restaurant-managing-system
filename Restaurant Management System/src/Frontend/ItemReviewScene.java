@@ -1,12 +1,9 @@
 package Frontend;
 
-import Backend.Payments.Cash;
-import Backend.Payments.Visa;
+import Backend.Payments.*;
 import Backend.Order;
-import Backend.Payment;
-import Backend.Table;
 import Backend.Item;
-import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
@@ -25,7 +22,7 @@ public class ItemReviewScene implements Template {
     ItemReviewScene(Order order){
         VBox review = new VBox();
         review.setSpacing(50);
-        review.setPadding(new Insets(20, 20, 20, 20));
+        review.setPadding(new Insets(50, 100, 50, 100));
         review.setAlignment(Pos.CENTER);
         review.getChildren().addAll(getHheader("Return to Main Menu"), getTable(order) , paymentTextBox(order ) );
         review.setBackground(App.getBackground());
@@ -46,24 +43,28 @@ public class ItemReviewScene implements Template {
 
     private TableView<Item> getTable (Order order){
         TableView<Item> table = new TableView<Item>();
-        table.setMaxWidth(1000);
 
         TableColumn nameCol = new TableColumn("Name");
-        nameCol.prefWidthProperty().bind(table.widthProperty().divide(3));
+        nameCol.prefWidthProperty().bind(table.widthProperty().divide(4));
         nameCol.setCellValueFactory(new PropertyValueFactory<Item, String>("Name"));
         
         TableColumn categoryCol = new TableColumn("Category");
-        categoryCol.prefWidthProperty().bind(table.widthProperty().divide(3));
+        categoryCol.prefWidthProperty().bind(table.widthProperty().divide(4));
         categoryCol.setCellValueFactory(new PropertyValueFactory<Item, String>("Category"));
         
         TableColumn priceCol = new TableColumn("Price");
-        priceCol.prefWidthProperty().bind(table.widthProperty().divide(3).subtract(3));
+        priceCol.prefWidthProperty().bind(table.widthProperty().divide(4).subtract(3));
         priceCol.setCellValueFactory(new PropertyValueFactory<Item, Double>("Price"));
 
-        table.getColumns().addAll(nameCol , categoryCol , priceCol);
+        TableColumn removeCol = new TableColumn("Remove");
+        removeCol.prefWidthProperty().bind(table.widthProperty().divide(4).subtract(3));
+        removeCol.setCellValueFactory(new PropertyValueFactory<Item, Double>("availableProperty"));
+        removeCol.setCellFactory(col -> new RemoveButtonTableCell());
+
+        table.getColumns().addAll(nameCol , categoryCol , priceCol, removeCol);
         table.autosize();
-        table.setEditable(true);
-        table.setItems(FXCollections.observableArrayList(order.getGuestOrder()));
+        //table.setEditable(true);
+        table.setItems(order.getGuestOrder());
         return table;
     }
 
@@ -78,7 +79,10 @@ public class ItemReviewScene implements Template {
         final TextField payment = new TextField();
         payment.setPromptText("Name");
         payment.setMinWidth(100);
-        payment.setText(Double.toString(order.calcTotalPrice())); // we can make an alert if the total price = 0
+        payment.setText(Double.toString(order.calcTotalPrice()));
+        order.getGuestOrder().addListener((ListChangeListener.Change<? extends Item> e) -> {
+        payment.setText(Double.toString(order.calcTotalPrice()));
+        }); // we can make an alert if the total price = 0
         payment.setEditable(false);
 
         ComboBox method = new ComboBox();
@@ -133,6 +137,7 @@ public class ItemReviewScene implements Template {
 
         final TextField addAmount = new TextField();
         addAmount.setPromptText("amount");
+
         addAmount.setMinWidth(100);
 
         Label l2 = new Label("The Rest:") ;

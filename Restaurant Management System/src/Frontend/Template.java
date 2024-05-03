@@ -1,9 +1,12 @@
 package Frontend;
 
+import Backend.Table;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
@@ -81,6 +84,37 @@ public interface Template {
         alert.setHeaderText(header);
         alert.setContentText(message);
         alert.show();
+    }
+    public static class RemoveButtonTableCell<T,S> extends TableCell<T,S> {
+        private final Button removeBtn = new Button();
+        private static Image removeImg;
+        private int rowNum;
+        public RemoveButtonTableCell() {
+            if (removeImg == null) removeImg = new Image("Assets/remove.png");
+            removeBtn.setGraphic(new ImageView(removeImg));
+            removeBtn.setOnAction(e -> {
+                Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmAlert.setTitle("Confirmation");
+                confirmAlert.setHeaderText("Are you sure you want to remove this item?");
+                confirmAlert.showAndWait();
+                if (confirmAlert.getResult() == ButtonType.OK) {
+                    this.getTableView().getItems().remove(rowNum);
+                    this.getTableView().refresh();
+                }
+            });
+        }
+        @Override
+        protected void updateItem(S item, boolean empty) {
+            super.updateItem(item, empty);
+            rowNum = this.getTableRow().getIndex();
+            if (item == null){
+                setGraphic(null);
+            }
+            else {
+                setGraphic(removeBtn);
+            }
+            
+        }
     }
     public static class BooleanComboBoxTableCell<T> extends TableCell<T, SimpleBooleanProperty> {
     // Custom Table cell for modifiction of boolean properties

@@ -286,7 +286,7 @@ public class MenuScene implements Template {
                 confirm.showAndWait();
                 if (confirm.getResult() == ButtonType.OK) {
                     deleteExistingImg();
-                    updateItem(false, false);
+                    this.getTableView().refresh();
                 }
             });
         }

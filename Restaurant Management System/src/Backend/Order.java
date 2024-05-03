@@ -3,13 +3,13 @@ package Backend;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,7 +19,7 @@ import java.time.temporal.ChronoUnit;
 public class Order implements Comparable<Order> {
     private LocalDate date;
     private LocalTime time;
-    private ArrayList<Item> guestOrder = new ArrayList<>();        // Guest's order
+    private ObservableList<Item> guestOrder = FXCollections.observableArrayList();        // Guest's order
     private SimpleDoubleProperty totalPrice = new SimpleDoubleProperty();
     private final SimpleIntegerProperty orderNum = new SimpleIntegerProperty();
     private static int TotalNumberOfOrders = 1;     // number of orders by all guests
@@ -28,7 +28,7 @@ public class Order implements Comparable<Order> {
         date = LocalDate.now();
         time = LocalTime.now();
         orderNum.set(TotalNumberOfOrders++);
-        this.guestOrder = new ArrayList<>(Arrays.asList(guestOrder));
+        this.guestOrder.addAll(guestOrder);
     }
 
     public Order(){
@@ -59,7 +59,7 @@ public class Order implements Comparable<Order> {
     }
     public Item getOrder(int n){return guestOrder.get(n);}          //return 1 specific item only
 
-    public ArrayList<Item> getGuestOrder() {return guestOrder;}   //return the total order in the shape of an array
+    public ObservableList<Item> getGuestOrder() {return guestOrder;}   //return the total order in the shape of an array
 
     public static int getTotalNumberOfOrders() {return TotalNumberOfOrders;}
 
@@ -67,13 +67,13 @@ public class Order implements Comparable<Order> {
 
     public int getNumOfItems(){return guestOrder.size();}
 
-    public void setGuestOrder(ArrayList<Item> guestOrder){
+    public void setGuestOrder(ObservableList<Item> guestOrder){
         this.guestOrder = guestOrder;
         totalPrice.set(calcTotalPrice());
     }
 
     public void setGuestOrder(Item[] guestOrder){
-        this.guestOrder = new ArrayList<>(Arrays.asList(guestOrder));
+        this.guestOrder.addAll(guestOrder);
         totalPrice.set(calcTotalPrice());
     }
 

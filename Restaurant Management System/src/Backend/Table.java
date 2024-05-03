@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.ObservableList;
 
 @JsonIncludeProperties({"id", "capacity", "available"})
 public class Table implements Available{
@@ -98,5 +99,11 @@ public class Table implements Available{
     @JsonProperty("available")
     public void setAvailability(boolean available) {
         this.available.set(available);
+    }
+    public static void updateTtableID(ObservableList<Table> tables) {
+        for (int i = 0; i < tables.size(); i++) {
+            tables.get(i).setTable_id(i + 1);
+        }
+        Table.table_num = tables.size();
     }
 }
