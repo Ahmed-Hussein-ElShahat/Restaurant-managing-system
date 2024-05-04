@@ -1,5 +1,6 @@
 package Frontend;
 
+import Backend.Order;
 import Backend.Table;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -47,6 +48,7 @@ public class TableSelectionScene implements Template {
                 tableBtn.prefWidthProperty().bind(pane.widthProperty().divide(3).subtract(20));
                 tableBtn.setOnAction(e -> {
                     table.setAvailability(false);
+                    table.setOrder(new Order());
                     new ItemSelectionScene(table.getOrder());
                 });
                 tables.add(tableBtn, column, row);
