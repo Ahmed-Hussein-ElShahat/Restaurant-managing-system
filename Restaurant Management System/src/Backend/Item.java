@@ -1,15 +1,11 @@
 package Backend;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.Image;
-import javafx.beans.property.SimpleDoubleProperty;
-import java.lang.IllegalArgumentException;
-
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.image.Image;
 
 @JsonIncludeProperties({"name", "category", "price", "description", "rating", "path", "available"})
 public class Item implements Available, Cloneable, Comparable<Item> {
@@ -69,7 +65,7 @@ public class Item implements Available, Cloneable, Comparable<Item> {
     
     @Override
     public int compareTo(Item o) {
-        return ((Double)this.getPrice()).compareTo((Double)o.getPrice());
+        return ((Double)this.getPrice()).compareTo(o.getPrice());
     }
     @Override
     public Object clone() throws CloneNotSupportedException {

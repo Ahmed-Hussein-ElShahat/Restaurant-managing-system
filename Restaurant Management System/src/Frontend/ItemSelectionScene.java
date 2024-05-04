@@ -15,6 +15,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
+import java.util.Comparator;
+
 
 public class ItemSelectionScene implements Template{
     final private ScrollPane sp = new ScrollPane();
@@ -34,7 +36,7 @@ public class ItemSelectionScene implements Template{
 
         // openImageFolder();
         ObservableList<GridPane> ov = FXCollections.observableArrayList();
-
+        FXCollections.sort(App.getMenu(), Comparator.comparing(Item::getCategory).reversed().thenComparing(Item::compareTo));
         for (int i = 0; i < App.getMenu().size(); i++) ov.add(showItem(App.getMenu().get(i)));
 
         lv = new ListView<>(ov);
