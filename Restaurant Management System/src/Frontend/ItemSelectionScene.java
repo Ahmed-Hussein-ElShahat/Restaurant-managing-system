@@ -3,7 +3,6 @@ package Frontend;
 
 import Backend.Item;
 import Backend.Order;
-import Backend.Table;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -149,12 +148,6 @@ public class ItemSelectionScene implements Template{
 
             if(e.getCode().equals(KeyCode.ENTER)){
                 int n = Integer.parseInt(tf.getText());
-                int maxItems = 100; // Maximum value
-                // Regect the add item if the number of items added is greater than the maximum value
-                if (n > maxItems) {
-                    Template.getWarning("Warning", "The number of items added exceeds the maximum which is " + maxItems, "Please enter a valid number!");
-                    tf.clear();
-                }
                 int index = lv.getItems().indexOf((GridPane)tf.getParent());
                 try{
                     wantedItem = App.getMenu().get(index);
