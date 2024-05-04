@@ -148,28 +148,30 @@ public class ItemSelectionScene implements Template{
         TextField tf = new TextField();
         tf.setPromptText("Number of items");
         tf.setOnKeyPressed(e ->{
-
             if(e.getCode().equals(KeyCode.ENTER)){
                 int n = Integer.parseInt(tf.getText());
-                int index = lv.getItems().indexOf((GridPane)tf.getParent());
-                try{
-                    wantedItem = App.getMenu().get(index);
-                    order.addnOrder(wantedItem, n);
-
-                    tf.clear();
-                    tf.setPromptText("Number of items");
-
-                    sp.requestFocus();
+                int maxItemNum = 150;
+                if (n > maxItemNum) {
+                    Template.getWarning("Maximum items exceeded", "Number of items ordered can't exceed " + maxItemNum + ".", "Please enter a valid amount.");
                 }
-                catch (IllegalArgumentException ex){
-                    Template.getWarning("Warning", "Invalid Input", "Number of items must be a positive integer.");
+                else{
+                    int index = lv.getItems().indexOf((GridPane)tf.getParent());
+                    try{
+                        wantedItem = App.getMenu().get(index);
+                        order.addnOrder(wantedItem, n);
+
+                        tf.clear();
+                        tf.setPromptText("Number of items");
+
+                        sp.requestFocus();
+                    }
+                    catch (IllegalArgumentException ex){
+                        Template.getWarning("Warning", "Invalid Input", "Number of items must be a positive integer.");
+                    }
+                    catch (IndexOutOfBoundsException ex){
+                        Template.getWarning("Warning", "No item selected", "Please select an item first.");
+                    }
                 }
-                catch (IndexOutOfBoundsException ex){
-                    Template.getWarning("Warning", "No item selected", "Please select an item first.");
-                }
-
-
-
             }
         });
         return tf;
