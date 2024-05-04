@@ -26,12 +26,18 @@ public class ItemSelectionScene implements Template{
     private Item previtem = new Item("",1,"");
     private ListView<GridPane> lv;
     public ItemSelectionScene(Order tableOrder) {
+        
+        Button btnreview = new Button("Place Order");
+        btnreview.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: #f0f8ff");
+
         // Check if its on site
         if(tableOrder != null) {
             order = tableOrder;
+            btnreview.setOnAction(e -> App.returnToMain());
         }
         else {
             order = new Order();
+            btnreview.setOnAction(e -> new ItemReviewScene(order));
         }
 
         // openImageFolder();
@@ -61,10 +67,6 @@ public class ItemSelectionScene implements Template{
         vbox.prefWidthProperty().bind(App.getScene().widthProperty());
         vbox.prefHeightProperty().bind(App.getScene().heightProperty());
         vbox.setBackground(App.getBackground());
-
-        Button btnreview = new Button("Review Order");
-        btnreview.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: #f0f8ff");
-        btnreview.setOnAction(e -> new ItemReviewScene(order));
 
         vbox.getChildren().addAll(getHheader("Item selection"),sp,btnreview);
         //start the scene
@@ -128,7 +130,6 @@ public class ItemSelectionScene implements Template{
         vbox.getChildren().addAll(bp, tf);
 
         //create an ImageView and configure it
-       ;
         if (item.getIsImage()){
             ImageView iv = new ImageView(item.getImage());
             iv.fitHeightProperty().bind(sp.heightProperty().divide(3).add(50));
