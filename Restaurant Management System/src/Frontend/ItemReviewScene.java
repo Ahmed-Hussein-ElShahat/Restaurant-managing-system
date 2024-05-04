@@ -19,6 +19,9 @@ import javafx.scene.control.Alert.AlertType;
 public class ItemReviewScene implements Template {
     private double amount = 0.0;
 
+    String css = "-fx-padding: 5px;" + 
+        "-fx-font-size: 16px;" +
+        "-fx-font-weight: bold;";
     ItemReviewScene(Order order){
         VBox review = new VBox();
         review.setSpacing(50);
@@ -74,9 +77,12 @@ public class ItemReviewScene implements Template {
         totalpayment.setAlignment(Pos.CENTER);
 
         Label label1 = new Label("Total Price : ") ;
+        label1.setStyle(css);
         Label label2 = new Label("Choose Payment Method") ;
+        label2.setStyle(css);
 
         final TextField payment = new TextField();
+        payment.setStyle(css);
         payment.setPromptText("Name");
         payment.setMinWidth(100);
         payment.setText(Double.toString(order.calcTotalPrice()));
@@ -86,11 +92,13 @@ public class ItemReviewScene implements Template {
         payment.setEditable(false);
 
         ComboBox method = new ComboBox();
+        method.setStyle(css);
         method.setPromptText("How to Pay ?");
         method.getItems().addAll("Cash" , "Visa") ;
         method.setMinWidth(100);
 
         Button bt = new Button("OK");
+        bt.setStyle(css);
         bt.setMinWidth(100);
 
         bt.setOnAction( e -> {
@@ -134,10 +142,13 @@ public class ItemReviewScene implements Template {
         Font l1Font = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
         l1.setFont(l1Font);
         l1.setTextFill(Color.WHITE);
+        
+        int textFieldMaxWidth = 200;
 
         final TextField addAmount = new TextField();
+        addAmount.setMaxWidth(textFieldMaxWidth);
         addAmount.setPromptText("amount");
-
+        addAmount.setStyle(css);
         addAmount.setMinWidth(100);
 
         Label l2 = new Label("The Rest:") ;
@@ -146,6 +157,8 @@ public class ItemReviewScene implements Template {
         l2.setTextFill(Color.WHITE);
 
         final TextField rest = new TextField();
+        rest.setMaxWidth(textFieldMaxWidth);
+        rest.setStyle(css);
         vb.setBackground(App.getBackground());
 
         Button returnbtn = new Button("Return to Review Page");

@@ -3,6 +3,7 @@ package Frontend;
 
 import Backend.Item;
 import Backend.Order;
+import Backend.Table;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -38,7 +39,7 @@ public class ItemSelectionScene implements Template{
         for (int i = 0; i < App.getMenu().size(); i++) ov.add(showItem(App.getMenu().get(i)));
 
         lv = new ListView<>(ov);
-
+        lv.getStylesheets().add("Frontend/application.css");
         // lv.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         // lv.getSelectionModel().selectedItemProperty().addListener(o -> {
         //     wantedItem = App.getMenu().get(lv.getSelectionModel().getSelectedIndex());
@@ -148,6 +149,12 @@ public class ItemSelectionScene implements Template{
 
             if(e.getCode().equals(KeyCode.ENTER)){
                 int n = Integer.parseInt(tf.getText());
+                int maxItems = 100; // Maximum value
+                // Regect the add item if the number of items added is greater than the maximum value
+                if (n > maxItems) {
+                    Template.getWarning("Warning", "The number of items added exceeds the maximum which is " + maxItems, "Please enter a valid number!");
+                    tf.clear();
+                }
                 int index = lv.getItems().indexOf((GridPane)tf.getParent());
                 try{
                     wantedItem = App.getMenu().get(index);
