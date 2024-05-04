@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>Backend</OriginalElement>
+  <nodes>
+    <node x="148.0" y="-18.5">Frontend.Template.BooleanComboBoxTableCell.StringBooleanConverter</node>
+    <node x="858.5" y="2009.5">Frontend.MenuScene</node>
+    <node x="542.0" y="140.5">Frontend.Template</node>
+    <node x="1169.0" y="3816.0">Frontend.HistoryScene</node>
+    <node x="458.0" y="1076.5">Frontend.Template.RemoveButtonTableCell</node>
+    <node x="-210.0" y="668.0">Backend.Item</node>
+    <node x="958.5" y="3956.0">Frontend.OrderScene</node>
+    <node x="178.0" y="500.5">Frontend.Template.BooleanComboBoxTableCell</node>
+    <node x="298.5" y="2919.5">Frontend.ItemSelectionScene</node>
+    <node x="862.0" y="3592.5">Frontend.TableSelectionScene</node>
+    <node x="852.0" y="971.5">Frontend.MenuScene.ImgEditTableCell</node>
+    <node x="1084.5" y="3452.5">Frontend.TablePaymentScene</node>
+    <node x="913.0" y="4893.0">Backend.Payment</node>
+    <node x="569.0" y="3544.5">Frontend.TableScene</node>
+    <node x="-147.5" y="2633.0">Backend.Table</node>
+    <node x="-190.0" y="216.0">Backend.Available</node>
+    <node x="-58.5" y="1708.0">Backend.Order</node>
+    <node x="499.0" y="4993.0">Backend.Payments</node>
+    <node x="494.0" y="1981.0">Frontend.ItemReviewScene</node>
+    <node x="667.0" y="4168.0">Frontend.App</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Frontend.Template.BooleanComboBoxTableCell.StringBooleanConverter" target="Frontend.Template.BooleanComboBoxTableCell" relationship="INNER_CLASS">
+      <point x="90.0" y="68.5" />
+      <point x="418.0" y="470.0" />
+      <point x="388.0" y="470.0" />
+      <point x="0.0" y="-69.5" />
+    </edge>
+    <edge source="Frontend.App" target="Backend.Item" relationship="TO_MANY">
+      <point x="-107.33333333333337" y="-342.0" />
+      <point x="720.6666666666666" y="4130.0" />
+      <point x="-52.0" y="4130.0" />
+      <point x="-52.0" y="4030.0" />
+      <point x="-172.0" y="4030.0" />
+      <point x="-172.0" y="1670.0" />
+      <point x="-112.0" y="1670.0" />
+      <point x="-112.0" y="1630.0" />
+      <point x="-121.0" y="1630.0" />
+      <point x="-89.0" y="462.0" />
+    </edge>
+    <edge source="Frontend.ItemSelectionScene" target="Backend.Item" relationship="TO_ONE">
+      <point x="-86.33333333333334" y="-70.5" />
+      <point x="341.66666666666663" y="2890.0" />
+      <point x="348.0" y="2890.0" />
+      <point x="348.0" y="1670.0" />
+      <point x="-112.0" y="1670.0" />
+      <point x="-112.0" y="1630.0" />
+      <point x="-121.0" y="1630.0" />
+      <point x="-89.0" y="462.0" />
+    </edge>
+    <edge source="Frontend.HistoryScene" target="Frontend.Template" relationship="REALIZATION">
+      <point x="0.0" y="-54.0" />
+      <point x="1288.0" y="3790.0" />
+      <point x="1388.0" y="3790.0" />
+      <point x="1388.0" y="950.0" />
+      <point x="1228.0" y="950.0" />
+      <point x="1228.0" y="430.0" />
+      <point x="791.0" y="430.0" />
+      <point x="83.0" y="129.5" />
+    </edge>
+    <edge source="Frontend.MenuScene" target="Frontend.MenuScene.ImgEditTableCell" relationship="CREATE">
+      <point x="-99.66666666666666" y="-100.5" />
+      <point x="908.3333333333333" y="1930.0" />
+      <point x="588.0" y="1930.0" />
+      <point x="588.0" y="1310.0" />
+      <point x="930.0" y="1310.0" />
+      <point x="-78.0" y="158.5" />
+    </edge>
+    <edge source="Frontend.OrderScene" target="Frontend.TableSelectionScene" relationship="CREATE">
+      <point x="-64.75" y="-54.0" />
+      <point x="1023.25" y="3930.0" />
+      <point x="1028.0" y="3930.0" />
+      <point x="1028.0" y="3730.0" />
+      <point x="988.0" y="3730.0" />
+      <point x="0.0" y="37.5" />
+    </edge>
+    <edge source="Frontend.App" target="Frontend.HistoryScene" relationship="CREATE">
+      <point x="0.0" y="-342.0" />
+      <point x="828.0" y="4090.0" />
+      <point x="1288.0" y="4090.0" />
+      <point x="0.0" y="54.0" />
+    </edge>
+    <edge source="Frontend.TableScene" target="Backend.Table" relationship="CREATE">
+      <point x="-59.5" y="-85.5" />
+      <point x="628.5" y="3510.0" />
+      <point x="628.0" y="3510.0" />
+      <point x="628.0" y="3370.0" />
+      <point x="145.75" y="3370.0" />
+      <point x="97.75" y="357.0" />
+    </edge>
+    <edge source="Frontend.OrderScene" target="Frontend.Template" relationship="REALIZATION">
+      <point x="64.75" y="-54.0" />
+      <point x="1152.75" y="3750.0" />
+      <point x="1348.0" y="3750.0" />
+      <point x="1348.0" y="950.0" />
+      <point x="1228.0" y="950.0" />
+      <point x="1228.0" y="430.0" />
+      <point x="791.0" y="430.0" />
+      <point x="83.0" y="129.5" />
+    </edge>
+    <edge source="Frontend.App" target="Backend.Table" relationship="TO_MANY">
+      <point x="-107.33333333333337" y="-342.0" />
+      <point x="720.6666666666666" y="4130.0" />
+      <point x="-52.0" y="4130.0" />
+      <point x="-52.0" y="3610.0" />
+      <point x="-49.75" y="3610.0" />
+      <point x="-97.75" y="357.0" />
+    </edge>
+    <edge source="Frontend.App" target="Backend.Order" relationship="TO_MANY">
+      <point x="-107.33333333333337" y="-342.0" />
+      <point x="720.6666666666666" y="4130.0" />
+      <point x="-52.0" y="4130.0" />
+      <point x="-52.0" y="4030.0" />
+      <point x="268.0" y="4030.0" />
+      <point x="268.0" y="2610.0" />
+      <point x="148.0" y="2610.0" />
+      <point x="148.0" y="2550.0" />
+      <point x="34.75" y="2550.0" />
+      <point x="-93.25" y="402.0" />
+    </edge>
+    <edge source="Backend.Table" target="Backend.Available" relationship="REALIZATION">
+      <point x="-97.75" y="-357.0" />
+      <point x="-49.75" y="2610.0" />
+      <point x="-232.0" y="2610.0" />
+      <point x="-232.0" y="650.0" />
+      <point x="-32.0" y="650.0" />
+      <point x="-32.0" y="350.0" />
+      <point x="-12.0" y="350.0" />
+      <point x="0.0" y="54.0" />
+    </edge>
+    <edge source="Frontend.TableScene" target="Frontend.Template" relationship="REALIZATION">
+      <point x="59.5" y="-85.5" />
+      <point x="747.5" y="3390.0" />
+      <point x="1268.0" y="3390.0" />
+      <point x="1268.0" y="950.0" />
+      <point x="1228.0" y="950.0" />
+      <point x="1228.0" y="430.0" />
+      <point x="791.0" y="430.0" />
+      <point x="83.0" y="129.5" />
+    </edge>
+    <edge source="Frontend.MenuScene" target="Backend.Item" relationship="CREATE">
+      <point x="-99.66666666666666" y="-100.5" />
+      <point x="908.3333333333333" y="1930.0" />
+      <point x="588.0" y="1930.0" />
+      <point x="588.0" y="1910.0" />
+      <point x="428.0" y="1910.0" />
+      <point x="428.0" y="1630.0" />
+      <point x="57.0" y="1630.0" />
+      <point x="89.0" y="462.0" />
+    </edge>
+    <edge source="Frontend.OrderScene" target="Frontend.ItemSelectionScene" relationship="CREATE">
+      <point x="-64.75" y="-54.0" />
+      <point x="1023.25" y="3930.0" />
+      <point x="1028.0" y="3930.0" />
+      <point x="1028.0" y="3730.0" />
+      <point x="428.0" y="3730.0" />
+      <point x="0.0" y="70.5" />
+    </edge>
+    <edge source="Frontend.OrderScene" target="Frontend.TablePaymentScene" relationship="CREATE">
+      <point x="-64.75" y="-54.0" />
+      <point x="1023.25" y="3930.0" />
+      <point x="1028.0" y="3930.0" />
+      <point x="1028.0" y="3730.0" />
+      <point x="1208.0" y="3730.0" />
+      <point x="0.0" y="37.5" />
+    </edge>
+    <edge source="Frontend.Template.BooleanComboBoxTableCell" target="Frontend.Template.BooleanComboBoxTableCell.StringBooleanConverter" relationship="CREATE">
+      <point x="-140.0" y="-69.5" />
+      <point x="248.0" y="470.0" />
+      <point x="238.0" y="470.0" />
+      <point x="-90.0" y="68.5" />
+    </edge>
+    <edge source="Frontend.TableScene" target="Frontend.Template.BooleanComboBoxTableCell" relationship="CREATE">
+      <point x="-59.5" y="-85.5" />
+      <point x="628.5" y="3510.0" />
+      <point x="628.0" y="3510.0" />
+      <point x="628.0" y="2890.0" />
+      <point x="468.0" y="2890.0" />
+      <point x="468.0" y="1210.0" />
+      <point x="388.0" y="1210.0" />
+      <point x="0.0" y="69.5" />
+    </edge>
+    <edge source="Frontend.ItemReviewScene" target="Frontend.Template.RemoveButtonTableCell" relationship="CREATE">
+      <point x="-77.0" y="-129.0" />
+      <point x="571.0" y="1950.0" />
+      <point x="628.0" y="1950.0" />
+      <point x="0.0" y="53.5" />
+    </edge>
+    <edge source="Frontend.App" target="Frontend.TableScene" relationship="CREATE">
+      <point x="0.0" y="-342.0" />
+      <point x="828.0" y="4090.0" />
+      <point x="688.0" y="4090.0" />
+      <point x="0.0" y="85.5" />
+    </edge>
+    <edge source="Frontend.ItemSelectionScene" target="Backend.Item" relationship="CREATE">
+      <point x="0.0" y="-70.5" />
+      <point x="428.0" y="1630.0" />
+      <point x="57.0" y="1630.0" />
+      <point x="89.0" y="462.0" />
+    </edge>
+    <edge source="Frontend.Template.RemoveButtonTableCell" target="Frontend.Template" relationship="INNER_CLASS">
+      <point x="0.0" y="-53.5" />
+      <point x="628.0" y="430.0" />
+      <point x="625.0" y="430.0" />
+      <point x="-83.0" y="129.5" />
+    </edge>
+    <edge source="Backend.Item" target="Backend.Available" relationship="REALIZATION">
+      <point x="0.0" y="-462.0" />
+      <point x="-32.0" y="350.0" />
+      <point x="-12.0" y="350.0" />
+      <point x="0.0" y="54.0" />
+    </edge>
+    <edge source="Backend.Table" target="Backend.Order" relationship="TO_ONE">
+      <point x="97.75" y="-357.0" />
+      <point x="145.75" y="2610.0" />
+      <point x="148.0" y="2610.0" />
+      <point x="148.0" y="2550.0" />
+      <point x="34.75" y="2550.0" />
+      <point x="-93.25" y="402.0" />
+    </edge>
+    <edge source="Frontend.App" target="Frontend.OrderScene" relationship="CREATE">
+      <point x="0.0" y="-342.0" />
+      <point x="828.0" y="4090.0" />
+      <point x="1088.0" y="4090.0" />
+      <point x="0.0" y="54.0" />
+    </edge>
+    <edge source="Frontend.MenuScene" target="Frontend.Template.BooleanComboBoxTableCell" relationship="CREATE">
+      <point x="-99.66666666666666" y="-100.5" />
+      <point x="908.3333333333333" y="1930.0" />
+      <point x="588.0" y="1930.0" />
+      <point x="588.0" y="1230.0" />
+      <point x="468.0" y="1230.0" />
+      <point x="468.0" y="1210.0" />
+      <point x="388.0" y="1210.0" />
+      <point x="0.0" y="69.5" />
+    </edge>
+    <edge source="Frontend.ItemSelectionScene" target="Backend.Order" relationship="TO_ONE">
+      <point x="-86.33333333333334" y="-70.5" />
+      <point x="341.66666666666663" y="2890.0" />
+      <point x="348.0" y="2890.0" />
+      <point x="348.0" y="2570.0" />
+      <point x="148.0" y="2570.0" />
+      <point x="148.0" y="2550.0" />
+      <point x="34.75" y="2550.0" />
+      <point x="-93.25" y="402.0" />
+    </edge>
+    <edge source="Frontend.TableScene" target="Frontend.Template.RemoveButtonTableCell" relationship="CREATE">
+      <point x="-59.5" y="-85.5" />
+      <point x="628.5" y="3510.0" />
+      <point x="628.0" y="3510.0" />
+      <point x="628.0" y="3370.0" />
+      <point x="828.0" y="3370.0" />
+      <point x="828.0" y="1950.0" />
+      <point x="628.0" y="1950.0" />
+      <point x="0.0" y="53.5" />
+    </edge>
+    <edge source="Frontend.MenuScene" target="Frontend.Template" relationship="REALIZATION">
+      <point x="99.66666666666666" y="-100.5" />
+      <point x="1107.6666666666667" y="1970.0" />
+      <point x="1228.0" y="1970.0" />
+      <point x="1228.0" y="430.0" />
+      <point x="791.0" y="430.0" />
+      <point x="83.0" y="129.5" />
+    </edge>
+    <edge source="Frontend.App" target="Frontend.Template" relationship="REALIZATION">
+      <point x="107.33333333333334" y="-342.0" />
+      <point x="935.3333333333333" y="4130.0" />
+      <point x="1428.0" y="4130.0" />
+      <point x="1428.0" y="950.0" />
+      <point x="1228.0" y="950.0" />
+      <point x="1228.0" y="430.0" />
+      <point x="791.0" y="430.0" />
+      <point x="83.0" y="129.5" />
+    </edge>
+    <edge source="Frontend.ItemReviewScene" target="Frontend.Template" relationship="REALIZATION">
+      <point x="77.0" y="-129.0" />
+      <point x="725.0" y="1910.0" />
+      <point x="828.0" y="1910.0" />
+      <point x="828.0" y="950.0" />
+      <point x="1228.0" y="950.0" />
+      <point x="1228.0" y="430.0" />
+      <point x="791.0" y="430.0" />
+      <point x="83.0" y="129.5" />
+    </edge>
+    <edge source="Frontend.ItemSelectionScene" target="Frontend.ItemReviewScene" relationship="CREATE">
+      <point x="0.0" y="-70.5" />
+      <point x="428.0" y="2550.0" />
+      <point x="648.0" y="2550.0" />
+      <point x="0.0" y="129.0" />
+    </edge>
+    <edge source="Frontend.ItemSelectionScene" target="Backend.Order" relationship="CREATE">
+      <point x="0.0" y="-70.5" />
+      <point x="428.0" y="2550.0" />
+      <point x="221.25" y="2550.0" />
+      <point x="93.25" y="402.0" />
+    </edge>
+    <edge source="Frontend.App" target="Frontend.MenuScene" relationship="CREATE">
+      <point x="0.0" y="-342.0" />
+      <point x="828.0" y="3570.0" />
+      <point x="1008.0" y="3570.0" />
+      <point x="0.0" y="100.5" />
+    </edge>
+    <edge source="Frontend.ItemSelectionScene" target="Frontend.Template" relationship="REALIZATION">
+      <point x="86.33333333333334" y="-70.5" />
+      <point x="514.3333333333334" y="2870.0" />
+      <point x="1188.0" y="2870.0" />
+      <point x="1188.0" y="950.0" />
+      <point x="1228.0" y="950.0" />
+      <point x="1228.0" y="430.0" />
+      <point x="791.0" y="430.0" />
+      <point x="83.0" y="129.5" />
+    </edge>
+    <edge source="Frontend.MenuScene.ImgEditTableCell" target="Frontend.MenuScene" relationship="INNER_CLASS">
+      <point x="78.0" y="158.5" />
+      <point x="1086.0" y="1970.0" />
+      <point x="1008.0" y="1970.0" />
+      <point x="0.0" y="-100.5" />
+    </edge>
+    <edge source="Frontend.Template.BooleanComboBoxTableCell" target="Frontend.Template" relationship="INNER_CLASS">
+      <point x="140.0" y="-69.5" />
+      <point x="528.0" y="470.0" />
+      <point x="628.0" y="470.0" />
+      <point x="628.0" y="430.0" />
+      <point x="625.0" y="430.0" />
+      <point x="-83.0" y="129.5" />
+    </edge>
+    <edge source="Backend.Order" target="Backend.Item" relationship="TO_MANY">
+      <point x="0.0" y="-402.0" />
+      <point x="128.0" y="1670.0" />
+      <point x="-112.0" y="1670.0" />
+      <point x="-112.0" y="1630.0" />
+      <point x="-121.0" y="1630.0" />
+      <point x="-89.0" y="462.0" />
+    </edge>
+    <edge source="Frontend.TableSelectionScene" target="Frontend.Template" relationship="REALIZATION">
+      <point x="63.0" y="-37.5" />
+      <point x="1051.0" y="3430.0" />
+      <point x="1308.0" y="3430.0" />
+      <point x="1308.0" y="950.0" />
+      <point x="1228.0" y="950.0" />
+      <point x="1228.0" y="430.0" />
+      <point x="791.0" y="430.0" />
+      <point x="83.0" y="129.5" />
+    </edge>
+    <edge source="Frontend.TableSelectionScene" target="Frontend.ItemSelectionScene" relationship="CREATE">
+      <point x="-63.0" y="-37.5" />
+      <point x="925.0" y="3410.0" />
+      <point x="428.0" y="3410.0" />
+      <point x="0.0" y="70.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="0.5015374337616144" showDependencies="true" x="519.3761151095407" y="493.39743999999996" />
+  <SelectedNodes>
+    <node>Frontend.TableSelectionScene</node>
+    <node>Frontend.HistoryScene</node>
+    <node>Frontend.Template.BooleanComboBoxTableCell</node>
+    <node>Backend.Table</node>
+    <node>Backend.Item</node>
+    <node>Backend.Payments</node>
+    <node>Frontend.Template.BooleanComboBoxTableCell.StringBooleanConverter</node>
+    <node>Backend.Order</node>
+    <node>Frontend.MenuScene.ImgEditTableCell</node>
+    <node>Frontend.MenuScene</node>
+    <node>Backend.Available</node>
+    <node>Frontend.App</node>
+    <node>Frontend.Template.RemoveButtonTableCell</node>
+    <node>Frontend.TablePaymentScene</node>
+    <node>Frontend.Template</node>
+    <node>Frontend.OrderScene</node>
+    <node>Frontend.ItemReviewScene</node>
+    <node>Frontend.TableScene</node>
+    <node>Frontend.ItemSelectionScene</node>
+    <node>Backend.Payment</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
