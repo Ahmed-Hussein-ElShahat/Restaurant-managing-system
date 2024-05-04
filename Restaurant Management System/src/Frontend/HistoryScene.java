@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import Backend.Order;
 
 class HistoryScene implements Template {
+
     HistoryScene() {
         VBox root = new VBox();
         root.setSpacing(50);
