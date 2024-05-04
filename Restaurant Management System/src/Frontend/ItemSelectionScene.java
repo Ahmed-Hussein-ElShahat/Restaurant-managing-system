@@ -3,7 +3,6 @@ package Frontend;
 
 import Backend.Item;
 import Backend.Order;
-import Backend.Table;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -15,6 +14,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+
+import java.util.Comparator;
 
 
 public class ItemSelectionScene implements Template{
@@ -41,7 +42,7 @@ public class ItemSelectionScene implements Template{
 
         // openImageFolder();
         ObservableList<GridPane> ov = FXCollections.observableArrayList();
-
+        FXCollections.sort(App.getMenu(), Comparator.comparing(Item::getCategory).reversed().thenComparing(Item::compareTo));
         for (int i = 0; i < App.getMenu().size(); i++) ov.add(showItem(App.getMenu().get(i)));
 
         lv = new ListView<>(ov);
@@ -150,12 +151,6 @@ public class ItemSelectionScene implements Template{
 
             if(e.getCode().equals(KeyCode.ENTER)){
                 int n = Integer.parseInt(tf.getText());
-                int maxItems = 100; // Maximum value
-                // Regect the add item if the number of items added is greater than the maximum value
-                if (n > maxItems) {
-                    Template.getWarning("Warning", "The number of items added exceeds the maximum which is " + maxItems, "Please enter a valid number!");
-                    tf.clear();
-                }
                 int index = lv.getItems().indexOf((GridPane)tf.getParent());
                 try{
                     wantedItem = App.getMenu().get(index);

@@ -151,20 +151,16 @@ public class ItemReviewScene implements Template {
         addAmount.setStyle(css);
         addAmount.setMinWidth(100);
 
-        Label l2 = new Label("The Rest:") ;
-        Font l2Font = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
-        l2.setFont(l2Font);
-        l2.setTextFill(Color.WHITE);
+        
 
-        final TextField rest = new TextField();
-        rest.setMaxWidth(textFieldMaxWidth);
-        rest.setStyle(css);
+        
         vb.setBackground(App.getBackground());
 
-        Button returnbtn = new Button("Return to Review Page");
+        Button returnbtn = new Button("Change Payment Method");
         returnbtn.setOnAction(e -> {
             new ItemReviewScene(order);
         });
+        
         Button returnmain = new Button("Cancel the Order");
         returnmain.setOnAction(e -> {
             App.returnToMain();
@@ -175,21 +171,21 @@ public class ItemReviewScene implements Template {
             App.getTables().getLast().setAvailability(true);
         });
 
-        vb.getChildren().addAll(l1 , addAmount , l2 , rest , returnbtn , returnmain);
+        vb.getChildren().addAll(l1 , addAmount   , returnbtn , returnmain );
         App.getScene().setRoot(vb);
-        rest.setEditable(false);
-        rest.setPromptText("rest");
-        rest.setMinWidth(100);
+        
         addAmount.setOnKeyPressed(f -> {
             if (f.getCode() == KeyCode.ENTER) {
                 try{
                     amount = Double.parseDouble(addAmount.getText());
                     if (amount >= order.calcTotalPrice()){
-                        rest.setEditable(true);
-                        rest.setText(Double.toString(Cash.calcRest(order.calcTotalPrice(), amount)));
-                        rest.setEditable(false);
+                             // past orders
+                        //addAmount.setEditable(false);
+                        // rest.setText());
+        // rest.setEditable(false);
                         App.getPastOrders().add(order);
-                        addAmount.setEditable(false);
+                        thanksSceneCash(Double.toString(Cash.calcRest(order.calcTotalPrice(), amount)));
+                        //returnmain, rest
                     }
                     else {
                         addAmount.clear();
@@ -227,6 +223,7 @@ public class ItemReviewScene implements Template {
             if(a.getCode() == KeyCode.ENTER){
                 try{
                     v.setId(VisaNo.getText());
+                    App.getPastOrders().add(order);     // past orders
                     thanksScene() ;
                 }catch(IllegalArgumentException e){
                     System.out.println(e.getLocalizedMessage());
@@ -238,7 +235,7 @@ public class ItemReviewScene implements Template {
                 }
             }            
         } );
-        Button returnbtn = new Button("Return to Review Page");
+        Button returnbtn = new Button("Change Payment Method");
         returnbtn.setOnAction(e -> {
             new ItemReviewScene(order);
         });
@@ -268,6 +265,38 @@ public class ItemReviewScene implements Template {
         });
         pane.setBackground(App.getBackground());
         pane.getChildren().addAll(thanks , returnbtn );
+        App.getScene().setRoot(pane);
+    }
+
+    private void thanksSceneCash(String Rest){
+        Label thanks = new Label("Thank you For Your Order") ;
+        Font hfont = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
+        thanks.setFont(hfont);
+        thanks.setTextFill(Color.WHITE);
+        VBox pane = new VBox();
+        pane.setAlignment(Pos.CENTER);
+        Button returnbtn = new Button("Return to Main Menu");
+        returnbtn.setOnAction(e -> {
+            App.returnToMain();
+        });
+
+        final TextField rest = new TextField();
+        
+        //rest.setEditable(false);
+        rest.setPromptText("rest");
+        rest.setMinWidth(100);
+        rest.setEditable(true);
+        rest.setText(Rest);
+        rest.setEditable(false);
+
+        Label l2 = new Label("The Rest:") ;
+        Font l2Font = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
+        l2.setFont(l2Font);
+        l2.setTextFill(Color.WHITE);
+
+
+        pane.setBackground(App.getBackground());
+        pane.getChildren().addAll(thanks , l2 , rest , returnbtn );
         App.getScene().setRoot(pane);
     }
 }
