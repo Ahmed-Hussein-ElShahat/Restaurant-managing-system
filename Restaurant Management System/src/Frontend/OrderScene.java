@@ -1,6 +1,5 @@
 package Frontend;
 
-import Backend.Item;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -8,7 +7,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert;
-import Backend.Order;
+
 
 public class OrderScene implements Template {
 
