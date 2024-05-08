@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -44,6 +45,10 @@ public class App extends Application implements Template{
         scene = new Scene(pane, 1024, 576);
         ObjectMapper mapper = new ObjectMapper();
         loadSavedData(mapper);
+        pastOrders.addListener((ListChangeListener.Change<? extends Order> e) -> {
+            Order.setTotalNumberOfOrders(pastOrders.size());
+            pastOrders.getLast().setOrderNum(Order.getTotalNumberOfOrders());
+        });
         // scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         String css = this.getClass().getResource("application.css").toExternalForm();
         scene.getStylesheets().add(css);

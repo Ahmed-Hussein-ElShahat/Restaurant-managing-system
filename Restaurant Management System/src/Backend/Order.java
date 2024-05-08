@@ -19,19 +19,17 @@ public class Order implements Comparable<Order> {
     private ObservableList<Item> guestOrder = FXCollections.observableArrayList();        // Guest's order
     private SimpleDoubleProperty totalPrice = new SimpleDoubleProperty();
     private final SimpleIntegerProperty orderNum = new SimpleIntegerProperty();
-    private static int TotalNumberOfOrders = 1;     // number of orders by all guests
+    private static int TotalNumberOfOrders;     // number of orders by all guests
 
     public Order(Item[] guestOrder){
         date = LocalDate.now();
         time = LocalTime.now();
-        orderNum.set(TotalNumberOfOrders++);
         this.guestOrder.addAll(guestOrder);
     }
 
     public Order(){
         date = LocalDate.now();
         time = LocalTime.now();
-        orderNum.set(TotalNumberOfOrders++);
     }
 
     //Compared by the time they were created.
