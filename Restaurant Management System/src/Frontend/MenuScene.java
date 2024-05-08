@@ -77,23 +77,33 @@ public class MenuScene implements Template {
         return table;
     }
     private HBox getFooter() {
+        String css = "-fx-padding: 10px 5px;" + 
+        "-fx-font-size: 16px;" +
+        "-fx-font-weight: bold;" +
+        "-fx-background-radius: 10px;" +
+        "-fx-border-radius: 10px;";
         HBox footer = new HBox();
         footer.setSpacing(3);
         footer.setAlignment(Pos.CENTER);
         final TextField addName = new TextField();
         addName.setPromptText("Name");
         addName.setMinWidth(100);
+        addName.setStyle(css);
 
         final TextField addprice = new TextField();
         addprice.setMinWidth(100);
         addprice.setPromptText("Price");
-        
+        addprice.setStyle(css);
+
         final ComboBox addcategory = new ComboBox();
         addcategory.setPromptText("Category");
         addcategory.getItems().addAll("Appetizer", "Main Course", "Dessert", "Drink");
         addcategory.setMinWidth(100);
+        addcategory.setStyle(css + "-fx-padding: 5px;");
 
         final Button addButton = new Button("Add Item");
+        addButton.setStyle(css);
+        addButton.setPrefWidth(100);
         addButton.setOnAction(e -> {
             if (addName.getText().isEmpty() || addprice.getText().isEmpty() || addcategory.getSelectionModel().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);

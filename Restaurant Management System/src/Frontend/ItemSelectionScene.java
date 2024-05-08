@@ -3,6 +3,7 @@ package Frontend;
 
 import Backend.Item;
 import Backend.Order;
+import Backend.Table;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -25,7 +26,7 @@ public class ItemSelectionScene implements Template{
     private Item wantedItem;
     private Item previtem = new Item("",1,"");
     private ListView<GridPane> lv;
-    public ItemSelectionScene(Order tableOrder) {
+    public ItemSelectionScene(Order tableOrder, Table reservingTable) {
         
         Button btnreview = new Button("Place Order");
         btnreview.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: #f0f8ff");
@@ -33,17 +34,24 @@ public class ItemSelectionScene implements Template{
         // Check if its on site
         if(tableOrder != null) {
             order = tableOrder;
-            btnreview.setOnAction(e -> App.returnToMain());
+            btnreview.setOnAction(e -> {
+                reservingTable.setAvailability(false);
+                App.returnToMain();
+            });
         }
         else {
             order = new Order();
-            btnreview.setOnAction(e -> new ItemReviewScene(order));
+            btnreview.setOnAction(e -> new ItemReviewScene(order, null));
         }
 
         // openImageFolder();
         ObservableList<GridPane> ov = FXCollections.observableArrayList();
         FXCollections.sort(App.getMenu(), Comparator.comparing(Item::getCategory).reversed().thenComparing(Item::compareTo));
-        for (int i = 0; i < App.getMenu().size(); i++) ov.add(showItem(App.getMenu().get(i)));
+        for (int i = 0; i < App.getMenu().size(); i++) {
+            if(App.getMenu().get(i).checkIfAvailable()) {
+                ov.add(showItem(App.getMenu().get(i)));
+            }
+        }
 
         lv = new ListView<>(ov);
         lv.getStylesheets().add("Frontend/application.css");

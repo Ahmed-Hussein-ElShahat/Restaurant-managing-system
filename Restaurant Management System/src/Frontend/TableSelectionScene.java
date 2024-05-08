@@ -47,9 +47,9 @@ public class TableSelectionScene implements Template {
                 });
                 tableBtn.prefWidthProperty().bind(pane.widthProperty().divide(3).subtract(20));
                 tableBtn.setOnAction(e -> {
-                    table.setAvailability(false);
+                    // table.setAvailability(false);
                     table.setOrder(new Order());
-                    new ItemSelectionScene(table.getOrder());
+                    new ItemSelectionScene(table.getOrder(), table);
                 });
                 tables.add(tableBtn, column, row);
                 column++;

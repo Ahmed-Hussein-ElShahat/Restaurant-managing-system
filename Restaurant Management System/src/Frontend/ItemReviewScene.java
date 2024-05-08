@@ -2,11 +2,14 @@ package Frontend;
 
 import Backend.Payments.*;
 import Backend.Order;
+import Backend.Table;
 import Backend.Item;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -21,13 +24,15 @@ public class ItemReviewScene implements Template {
 
     String css = "-fx-padding: 5px;" + 
         "-fx-font-size: 16px;" +
-        "-fx-font-weight: bold;";
-    ItemReviewScene(Order order){
+        "-fx-font-weight: bold;" +
+        "-fx-background-radius: 10px;" +
+        "-fx-border-radius: 10px;";
+    ItemReviewScene(Order order, Table payingTable){
         VBox review = new VBox();
         review.setSpacing(50);
         review.setPadding(new Insets(50, 100, 50, 100));
         review.setAlignment(Pos.CENTER);
-        review.getChildren().addAll(getHheader("Return to Main Menu"), getTable(order) , paymentTextBox(order ) );
+        review.getChildren().addAll(getHheader("Return to Main Menu"), getTable(order) , paymentTextBox(order, payingTable));
         review.setBackground(App.getBackground());
         App.getScene().setRoot(review);
     }
@@ -71,18 +76,24 @@ public class ItemReviewScene implements Template {
         return table;
     }
 
-    private HBox paymentTextBox (Order order) {
+    private HBox paymentTextBox (Order order, Table payingTable) {
         HBox totalpayment = new HBox();
         totalpayment.setSpacing(3);
         totalpayment.setAlignment(Pos.CENTER);
-
+        totalpayment.setStyle("-fx-background-color:linear-gradient(from 0% 0% to 100% 100%, #136a8a, #267871); -fx-padding:15px; -fx-background-radius: 20px;");
+        totalpayment.setMinWidth(850);
+        totalpayment.setMaxWidth(900);
+        
         Label label1 = new Label("Total Price : ") ;
         label1.setStyle(css);
-        Label label2 = new Label("Choose Payment Method") ;
+        label1.setTextFill(Color.WHITE);
+        Label label2 = new Label("Choose Payment Method : ") ;
         label2.setStyle(css);
+        label2.setTextFill(Color.WHITE);
+
 
         final TextField payment = new TextField();
-        payment.setStyle(css);
+        payment.setStyle(css + "-fx-padding: 10px 5px;");
         payment.setPromptText("Name");
         payment.setMinWidth(100);
         payment.setText(Double.toString(order.calcTotalPrice()));
@@ -98,7 +109,7 @@ public class ItemReviewScene implements Template {
         method.setMinWidth(100);
 
         Button bt = new Button("OK");
-        bt.setStyle(css);
+        bt.setStyle(css + "-fx-padding: 10px 5px");
         bt.setMinWidth(100);
 
         bt.setOnAction( e -> {
@@ -113,11 +124,11 @@ public class ItemReviewScene implements Template {
                     alert.setContentText("Make an Order First");
                     alert.showAndWait();
                 }
-                else if ( method.getSelectionModel().getSelectedItem() .equals("Cash")  ){
-                    cashScene(order);
+                else if ( method.getSelectionModel().getSelectedItem().equals("Cash")  ){
+                    cashScene(order, payingTable);
                 }
-                else if( method.getSelectionModel().getSelectedItem() .equals("Visa")  ){
-                    visaScene(order);
+                else if( method.getSelectionModel().getSelectedItem().equals("Visa")  ){
+                    visaScene(order, payingTable);
                 }
             } catch (NullPointerException g) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -128,57 +139,69 @@ public class ItemReviewScene implements Template {
             }
         });
 
-        totalpayment.getChildren().addAll(label1 , payment , label2 , method , bt );
-        return totalpayment ;
+        totalpayment.getChildren().addAll(label1 , payment , label2 , method , bt);
+        return totalpayment;
     }
 
-    private void cashScene (Order order){
-        VBox vb = new VBox();
-        vb.setSpacing(50);
-        vb.setPadding(new Insets(20, 20, 20, 20));
-        vb.setAlignment(Pos.CENTER);
+    private void cashScene(Order order, Table payingTable) {
+        VBox container = new VBox();
+        StackPane pane = new StackPane(container);
+        container.setSpacing(25);
+        container.setPadding(new Insets(20, 20, 20, 20));
+        container.setAlignment(Pos.CENTER);
+        container.setStyle("-fx-background-color:linear-gradient(to bottom, #16222a, #3a6073); -fx-padding:15px; -fx-background-radius: 20px;");
+        //container.setStyle("-fx-background-color:linear-gradient(to bottom, #0e1e3e, #3758a3); -fx-padding:15px; -fx-background-radius: 20px;");
+        container.setMaxWidth(400);
+        container.setMaxHeight(350);
 
         Label l1 = new Label("The payed amount :") ;
         Font l1Font = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
         l1.setFont(l1Font);
         l1.setTextFill(Color.WHITE);
-        
-        int textFieldMaxWidth = 200;
 
         final TextField addAmount = new TextField();
-        addAmount.setMaxWidth(textFieldMaxWidth);
+        addAmount.setMaxWidth(250);
         addAmount.setPromptText("amount");
-        addAmount.setStyle(css);
-        addAmount.setMinWidth(100);
+        addAmount.setStyle(css + "-fx-padding: 10px 5px; -fx-font-size: 20px;");
 
-        
-
-        
-        vb.setBackground(App.getBackground());
+        pane.setBackground(App.getBackground());
 
         Button returnbtn = new Button("Change Payment Method");
+        returnbtn.setStyle(css + "-fx-padding: 15px 5px");
+        returnbtn.setPrefWidth(250);
         returnbtn.setOnAction(e -> {
-            new ItemReviewScene(order);
+            new ItemReviewScene(order, payingTable);
         });
         
-        Button returnmain = new Button("Cancel the Order");
+        Button returnmain = new Button("Cancel Order");
+        returnmain.setStyle(css + "-fx-padding: 15px 5px");
+        returnmain.setPrefWidth(250);
         returnmain.setOnAction(e -> {
+            if(payingTable != null) {
+                payingTable.setAvailability(true);
+                payingTable.setOrder(null);
+            }
             App.returnToMain();
             // if the customer cancels the order
             // we must clear the order and the order history 
             // Table t = new Table();
             // t.setAvailability(true);
-            App.getTables().getLast().setAvailability(true);
+            // App.getTables().getLast().setAvailability(true);
         });
 
-        vb.getChildren().addAll(l1 , addAmount   , returnbtn , returnmain );
-        App.getScene().setRoot(vb);
+        container.getChildren().addAll(l1 , addAmount   , returnbtn , returnmain );
+
+        App.getScene().setRoot(pane);
         
         addAmount.setOnKeyPressed(f -> {
             if (f.getCode() == KeyCode.ENTER) {
                 try{
                     amount = Double.parseDouble(addAmount.getText());
                     if (amount >= order.calcTotalPrice()){
+                        if(payingTable != null) {
+                            payingTable.setAvailability(true);
+                            payingTable.setOrder(null);
+                        }
                              // past orders
                         //addAmount.setEditable(false);
                         // rest.setText());
@@ -206,12 +229,16 @@ public class ItemReviewScene implements Template {
             }
         });
     }
-    private void visaScene (Order order){
+    private void visaScene(Order order, Table payingTable){
         Visa v = new Visa();
-        HBox hb = new HBox();
-        hb.setSpacing(50);
-        hb.setPadding(new Insets(20, 20, 20, 20));
-        hb.setAlignment(Pos.CENTER);
+        VBox container = new VBox();
+        StackPane pane = new StackPane(container);
+        container.setSpacing(25);
+        container.setPadding(new Insets(20, 20, 20, 20));
+        container.setAlignment(Pos.CENTER);
+        container.setStyle("-fx-background-color:linear-gradient(to bottom, #16222a, #3a6073); -fx-padding:15px; -fx-background-radius: 20px;");
+        container.setMaxWidth(400);
+        container.setMaxHeight(350);
 
         Label l1 = new Label("Enter Visa Number :") ;
         Font hfont = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
@@ -219,12 +246,18 @@ public class ItemReviewScene implements Template {
         l1.setTextFill(Color.WHITE);
         final TextField VisaNo = new TextField();
         VisaNo.setPromptText("Visa Number");
+        VisaNo.setStyle(css + "-fx-padding: 10px 5px; -fx-font-size: 20px;");
+        VisaNo.setMaxWidth(250);
         VisaNo.setOnKeyPressed(a -> {
             if(a.getCode() == KeyCode.ENTER){
                 try{
                     v.setId(VisaNo.getText());
+                    if(payingTable != null) {
+                        payingTable.setAvailability(true);
+                    }
                     App.getPastOrders().add(order);     // past orders
-                    thanksScene() ;
+                    payingTable.setOrder(null); // empties order for the table
+                    thanksScene();
                 }catch(IllegalArgumentException e){
                     System.out.println(e.getLocalizedMessage());
                     Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -235,68 +268,93 @@ public class ItemReviewScene implements Template {
                 }
             }            
         } );
+
         Button returnbtn = new Button("Change Payment Method");
+        returnbtn.setStyle(css + "-fx-padding: 15px 5px");
+        returnbtn.setPrefWidth(250);
         returnbtn.setOnAction(e -> {
-            new ItemReviewScene(order);
+            new ItemReviewScene(order, payingTable);
         });
-        Button returnmain = new Button("Cancel the Order");
+
+        Button returnmain = new Button("Cancel Order");
+        returnmain.setStyle(css + "-fx-padding: 15px 5px");
+        returnmain.setPrefWidth(250);
         returnmain.setOnAction(e -> {
+            if(payingTable != null) {
+                payingTable.setAvailability(true);
+                payingTable.setOrder(null);
+            }
             App.returnToMain();
             // if the customer cancels the order
             // we must clear the order and the order history 
         });
-        hb.setBackground(App.getBackground());
-        hb.getChildren().addAll(l1 , VisaNo , returnbtn , returnmain);
+        pane.setBackground(App.getBackground());
+        container.getChildren().addAll(l1 , VisaNo , returnbtn , returnmain);
 
-        App.getScene().setRoot(hb);
+        App.getScene().setRoot(pane);
 
     }
     
     private void thanksScene(){
-        Label thanks = new Label("Thank you For Your Order") ;
-        Font hfont = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
+        Label thanks = new Label("Thank you") ;
+        Font hfont = Font.font("Freestyle Script", FontWeight.EXTRA_BOLD ,60);
         thanks.setFont(hfont);
         thanks.setTextFill(Color.WHITE);
-        VBox pane = new VBox();
-        pane.setAlignment(Pos.CENTER);
+        VBox container = new VBox();
+        StackPane pane = new StackPane(container);
+        container.setSpacing(25);
+        container.setAlignment(Pos.CENTER);
+        container.setStyle("-fx-background-color:linear-gradient(to bottom, #0e1e3e, #3758a3); -fx-padding:15px; -fx-background-radius: 20px;");
+        container.setMaxWidth(450);
+        container.setMaxHeight(350);
         Button returnbtn = new Button("Return to Main Menu");
         returnbtn.setOnAction(e -> {
             App.returnToMain();
         });
+        returnbtn.setStyle(css + "-fx-padding: 15px 5px");
+        returnbtn.setPrefWidth(250);
+        container.getChildren().addAll(thanks , returnbtn );
         pane.setBackground(App.getBackground());
-        pane.getChildren().addAll(thanks , returnbtn );
         App.getScene().setRoot(pane);
     }
 
     private void thanksSceneCash(String Rest){
-        Label thanks = new Label("Thank you For Your Order") ;
-        Font hfont = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
+        Label thanks = new Label("Thank you") ;
+        Font hfont = Font.font("Freestyle Script", FontWeight.EXTRA_BOLD ,60);
         thanks.setFont(hfont);
         thanks.setTextFill(Color.WHITE);
-        VBox pane = new VBox();
-        pane.setAlignment(Pos.CENTER);
+        VBox container = new VBox();
+        StackPane pane = new StackPane(container);
+        container.setSpacing(25);
+        container.setAlignment(Pos.CENTER);
+        container.setStyle("-fx-background-color:linear-gradient(to bottom, #0e1e3e, #3758a3); -fx-padding:15px; -fx-background-radius: 20px;");
+        container.setMaxWidth(450);
+        container.setMaxHeight(350);
         Button returnbtn = new Button("Return to Main Menu");
         returnbtn.setOnAction(e -> {
             App.returnToMain();
         });
+        returnbtn.setStyle(css + "-fx-padding: 15px 5px");
+        returnbtn.setPrefWidth(250);
 
         final TextField rest = new TextField();
-        
+        rest.setStyle(css + "-fx-padding: 10px 5px; -fx-font-size: 20px;");
+        rest.setMaxWidth(250);
         //rest.setEditable(false);
-        rest.setPromptText("rest");
+        rest.setPromptText("change");
         rest.setMinWidth(100);
         rest.setEditable(true);
         rest.setText(Rest);
         rest.setEditable(false);
 
-        Label l2 = new Label("The Rest:") ;
-        Font l2Font = Font.font("Helvetica", FontWeight.EXTRA_BOLD ,35);
+        Label l2 = new Label("Change:") ;
+        Font l2Font = Font.font("Helvetica", FontWeight.BOLD ,25);
         l2.setFont(l2Font);
         l2.setTextFill(Color.WHITE);
 
 
         pane.setBackground(App.getBackground());
-        pane.getChildren().addAll(thanks , l2 , rest , returnbtn );
+        container.getChildren().addAll(thanks , l2 , rest , returnbtn );
         App.getScene().setRoot(pane);
     }
 }

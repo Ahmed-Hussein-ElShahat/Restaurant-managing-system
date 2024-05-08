@@ -2,6 +2,7 @@ package Frontend;
 
 import Backend.Table;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
@@ -45,8 +46,15 @@ public class TablePaymentScene implements Template {
                 });
                 tableBtn.prefWidthProperty().bind(pane.widthProperty().divide(3).subtract(20));
                 tableBtn.setOnAction(e -> {
-                    table.setAvailability(true);
-                    new ItemReviewScene(table.getOrder());
+                    if(table.getOrder() == null) {
+                        Alert messageAlert = new Alert(Alert.AlertType.INFORMATION);
+                        messageAlert.setHeaderText("Sorry, The table is not occupied");
+                        messageAlert.setContentText("You can change it to available in the modify tables");
+                        messageAlert.show();
+                    }
+                    else {
+                        new ItemReviewScene(table.getOrder(), table);
+                    }
                 });
                 tables.add(tableBtn, column, row);
                 column++;

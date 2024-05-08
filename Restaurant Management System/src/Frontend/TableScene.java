@@ -54,12 +54,20 @@ public class TableScene implements Template {
     }
     private HBox getFooter() {
         HBox footer = new HBox();
-        footer.setSpacing(3);
+        String css = "-fx-padding: 10px 5px;" + 
+        "-fx-font-size: 16px;" +
+        "-fx-font-weight: bold;" +
+        "-fx-background-radius: 10px;" +
+        "-fx-border-radius: 10px;";
+        footer.setSpacing(10);
         final TextField addCapacity = new TextField();
         addCapacity.setPromptText("Capacity");
         addCapacity.setMinWidth(100);
+        addCapacity.setStyle(css);
 
         final Button addButton = new Button("Add Table");
+        addButton.setStyle(css);
+        addButton.setPrefWidth(100);
         addButton.setOnAction(e -> {
             if (addCapacity.getText().isEmpty()) {
                 Template.getWarning("Warning", "Field(s) empty", "Please fill all the fields");

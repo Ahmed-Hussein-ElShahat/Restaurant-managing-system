@@ -39,9 +39,9 @@ public class OrderScene implements Template {
         
         
         tkeButton.setOnAction(e -> {    //Go directly to item selection scene
-            new ItemSelectionScene(null);
+            new ItemSelectionScene(null, null);
         });
-        onSiteButton.setOnAction(e -> { 
+        onSiteButton.setOnAction(e -> {
             //Check if there is a table available
             boolean flag = false;
             for (int i = 0; i < App.getTables().size(); i++) {
