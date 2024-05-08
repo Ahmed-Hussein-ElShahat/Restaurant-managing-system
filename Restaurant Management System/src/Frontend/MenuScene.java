@@ -41,29 +41,29 @@ public class MenuScene implements Template {
         nameCol.setCellValueFactory(new PropertyValueFactory<Item, String>("Name"));
         
         TableColumn<Item, String> categoryCol = new TableColumn<>("Category");
-        categoryCol.prefWidthProperty().bind(table.widthProperty().divide(6).subtract(3));
+        categoryCol.prefWidthProperty().bind(table.widthProperty().divide(5).subtract(3));
         categoryCol.setCellValueFactory(new PropertyValueFactory<Item, String>("Category"));
         
         TableColumn<Item, Double> priceCol = new TableColumn<>("Price");
-        priceCol.prefWidthProperty().bind(table.widthProperty().divide(6).subtract(3));
+        priceCol.prefWidthProperty().bind(table.widthProperty().divide(5).subtract(3));
         priceCol.setCellValueFactory(new PropertyValueFactory<Item, Double>("Price"));
         
         TableColumn<Item, SimpleBooleanProperty> avaCol = new TableColumn<>("Availability");
-        avaCol.prefWidthProperty().bind(table.widthProperty().divide(6));
+        avaCol.prefWidthProperty().bind(table.widthProperty().divide(5));
         avaCol.setCellValueFactory(new PropertyValueFactory<Item, SimpleBooleanProperty>("availableProperty"));
         avaCol.setCellFactory(col -> new BooleanComboBoxTableCell("item"));
 
-        TableColumn<Item, Integer> ratingCol = new TableColumn<>("Rating");
-        ratingCol.prefWidthProperty().bind(table.widthProperty().divide(6).subtract(70));
-        ratingCol.setCellValueFactory(new PropertyValueFactory<Item, Integer>("Rating"));
+        // TableColumn<Item, Integer> ratingCol = new TableColumn<>("Rating");
+        // ratingCol.prefWidthProperty().bind(table.widthProperty().divide(6).subtract(70));
+        // ratingCol.setCellValueFactory(new PropertyValueFactory<Item, Integer>("Rating"));
 
         TableColumn<Item, Boolean> imgCol = new TableColumn<>("Image");
-        imgCol.prefWidthProperty().bind(table.widthProperty().divide(6).add(40));
+        imgCol.prefWidthProperty().bind(table.widthProperty().divide(5));
         imgCol.setCellValueFactory(new PropertyValueFactory<Item, Boolean>("isImage"));
         imgCol.setCellFactory(col -> new ImgEditTableCell());
 
         //avaCol.setSortable(false);
-        table.getColumns().addAll(nameCol, categoryCol, priceCol, avaCol ,ratingCol, imgCol);
+        table.getColumns().addAll(nameCol, categoryCol, priceCol, avaCol , imgCol);
         table.autosize();
         table.setEditable(true);
         table.setItems(App.getMenu());
@@ -292,7 +292,7 @@ public class MenuScene implements Template {
         }
         private void deleteExistingImg() {
             String extension = getExtension(App.getMenu().get(rowNum).getImage().getUrl());
-            File fileToDelete = new File(App.getImgDistPath().toString() + "/" + rowNum + extension);
+            File fileToDelete = new File(App.getImgDistPath().toString() + "/" + App.getMenu().get(rowNum).getName() + extension);
             if (fileToDelete.exists()) {
                 boolean deleted = fileToDelete.delete();
             if (deleted) {
@@ -321,7 +321,7 @@ public class MenuScene implements Template {
                 try {
                     // Create the image folder if it doesn't exist
                     if (!App.getImgDistPath().toFile().exists()) Files.createDirectory(App.getImgDistPath());
-                    Path destinationPath = Paths.get(App.getImgDistPath().toString(), rowNum + getExtension(file.toPath()));
+                    Path destinationPath = Paths.get(App.getImgDistPath().toString(), App.getMenu().get(rowNum).getName() + getExtension(file.toPath()));
                     Files.copy(file.toPath(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
                     if (App.getMenu().get(rowNum).getImage() != null) {
                         if (getExtension(file.toPath()) != getExtension(App.getMenu().get(rowNum).getImage().getUrl())) deleteExistingImg();

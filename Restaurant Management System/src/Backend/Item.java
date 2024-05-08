@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 
-@JsonIncludeProperties({"name", "category", "price", "description", "rating", "path", "available"})
+@JsonIncludeProperties({"name", "category", "price", "description", "path", "available"})
 public class Item implements Available, Cloneable, Comparable<Item> {
 
     private SimpleStringProperty category = new SimpleStringProperty();
@@ -20,16 +20,16 @@ public class Item implements Available, Cloneable, Comparable<Item> {
     
     private SimpleBooleanProperty available = new SimpleBooleanProperty(true);
     
-    private int rating = 0;
+    //private int rating = 0;
     
     private Image image;
 
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-    public int getRating() {
-        return rating;
-    }
+    // public void setRating(int rating) {
+    //     this.rating = rating;
+    // }
+    // public int getRating() {
+    //     return rating;
+    // }
     public Item() {};
     public Item(String Name, double Price) {
         this.name.set(Name);
