@@ -46,7 +46,9 @@ public class ItemSelectionScene implements Template{
 
         // openImageFolder();
         ObservableList<GridPane> ov = FXCollections.observableArrayList();
+
         FXCollections.sort(App.getMenu(), Comparator.comparing(Item::getCategory).reversed().thenComparing(Item::compareTo));
+        
         for (int i = 0; i < App.getMenu().size(); i++) {
             if(App.getMenu().get(i).checkIfAvailable()) {
                 ov.add(showItem(App.getMenu().get(i)));
