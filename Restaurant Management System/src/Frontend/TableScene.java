@@ -35,7 +35,7 @@ public class TableScene implements Template {
         TableColumn avlCol = new TableColumn("Availability");
         avlCol.prefWidthProperty().bind(table.widthProperty().divide(4).add(20));
         avlCol.setCellValueFactory(new PropertyValueFactory<Table, SimpleBooleanProperty>("availableProperty"));
-        avlCol.setCellFactory(col -> new BooleanComboBoxTableCell("table"));
+        avlCol.setCellFactory(col -> new BooleanComboBoxTableCell());
 
         TableColumn removeCol = new TableColumn("Remove");
         removeCol.prefWidthProperty().bind(table.widthProperty().divide(4).subtract(20));
