@@ -1,5 +1,6 @@
 package Frontend;
 
+import Backend.Available;
 import Backend.Table;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
@@ -116,35 +117,28 @@ public interface Template {
             
         }
     }
-    public static class BooleanComboBoxTableCell<T> extends TableCell<T, SimpleBooleanProperty> {
+    public static class BooleanComboBoxTableCell extends TableCell<Available, SimpleBooleanProperty> {
     // Custom Table cell for modifiction of boolean properties
 
         private final ComboBox<SimpleBooleanProperty> comboBox; // Combo box for boolean values
-        private int rowNum;
         //IMPORTANT NOTE: you need to specify the items in the list in the constructor.
-        public BooleanComboBoxTableCell(String type) {
-          comboBox = new ComboBox<>();
-          comboBox.setConverter(new StringBooleanConverter("Available", "Not Available")); 
-          // sets the display values of the comboBox to (Available/ Not Available)
+        public BooleanComboBoxTableCell() {
+            comboBox = new ComboBox<>();
+            comboBox.setConverter(new StringBooleanConverter("Available", "Not Available")); 
+            // sets the display values of the comboBox to (Available/ Not Available)
 
-          comboBox.getItems().addAll(new SimpleBooleanProperty(true), new SimpleBooleanProperty(false));
+            comboBox.getItems().addAll(new SimpleBooleanProperty(true), new SimpleBooleanProperty(false));
 
-          setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
           
-          // Action taken when interacting with the comboBox
-          comboBox.setOnAction(e -> {
-            if (getItem()!= null) {
-                rowNum = this.getTableRow().getIndex();
-                if (type == "item") {
-                    // Sets the item availability to the selected value
-                    App.getMenu().get(rowNum).getAvailableProperty().set(getSelection());
+            // Action taken when interacting with the comboBox
+            comboBox.setOnAction(e -> {
+                if (getItem() != null) {
+                    boolean selected = getSelection();
+                    this.getTableRow().getItem().getAvailableProperty().set(selected);
                 }
-                else if (type == "table") {
-                    // Sets the table availability to the selected value
-                    App.getTables().get(rowNum).getAvailableProperty().set(getSelection());
-                }
-            }
-          });
+            });
+
         }
         @Override
         protected void updateItem(SimpleBooleanProperty item, boolean empty) {
