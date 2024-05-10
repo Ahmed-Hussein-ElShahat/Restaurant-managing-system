@@ -254,9 +254,9 @@ public class ItemReviewScene implements Template {
                     v.setId(VisaNo.getText());
                     if(payingTable != null) {
                         payingTable.setAvailability(true);
+                        payingTable.setOrder(null); // empties order for the table
                     }
                     App.getPastOrders().add(order);     // past orders
-                    payingTable.setOrder(null); // empties order for the table
                     thanksScene();
                 }catch(IllegalArgumentException e){
                     System.out.println(e.getLocalizedMessage());
