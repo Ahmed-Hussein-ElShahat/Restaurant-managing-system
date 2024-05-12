@@ -67,6 +67,7 @@ public class Item implements Available, Cloneable, Comparable<Item> {
     public int compareTo(Item o) {
         return ((Double)this.getPrice()).compareTo(o.getPrice());
     }
+    
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();

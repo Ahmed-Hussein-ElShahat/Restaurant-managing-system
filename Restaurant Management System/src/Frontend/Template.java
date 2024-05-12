@@ -118,7 +118,7 @@ public interface Template {
         }
     }
     public static class BooleanComboBoxTableCell extends TableCell<Available, SimpleBooleanProperty> {
-    // Custom Table cell for modifiction of boolean properties
+    // Custom Table cell for modifiction of the available property
 
         private final ComboBox<SimpleBooleanProperty> comboBox; // Combo box for boolean values
         //IMPORTANT NOTE: you need to specify the items in the list in the constructor.

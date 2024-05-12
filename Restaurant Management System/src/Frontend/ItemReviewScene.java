@@ -8,7 +8,6 @@ import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -17,7 +16,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
-import javafx.scene.control.Alert.AlertType;
 
 public class ItemReviewScene implements Template {
     private double amount = 0.0;
@@ -36,18 +34,6 @@ public class ItemReviewScene implements Template {
         review.setBackground(App.getBackground());
         App.getScene().setRoot(review);
     }
-
-    // private HBox getheader() { //not sure we will use it or not 
-    //     HBox header = new HBox();
-    //     header.setAlignment(Pos.CENTER);
-    //     Button returnbtn = new Button("Return to Main Menu");
-    //     returnbtn.setOnAction(e -> {
-    //         App.returnToMain();
-    //     });
-    //     header.setSpacing(100);
-    //     header.getChildren().addAll(getHeader("Restaurant Menu"),  returnbtn);
-    //     return header;
-    // }
 
     private TableView<Item> getTable (Order order){
         TableView<Item> table = new TableView<Item>();
@@ -202,29 +188,18 @@ public class ItemReviewScene implements Template {
                             payingTable.setAvailability(true);
                             payingTable.setOrder(null);
                         }
-                             // past orders
-                        //addAmount.setEditable(false);
-                        // rest.setText());
-        // rest.setEditable(false);
                         App.getPastOrders().add(order);
                         thanksSceneCash(Double.toString(Cash.calcRest(order.calcTotalPrice(), amount)));
-                        //returnmain, rest
                     }
                     else {
                         addAmount.clear();
-                        Alert alert = new Alert(AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setHeaderText("Invalid input!");
-                        alert.setContentText("Please enter a valid amount.");
-                        alert.showAndWait();
-                        
+                        Template.getWarning("Warning", "The paid amount is less than the total price",
+                            "Please enter a valid amount.");
                     }
                 }catch(NumberFormatException e) {
-                    //System.out.println("Error parsing amount!");
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Invalid input!");
-                    alert.setContentText("Please enter a valid amount.");
+                    addAmount.clear();
+                    Template.getWarning("Warning", "Invalid input!",
+                        "Please enter a valid amount.");
                 }
             }
         });
