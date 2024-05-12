@@ -21,6 +21,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.net.MalformedURLException;
 
+import Backend.Available;
 import Backend.Item;
 import Frontend.Template.BooleanComboBoxTableCell;
 
@@ -52,6 +53,8 @@ public class MenuScene implements Template {
         TableColumn avaCol = new TableColumn<>("Availability");
         avaCol.prefWidthProperty().bind(table.widthProperty().divide(5));
         avaCol.setCellValueFactory(new PropertyValueFactory<Item, SimpleBooleanProperty>("availableProperty"));
+        
+        // Sets the table cells for this column as the custom availability table cell
         avaCol.setCellFactory(col -> new BooleanComboBoxTableCell());
 
         // TableColumn<Item, Integer> ratingCol = new TableColumn<>("Rating");
